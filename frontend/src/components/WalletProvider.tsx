@@ -13,8 +13,6 @@ const config = getDefaultConfig({
   chains: [sepolia, scrollSepolia]
 });
 
-
-
 export default function WalletProvider({
   children,
 }: Readonly<{
