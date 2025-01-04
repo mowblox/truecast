@@ -3,7 +3,7 @@ import { useParams, usePathname } from "next/navigation";
 import TopNav from "./TopNav";
 
 export default function TopNavWrapper() {
-  const { id } = useParams();
+  const { id } = useParams() as { id: string };
   const pathname = usePathname();
 
   const excludes = [
@@ -14,7 +14,7 @@ export default function TopNavWrapper() {
 
   return (
     <>
-      {excludes.includes(pathname) ? '' : (
+      {pathname && excludes.includes(pathname) ? '' : (
         <div className="mb-8">
           <TopNav />
         </div>

@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import LandingContent from './landingPage';
+import Footer from "@/components/Footer";
 import WaitListPage from "./waitListPage";
 
 export const metadata: Metadata = {
@@ -7,5 +7,10 @@ export const metadata: Metadata = {
 };
 
 export default function LandingPage() {
-  return <WaitListPage />;
+  return (
+    <>
+      <WaitListPage />
+      <Footer />
+    </>
+  );
 }

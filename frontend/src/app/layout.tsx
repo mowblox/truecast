@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import { Space_Grotesk, Roboto_Flex, Afacad } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import WalletProvider from "@/components/WalletProvider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
@@ -41,7 +40,6 @@ export default function RootLayout({
             <Header />
             {children}
             <Toaster position="top-center" richColors />
-            <Footer />
           </WalletProvider>
         </ThemeProvider>
       </body>

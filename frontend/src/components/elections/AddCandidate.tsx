@@ -112,7 +112,7 @@ export default function AddCandidate() {
                 name="fullname"
                 value={formData[index]?.fullname || ""}
                 onChange={(e) => handleInputChange(e, index)}
-                className="w-full h-10 border-b-2 border-opacity-10 border-b-subtle-text bg-dark focus:outline-none"
+                className="w-full h-10 border-b-2 border-opacity-10 border-b-subtle-text bg-[#09090B] focus:outline-none"
                 required
               />
             </div>
@@ -129,7 +129,7 @@ export default function AddCandidate() {
                 name="team"
                 value={formData[index]?.team || ""}
                 onChange={(e) => handleInputChange(e, index)}
-                className="w-full h-10 border-b-2 border-opacity-10 border-b-subtle-text bg-dark focus:outline-none"
+                className="w-full h-10 border-b-2 border-opacity-10 border-b-subtle-text bg-[#09090B] focus:outline-none"
                 required
               />
             </div>

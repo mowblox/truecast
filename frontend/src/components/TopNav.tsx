@@ -3,7 +3,8 @@ import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
 
 export default function TopNav({ disabled = false }: { disabled?: boolean }) {
-  const { id } = useParams();
+  const params = useParams();
+  const id = params?.id as string | undefined;
   const pathname = usePathname();
 
   const tabs = [
