@@ -1,7 +1,8 @@
-'use client';
+"use client";
 import { useParams } from "next/navigation";
 import ElectionTitle from "./ElectionTitle";
 import ElectionDescription from "./ElectionDescription";
+import { useState } from "react";
 
 interface Candidates {
   id: number;
@@ -9,7 +10,8 @@ interface Candidates {
 }
 
 export default function ElectionSummary() {
-  const { id }: { id: string } = useParams();
+  const params = useParams();
+  const id = Array.isArray(params?.id) ? params.id[0] : params?.id || "";
 
   const candidates: Candidates[] = [
     { id: 1, name: "Joshua Mensah" },
@@ -17,6 +19,46 @@ export default function ElectionSummary() {
     { id: 3, name: "James Hammond" },
     { id: 4, name: "Michael Brown" },
   ];
+
+  const [link, setlink] = useState<string>("");
+  interface ResponseData {
+    status: boolean;
+    message: string;
+    data: any;
+  }
+  interface VerifyLink {
+    verifyLink: string;
+  }
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = event.target.value;
+    setlink(value);
+    console.log({ value });
+  }
+
+  async function submitLink(): Promise<ResponseData | null> {
+    const url = "";
+    const submitLink: VerifyLink = { verifyLink: link };
+    // console.log(submitLink);
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(submitLink),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const responseData: ResponseData = await response.json();
+      // console.log(responseData);
+      return responseData;
+    } catch (error) {
+      console.error("Error", error);
+      return null;
+    }
+  }
 
   return (
     <div className="w-[80%]">
@@ -63,18 +105,30 @@ export default function ElectionSummary() {
           <p className="text-subtle-text mt-3">24</p>
         </div>
       </div>
-      <div className="flex md:flex-row mt-[103px] items-center mb-4 gap-8">
-        <button className="text-nowrap h-14 text-center md:px-10 md:py-2 px-14 border-2 border-subtle-text rounded-[50px]">
-          save draft
-        </button>
-        <button className=" h-14 rounded-[50px] sm:self-center md:mt-2 text-center bg-gradient-to-r from-primary to-secondary px-[75px]">
-          <span className="text-nowrap">publish election link</span>
-        </button>
-      </div>
-
-      <div>
-
-      </div>
+      <section className="flex flex-col gap-4 w-full md:max-w-[639px]">
+        <div className="flex flex-col">
+          <span className="text-base font-bold md:text-2xl">
+            Check eligibility
+          </span>
+        </div>
+        <input
+          type="text"
+          placeholder="Type or paste unique voting link here"
+          className=" w-full bg-[#0D0E15] p-5 focus:outline-none rounded-xl placeholder:text-primary placeholder:font-space-grotesk text-italic"
+          value={link}
+          name="link"
+          onChange={handleChange}
+        />
+        <div className="w-full flex justify-end mt-8">
+          <button
+            type="button"
+            onClick={submitLink}
+            className="flex bg-primary text-white font-space-grotesk py-3 px-12 font-bold rounded-full"
+          >
+            verify
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,18 +1,20 @@
 'use client';
 import { ELECTION_ABI } from "@/contracts/Election";
-import { useSDK } from "@metamask/sdk-react";
+import { useAccount, useChainId } from "wagmi";
 import { useState, useEffect } from "react";
 import Web3 from "web3";
 
 export default function ElectionDescription({ address }: Readonly<{ address: string }>) {
-  const [description, setDescription] = useState('');
-  const { provider, connected } = useSDK();
+  const chainId = useChainId();
+  const { connector } = useAccount();
+  const [description, setDescription] = useState('Loading...');
 
-  useEffect(() => {
+  const getDescription = async () => {
     // Call transaction
-    if (connected && provider) {
+    if (connector) {
       // Initialize web3
-      const web3 = new Web3(provider);
+      // @ts-ignore
+      const web3 = new Web3(await connector.getProvider());
       // Initialize contract
       const election = new web3.eth.Contract(ELECTION_ABI, address);
       // Invote method
@@ -23,7 +25,11 @@ export default function ElectionDescription({ address }: Readonly<{ address: str
         .then(data => setDescription(String(data)))
         .catch(console.log);
     }
-  }, [provider, connected])
+  }
+
+  useEffect(() => {
+    getDescription();
+  }, [chainId])
 
   return <span>{description}</span>
 }

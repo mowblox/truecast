@@ -1,4 +1,6 @@
+import { AppSidebar } from "@/components/AppSideBar";
 import TopNavWrapper from "@/components/TopNavWrapper";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export default function ElectionDetailLayout({
   children,
@@ -7,8 +9,13 @@ export default function ElectionDetailLayout({
 }>) {
   return (
     <>
-      <TopNavWrapper />
-      {children}
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <TopNavWrapper />
+          {children}
+        </SidebarInset>
+      </SidebarProvider>
     </>
   );
 }

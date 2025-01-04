@@ -73,12 +73,12 @@ export default function ElectionVotePage() {
     );
   };
   return (
-    <main className="mb-28">
+    <main className="px-12">
       <div className="w-full flex justify-between h-[71px] items-center">
-        <span className="text-xs md:text-2xl font-space-grotesk text-secondary">
+        <span className="text-xs md:text-2xl font-space-grotesk text-chart-1">
           Total votes : {electionData.totalVotes}
         </span>
-        <span className="text-base md:text-4xl font-space-grotesk">
+        <span className="text-base md:text-5xl font-space-grotesk tracking-widest">
           {electionData.timer}
         </span>
       </div>
