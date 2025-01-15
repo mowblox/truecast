@@ -19,8 +19,11 @@ const afacad = Afacad({
   variable: "--font-afacad",
 });
 
+const fonts = [afacad, space_grotesk, roboto_flex];
+const fontClasses = fonts.map((font) => font.variable).join(" ");
+
 export const metadata: Metadata = {
-  title: "ABVS",
+  title: "Truecast | Landing",
   description: "BUIDL with Mowblox",
 };
 
@@ -30,17 +33,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${space_grotesk.variable} ${roboto_flex.variable} ${afacad.variable}`}
-    >
+    <html lang="en" className={fontClasses}>
       <body className="bg-dark">
         <ThemeProvider attribute="class" defaultTheme="dark">
-          <WalletProvider>
+          {/* <WalletProvider> */}
+          <div className="w-full max-w-screen-2xl mx-auto overflow-x-hidden">
             <Header />
             {children}
-            <Toaster position="top-center" richColors />
-          </WalletProvider>
+          </div>
+          <Toaster position="top-center" richColors />
+          {/* </WalletProvider> */}
         </ThemeProvider>
       </body>
     </html>

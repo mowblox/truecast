@@ -2,22 +2,18 @@
 import React, { useEffect, useState, FormEvent, useRef } from "react";
 import Image from "next/image";
 import bell from "../../public/images/bell.png";
-import { Separator } from "@radix-ui/react-select";
-import mowblox from "../../public/images/mowblox.png";
-import scroll from "../../public/images/scroll.png";
-import creya from "../../public/images/creya.png";
 import sheild from "../../public/images/Shield.svg";
 import lighting from "../../public/images/Lightning.svg";
 import user from "../../public/images/User.svg";
 import gradient from "../../public/images/Gradient.png";
 import eclipse from "../../public/images/Gradient-2.png";
 import eclipse2 from "../../public/images/card-gradient.png";
-import background from "../../public/images/hero_bg.svg";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import emailjs from "emailjs-com";
 import { toast } from "sonner";
 import Aos from "aos";
 import "aos/dist/aos.css";
+import Hero from "@/components/landing/Hero";
 
 const WaitListPage = () => {
   const [email, setEmail] = useState<string>("");
@@ -56,70 +52,8 @@ const WaitListPage = () => {
   }, []);
 
   return (
-    <div className=" m-auto flex flex-col gap-16 lg:gap-28 relative">
-      {/* Hero Section */}
-      <section className="items-center flex flex-col gap-16 lg:gap-28 ">
-        <div className="flex flex-col items-center w-[80%] lg:w-[60%] xl:w-[50%] text-center">
-          <Image
-            src={background}
-            alt="Background"
-            className="absolute w-full -z-10 mt-16 xs:mt-[130px] sm:-mt-[50px] md:-mt-[150px] lg:-mt-[250px] xl:-mt-[350px] 2xl:-mt-[500px] "
-          />
-          <h1 className="text-[50px] lg:text-8xl 2xl:text-9xl font-bold font-afacad">
-            Future Of Fair Elections
-          </h1>
-          <p className="mt-4 lg:mt-6 w-full md:w-[60%] lg:w-[80%] 2xl:w-[70%] lg:text-xl xl:text-2xl 3xl:text-2xl font-afacad text-subtle-text leading-loose">
-            Remember that feeling after casting your vote? That moment of
-            &quot;I hope it makes it&quot;? Yeah, we weren&apos;t fans either.
-            That&apos;s why we’re building something better.
-          </p>
-          <form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            className="flex flex-col lg:flex-row py-2 px-2 rounded-3xl lg:rounded-full bg-[#07070729] items-center w-full md:w-[70%] mt-6 lg:mt-12 xl:mt-20 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary"
-          >
-            <input
-              type="email"
-              name="user_email"
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-[#07070702] font-afacad rounded-full p-3 focus:outline-none focus:[#0707074D]"
-            />
-            <button
-              type="submit"
-              className="bg-primary hover:bg-chart-1 text-white w-full lg:w-[50%] font-afacad p-3 rounded-full mt-4 lg:mt-0 lg:ml-4 focus:outline-none hover:from-[#ffffff] hover:to-primary"
-            >
-              {loading ? (
-                <LoadingSpinner className="mx-auto sm:w-auto" />
-              ) : (
-                <>
-                  Get notified
-                  <Image
-                    src={bell}
-                    alt="Notification bell"
-                    width={20}
-                    height={20}
-                    className="inline ml-2"
-                  />
-                </>
-              )}
-            </button>
-          </form>
-        </div>
-
-        {/* Support Section */}
-        <div className="flex flex-col gap-4 items-center">
-          <h1 className="font-afacad text-xl lg:text-2xl">Support by</h1>
-          <div className="flex flex-wrap items-center justify-center gap-6 lg:space-x-12">
-            <Image src={mowblox} alt="Mowblox" width={100} height={100} />
-            <Separator className="hidden lg:block w-[1px] h-4 bg-subtle-text" />
-            <Image src={scroll} alt="Scroll" width={100} height={100} />
-            <Separator className="hidden lg:block w-[1px] h-4 bg-subtle-text" />
-            <Image src={creya} alt="Creya" width={100} height={100} />
-          </div>
-        </div>
-      </section>
+    <div className="m-auto flex flex-col relative">
+      <Hero />
 
       {/* Features Section */}
       <section className="flex flex-col items-center gap-16 lg:gap-28">

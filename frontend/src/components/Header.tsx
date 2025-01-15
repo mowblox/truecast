@@ -1,33 +1,56 @@
-'use client';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 
+const socials = [
+  {
+    url: "https://linkedin.com/truecastio",
+    image: "/images/linkedin.png",
+    name: "LinkedIn",
+  },
+  { url: "https://twitter.com/truecastio", name: "X (Twitter)" },
+  {
+    url: "mailto:info@truecastio.com",
+    image: "/images/email.png",
+    name: "Email",
+  },
+];
 
 export default function Header() {
-
   return (
-    <header className='mx-auto w-[90%]'>
-      <nav className=" bg-dark py-2.5 justify-center ">
-        <div className="flex flex-col lg:flex-row justify-center lg:justify-between items-center ">
-          <Link href="/">
-            <Image
-              src="/images/truecast-logo.svg"
-              alt="Logo"
-              width={150}
-              height={36}
-              className='mb-6'
-            />
-          </Link>
-          {/* <div className="flex items-center lg:order-2">
-            <ConnectButton />
-          </div> */}
-          <div className='flex items-center text-xl font-afacad gap-4 cursor-pointer hover:text-primary'>
-            <Image src='/images/email.png' alt="Logo" width={25} height={36} className="self-center" />
-            <a>Email</a>
-          </div>
+    <header className="w-full mx-auto px-8 py-5">
+      <nav className="flex flex-col md:flex-row justify-center md:justify-between items-center gap-5">
+        <Link href="/">
+          <h1 className="font-afacad text-[26px] font-medium leading-8 relative after:absolute after:left-0 after:-bottom-2 after:w-1/2 after:h-1.5 after:rounded-full after:bg-primary">
+            Truecast
+          </h1>
+        </Link>
+        <div className="flex gap-5">
+          {socials.map((social) => (
+            <SocialLink key={social.url} {...social} />
+          ))}
         </div>
       </nav>
     </header>
   );
 }
+
+const SocialLink = (link: { url: string; image?: string; name: string }) => {
+  return (
+    <Link
+      href={link.url}
+      className="flex items-center font-afacad gap-2 cursor-pointer hover:text-primary"
+    >
+      {link.image ? (
+        <Image
+          src={link.image}
+          alt={link.name}
+          width={25}
+          height={36}
+          className="self-center"
+        />
+      ) : null}
+      <span>{link.name}</span>
+    </Link>
+  );
+};
