@@ -37,7 +37,7 @@ export default function RootLayout({
       <body className="bg-white dark:bg-dark min-h-dvh font-afacad">
         <ThemeProvider attribute="class">
           {/* <WalletProvider> */}
-          <div className="w-full max-w-screen-2xl mx-auto overflow-x-hidden">
+          <div className="w-full max-w-screen-2xl mx-auto overflow-x-hidden relative">
             <Header />
             {children}
           </div>

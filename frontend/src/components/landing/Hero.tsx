@@ -1,10 +1,20 @@
+"use client";
 import Image from "next/image";
 import WaitlistForm from "@/components/waitlist/WaitlistForm";
 import SupportedBy from "./SupportedBy";
+import { motion } from "framer-motion";
 
 const Hero = () => {
+  const motionConfig = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+  };
   return (
-    <section className="items-center flex flex-col gap-14 relative">
+    <motion.section
+      {...motionConfig}
+      className="items-center flex flex-col gap-14 relative"
+    >
       <HeroBg />
       <div className="flex flex-col items-center max-w-3xl px-4 text-center mt-11">
         <h1 className=" text-7xl lg:text-9xl tracking-[-3px]">
@@ -19,7 +29,7 @@ const Hero = () => {
       </div>
 
       <SupportedBy />
-    </section>
+    </motion.section>
   );
 };
 
