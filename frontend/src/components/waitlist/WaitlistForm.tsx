@@ -24,13 +24,23 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
         throw new Error("Email is required");
       }
 
-      const result = await emailjs.sendForm(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
-        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
-        formRef.current!,
-        process.env.NEXT_PUBLIC_EMAILJS_USER_ID
-      );
+      const body = {
+        email: email,
+        tags: ["Truecast"],
+      };
 
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      const response = await fetch("https://mowblox.com/api/notify", {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers,
+      });
+      const result = await response.json();
+
+      console.log(result);
       if (result.status === 200) {
         toast.success("You have been added to the waitlist!");
         setEmail("");
