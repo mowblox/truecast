@@ -1,7 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState, useRef, FormEvent } from "react";
-import emailjs from "emailjs-com";
+import { useState, FormEvent } from "react";
 import { toast } from "sonner";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { cn } from "@/lib/utils";
@@ -13,7 +12,6 @@ interface WaitlistFormProps {
 const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
   const [email, setEmail] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,7 +31,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
         "Content-Type": "application/json",
       };
 
-      const response = await fetch("https://mowblox.com/api/notify", {
+      const response = await fetch("/api/notify", {
         method: "POST",
         body: JSON.stringify(body),
         headers,
@@ -41,11 +39,11 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
       const result = await response.json();
 
       console.log(result);
-      if (result.status === 200) {
-        toast.success("You have been added to the waitlist!");
+      if (result.success) {
+        toast.success(result.message);
         setEmail("");
       } else {
-        throw new Error(result.text || "Something went wrong");
+        throw new Error(result.message || "Something went wrong");
       }
     } catch (error: unknown) {
       if (error instanceof Error) {

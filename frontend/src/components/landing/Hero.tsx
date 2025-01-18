@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Separator } from "@radix-ui/react-select";
 import WaitlistForm from "@/components/waitlist/WaitlistForm";
+import { Fragment } from "react";
 
 const Hero = () => {
   return (
@@ -44,7 +45,7 @@ const SupportedBy = () => {
       <h1 className="font-afacad text-xl lg:text-2xl">Supported by</h1>
       <div className="w-full flex px-4 overflow-x-auto sm:items-center sm:justify-center gap-6 lg:gap-12">
         {supporters.map((supporter, i) => (
-          <>
+          <Fragment key={i}>
             <Image
               src={supporter.image}
               alt={supporter.name}
@@ -55,7 +56,7 @@ const SupportedBy = () => {
             {i < supporters.length - 1 ? (
               <Separator className="hidden lg:block w-[1px] h-4 bg-subtle-text" />
             ) : null}
-          </>
+          </Fragment>
         ))}
       </div>
     </div>
