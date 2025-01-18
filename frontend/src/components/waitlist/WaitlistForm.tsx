@@ -57,7 +57,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
     <form
       onSubmit={handleSubmit}
       className={cn(
-        "w-full max-w-[600px] flex flex-col md:flex-row items-center p-2 rounded-3xl md:rounded-full bg-[#fff]/5 backdrop-blur-[2px] transition duration-200 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary",
+        "w-full max-w-[600px] flex flex-col md:flex-row gap-4 items-center p-2 rounded-3xl md:rounded-full dark:backdrop-blur-[1px] transition duration-200 focus-within:border-primary",
         className
       )}
     >
@@ -68,12 +68,12 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
         placeholder="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full bg-transparent outline-none font-afacad rounded-full p-3"
+        className="w-full bg-light-shade border-[0.5px] border-primary dark:border-none dark:bg-transparent outline-none font-afacad rounded-full py-3 px-5 text-text"
       />
       <button
         disabled={loading}
         type="submit"
-        className="bg-primary hover:bg-chart-1 text-white font-afacad py-3 px-6 rounded-full focus:outline-none hover:from-[#ffffff] hover:to-primary flex items-center justify-center text-nowrap shrink-0 gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
+        className="w-full md:w-fit bg-primary hover:bg-secondary text-white font-afacad py-3 px-6 rounded-full focus:outline-none hover:from-[#ffffff] hover:to-primary flex items-center justify-center text-nowrap shrink-0 gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
       >
         Get notified
         {loading ? (

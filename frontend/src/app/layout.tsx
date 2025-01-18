@@ -33,9 +33,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={fontClasses}>
-      <body className="bg-dark">
-        <ThemeProvider attribute="class" defaultTheme="dark">
+    <html lang="en" className={fontClasses} suppressHydrationWarning>
+      <body className="bg-white dark:bg-dark min-h-dvh font-afacad">
+        <ThemeProvider attribute="class">
           {/* <WalletProvider> */}
           <div className="w-full max-w-screen-2xl mx-auto overflow-x-hidden">
             <Header />

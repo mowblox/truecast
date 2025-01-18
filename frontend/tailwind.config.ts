@@ -11,11 +11,13 @@ const config: Config = {
     colors: {
       primary: "#1D57C2",
       secondary: "#4C9FE4",
-      text: "#F5F5F5",
+      text: "#413F3F",
+      "dark-text": "#F5F5F5",
       "subtle-text": "#939393",
+      "light-shade": "#1D57C21A",
       dark: "#070707",
       gray: "#0B0F12",
-      white: "fffff",
+      white: "#FFFFFF",
       transparent: "transparent",
     },
     fontFamily: {

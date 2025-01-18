@@ -28,7 +28,6 @@
     "@web3auth/ethereum-provider": "^9.4.0",
     "@web3auth/modal": "^9.4.0",
     "@web3auth/web3auth-wagmi-connector": "^7.0.0",
-    "aos": "^2.3.4",
     "class-variance-authority": "^0.7.1",
     "emailjs-com": "^3.2.0",
     "framer-motion": "^11.12.0",
