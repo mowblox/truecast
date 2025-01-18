@@ -27,7 +27,7 @@ const SupportedBy = () => {
   return (
     <div className="w-full flex flex-col gap-4 items-center mt-10 lg:mt-[208px]">
       <h1 className="font-afacad text-xl lg:text-2xl">Supported by</h1>
-      <div className="w-full flex px-4 overflow-x-auto sm:items-center sm:justify-center gap-6 lg:gap-12">
+      <div className="w-full flex px-4 overflow-x-auto sm:items-center sm:justify-center gap-6 lg:gap-12 hide-scrollbar">
         {supporters.map((supporter, i) => (
           <Fragment key={i}>
             <Image
