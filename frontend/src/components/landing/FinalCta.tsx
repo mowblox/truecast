@@ -19,11 +19,10 @@ const FinalCta = () => {
         className="flex flex-col items-center gap-4 lg:gap-6 w-full px-5"
       >
         <div className="flex flex-col gap-3 max-w-2xl">
-          <h1 className="text-xl lg:text-5xl font-afacad font-bold text-center">
-            Ready to experience{" "}
-            <span className="text-primary">the future of voting?</span>
+          <h1 className="text-[32px] lg:text-5xl text-center text-dark dark:text-white">
+            Ready to experience the future of voting?
           </h1>
-          <p className="text-center font-afacad text-subtle-text leading-loose lg:text-xl">
+          <p className="text-xl text-center leading-loose text-text dark:text-dark-text/60">
             Be one of the first to bring secure, modern elections to your
             organization or community. Drop your email below to get early access
             to our platform.

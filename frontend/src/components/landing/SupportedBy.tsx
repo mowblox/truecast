@@ -11,12 +11,12 @@ const SupportedBy = () => {
     {
       name: "Mowblox",
       image: "/images/logos/sponsors/mowblox_light.png",
-      imageDark: "/images/logos/sponsors/mowblox.png",
+      imageDark: "/images/logos/sponsors/mowblox_dark.png",
     },
     {
       name: "Scroll",
       image: "/images/logos/sponsors/scroll_light.png",
-      imageDark: "/images/logos/sponsors/scroll.png",
+      imageDark: "/images/logos/sponsors/scroll_dark.png",
     },
     {
       name: "Creya",
@@ -37,7 +37,7 @@ const SupportedBy = () => {
                   : supporter.imageDark
               }
               alt={supporter.name}
-              className="shrink-0"
+              className="shrink-0 h-10 main"
               width={140}
               height={35}
             />

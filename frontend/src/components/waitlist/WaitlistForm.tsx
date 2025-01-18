@@ -68,12 +68,12 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
         placeholder="Email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full bg-light-shade border-[0.5px] border-primary dark:border-none dark:bg-transparent outline-none font-afacad rounded-full py-3 px-5 text-text"
+        className="w-full bg-light-shade border-[0.5px] border-primary dark:border-none dark:bg-transparent outline-none rounded-full py-3 px-4 text-text dark:text-dark-text/60"
       />
       <button
         disabled={loading}
         type="submit"
-        className="w-full md:w-fit bg-primary hover:bg-secondary text-white font-afacad py-3 px-6 rounded-full focus:outline-none hover:from-[#ffffff] hover:to-primary flex items-center justify-center text-nowrap shrink-0 gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
+        className="w-full md:w-fit bg-primary text-white py-3 px-6 rounded-full focus:outline-none flex items-center justify-center text-nowrap shrink-0 gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
       >
         Get notified
         {loading ? (

@@ -30,10 +30,12 @@ const features = [
 
 const Features = () => {
   return (
-    <section className="flex flex-col items-center gap-16 lg:gap-28 w-full max-w-6xl mx-auto">
-      <h1 className="text-2xl md:text-3xl font-afacad font-bold text-center xl:text-4xl 2xl:text-5xl">
+    <section className="flex flex-col items-center gap-20 lg:gap-28 w-full max-w-6xl mx-auto">
+      <h1 className="text-text dark:text-dark-text text-[32px] lg:text-[52px] font-bold lg:font-normal text-center">
         Your elections{" "}
-        <span className="text-primary">secured, anywhere, anytime.</span>
+        <span className="text-secondary-foreground dark:text-primary">
+          secured, anywhere, anytime.
+        </span>
       </h1>
 
       <Image src={gradient} alt="eclipse" className="absolute left-0" />
@@ -43,8 +45,6 @@ const Features = () => {
     </section>
   );
 };
-
-export default Features;
 
 type FeatureCardProps = {
   reverse: boolean;
@@ -56,32 +56,27 @@ type FeatureCardProps = {
 };
 
 const FeatureCard = ({ reverse, card }: FeatureCardProps) => {
-  const aosConfig = {
-    "data-aos": "fade-in",
-    "data-aos-duration": "1500",
-    "data-aos-easing": "ease-in-out",
-    "data-aos-once": "false",
-  };
-
   const className = cn(
-    "w-full flex flex-col-reverse justify-between px-5",
+    "w-full flex flex-col gap-y-16 justify-between px-4",
     reverse ? "md:flex-row-reverse" : "md:flex-row"
   );
   return (
-    <div {...aosConfig} className={className}>
+    <div className={className}>
       <div className="flex flex-col gap-4 max-w-xl max-md:text-center">
-        <h1 className="text-xl lg:text-3xl font-afacad font-bold 2xl:text-4xl">
+        <h1 className="text-[32px] lg:text-[42px] text-dark dark:text-white">
           {card.title}
         </h1>
-        <p className="text-subtle-text xl:text-xl  2xl:text-2xl font-afacad leading-loose">
+        <p className="text-text dark:text-dark-text/60 text-xl  2xl:text-2xl leading-loose">
           {card.description}
         </p>
       </div>
       <Image
         src={card.image}
         alt={card.title}
-        className="aspect-square max-md:w-24 max-md:mx-auto"
+        className="aspect-square max-md:w-[200px] max-md:mx-auto"
       />
     </div>
   );
 };
+
+export default Features;

@@ -37,10 +37,7 @@ const Socials = () => {
 
 const SocialLink = (link: { url: string; image?: string; name: string }) => {
   return (
-    <Link
-      href={link.url}
-      className="flex items-center gap-2 cursor-pointer hover:text-secondary"
-    >
+    <Link href={link.url} className="flex items-center gap-2 cursor-pointer">
       {link.image ? (
         <Image
           src={link.image}
@@ -50,7 +47,7 @@ const SocialLink = (link: { url: string; image?: string; name: string }) => {
           className="self-center"
         />
       ) : null}
-      <span className="text-secondary">{link.name}</span>
+      <span className="text-white">{link.name}</span>
     </Link>
   );
 };
