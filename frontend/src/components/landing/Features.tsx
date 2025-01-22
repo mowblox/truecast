@@ -3,9 +3,8 @@ import Image from "next/image";
 import sheild from "../../../public/images/Shield.svg";
 import lighting from "../../../public/images/Lightning.svg";
 import user from "../../../public/images/User.svg";
-import gradient from "../../../public/images/Gradient.png";
-import eclipse from "../../../public/images/Gradient-2.png";
 import { cn } from "@/lib/utils";
+import LightSource from "./LightSource";
 
 const features = [
   {
@@ -30,18 +29,26 @@ const features = [
 
 const Features = () => {
   return (
-    <section className="flex flex-col items-center gap-20 lg:gap-28 w-full max-w-6xl mx-auto">
-      <h1 className="text-text dark:text-dark-text text-[32px] lg:text-[52px] font-bold lg:font-normal text-center">
-        Your elections{" "}
-        <span className="text-secondary-foreground dark:text-primary">
-          secured, anywhere, anytime.
-        </span>
-      </h1>
+    <section className="relative">
+      <div className="flex flex-col items-center gap-20 lg:gap-28 w-full max-w-6xl mx-auto">
+        <h1 className="text-text dark:text-dark-text text-[32px] lg:text-[52px] font-bold lg:font-normal text-center">
+          Your elections{" "}
+          <span className="text-secondary-foreground dark:text-primary">
+            secured, anywhere, anytime.
+          </span>
+        </h1>
 
-      <Image src={gradient} alt="eclipse" className="absolute left-0" />
-      {features.map((card, i) => (
-        <FeatureCard key={i} reverse={(i + 1) % 2 === 0} card={card} />
-      ))}
+        <LightSource className="left-0" />
+        <LightSource
+          position="right"
+          className="right-0 top-[40%] translate-x-1/3"
+        />
+        <LightSource className="left-0 bottom-0" />
+
+        {features.map((card, i) => (
+          <FeatureCard key={i} reverse={(i + 1) % 2 === 0} card={card} />
+        ))}
+      </div>
     </section>
   );
 };

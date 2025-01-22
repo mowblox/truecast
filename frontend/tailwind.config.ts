@@ -25,6 +25,7 @@ const config: Config = {
       "space-grotesk": ["var(--font-space-grotesk)"],
       "roboto-flex": ["var(--font-roboto-flex)"],
       afacad: ["var(--font-afacad)"],
+      abel: ["var(--font-abel)"],
     },
     extend: {
       screens: {

@@ -1,18 +1,12 @@
 import { socials } from "@/data/socials";
-import Image from "next/image";
 import Link from "next/link";
+import Logo from "./landing/Logo";
 
 export default function Footer() {
   return (
     <div className="w-full flex flex-col lg:items-center pt-28 lg:mt-20 bg-dark">
       <div className="mb-10 flex flex-col lg:items-center lg:text-center md:mb-10 gap-4 px-4">
-        <Image
-          src="/images/truecast-logo.svg"
-          alt="Logo"
-          width={150}
-          height={36}
-          className="cursor-pointer"
-        />
+        <Logo />
         <p className="text-white/60 text-xl mt-6">
           Secure, Transparent, and Fair Voting for Everyone
         </p>

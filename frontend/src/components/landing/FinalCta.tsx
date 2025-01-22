@@ -1,16 +1,11 @@
 import React from "react";
 import WaitlistForm from "../waitlist/WaitlistForm";
-import Image from "next/image";
-import eclipse2 from "../../../public/images/card-gradient.png";
+import LightSource from "./LightSource";
 
 const FinalCta = () => {
   return (
     <section className="flex flex-col items-center gap-16 lg:gap-28 mb-20">
-      <Image
-        src={eclipse2}
-        alt="eclipse"
-        className="absolute right-0 w-[30%]"
-      />
+      <LightSource position="right" className="right-0 translate-x-1/3" />
       <div
         data-aos="fade-up"
         data-aos-duration="1500"

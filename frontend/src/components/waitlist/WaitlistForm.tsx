@@ -57,7 +57,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
     <form
       onSubmit={handleSubmit}
       className={cn(
-        "w-full max-w-[600px] flex flex-col md:flex-row gap-4 items-center p-2 rounded-3xl md:rounded-full dark:backdrop-blur-[1px] transition duration-200 focus-within:border-primary",
+        "w-full max-w-[600px] flex flex-col md:flex-row gap-4 items-center p-1.5 rounded-3xl md:rounded-full md:bg-[#F9FAFB] transition duration-200 focus-within:border-primary",
         className
       )}
     >
@@ -65,15 +65,15 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
         type="email"
         required
         name="user_email"
-        placeholder="Email address"
+        placeholder="Enter your email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full bg-light-shade border-[0.5px] border-primary dark:border-none dark:bg-transparent outline-none rounded-full py-3 px-4 text-text dark:text-dark-text/60"
+        className="w-full bg-transparent max-md:bg-[#F9FAFB] max-md:border-[0.5px] max-md:border-[#F9FAFB]  outline-none rounded-full py-3 px-8 text-text"
       />
       <button
         disabled={loading}
         type="submit"
-        className="w-full md:w-fit bg-primary text-white py-3 px-6 rounded-full focus:outline-none flex items-center justify-center text-nowrap shrink-0 gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
+        className="w-full md:w-fit bg-primary text-white py-3 px-8 rounded-full focus:outline-none flex items-center justify-center text-nowrap shrink-0 gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
       >
         Get notified
         {loading ? (

@@ -3,16 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { socials } from "@/data/socials";
 import { AlignRight } from "lucide-react";
+import { useTheme } from "next-themes";
+import Logo from "./landing/Logo";
 
 export default function Header() {
   return (
-    <header className="w-full px-4 lg:px-8 py-5 bg-dark text-white">
+    <header className="w-full px-4 lg:px-8 py-5 text-dark dark:text-white">
       <nav className="flex justify-between items-center gap-5">
-        <Link href="/">
-          <h1 className="text-[26px] font-medium leading-8 relative after:absolute after:left-0 after:-bottom-2 after:w-1/2 after:h-1.5 after:rounded-full after:bg-primary">
-            Truecast
-          </h1>
-        </Link>
+        <Logo />
         <Socials />
       </nav>
     </header>
@@ -35,19 +33,28 @@ const Socials = () => {
   );
 };
 
-const SocialLink = (link: { url: string; image?: string; name: string }) => {
+const SocialLink = (link: {
+  url: string;
+  image?: string;
+  name: string;
+  imageDark?: string;
+}) => {
+  const { resolvedTheme } = useTheme();
   return (
     <Link href={link.url} className="flex items-center gap-2 cursor-pointer">
       {link.image ? (
         <Image
-          src={link.image}
+          src={
+            (resolvedTheme === "dark" ? link.imageDark : link.image) ||
+            link.image
+          }
           alt={link.name}
-          width={25}
-          height={36}
+          width={20}
+          height={20}
           className="self-center"
         />
       ) : null}
-      <span className="text-white">{link.name}</span>
+      <span className="text-dark dark:text-white">{link.name}</span>
     </Link>
   );
 };
