@@ -57,7 +57,7 @@ const WaitlistForm: React.FC<WaitlistFormProps> = ({ className }) => {
     <form
       onSubmit={handleSubmit}
       className={cn(
-        "w-full max-w-[600px] flex flex-col md:flex-row gap-4 items-center p-1.5 rounded-3xl md:rounded-full md:bg-[#F9FAFB] transition duration-200 focus-within:border-primary",
+        "w-full max-w-[600px] flex flex-col md:flex-row gap-4 items-center p-1.5 rounded-3xl md:rounded-full md:bg-[#F9FAFB] transition duration-200 border-[#0707074D] border-[0.5px] focus-within:border-primary",
         className
       )}
     >

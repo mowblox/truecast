@@ -20,7 +20,7 @@ const SupportedBy = () => {
     },
     {
       name: "Creya",
-      image: "/images/logos/sponsors/creya.png",
+      image: "/images/logos/sponsors/creya_light.png",
       imageDark: "/images/logos/sponsors/creya.png",
     },
   ];
