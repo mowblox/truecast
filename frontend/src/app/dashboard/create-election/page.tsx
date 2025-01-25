@@ -1,7 +1,39 @@
 import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Election from "./_components/Election";
 
-const page = () => {
-  return <div>page</div>;
+const tabHeaders = [
+  { value: "election", label: "Election" },
+  { value: "candidates", label: "Candidates" },
+  { value: "voters", label: "Voters" },
+  { value: "summary", label: "Summary" },
+];
+
+const tabsContent = [{ value: "election", component: <Election /> }];
+
+const CreateElection = () => {
+  return (
+    <main className="flex flex-col ml-[117px] w-full max-w-[672px] max-md:px-4">
+      <Tabs defaultValue="election" className="w-full">
+        <TabsList className="w-full flex justify-between border-b px-0 border-gray/30 dark:border-[#EAEAEA]/15">
+          {tabHeaders.map(({ value, label }) => (
+            <TabsTrigger
+              key={value}
+              className="px-0 text-xl transition duration-300 data-[state=active]:text-secondary dark:text-white/60 dark:data-[state=active]:text-secondary relative before:absolute before:w-full before:h-1 before:bg-secondary before:rounded-full before:bottom-0 before:translate-y-1/2 before:opacity-0 data-[state=active]:before:opacity-100 before:transition before:duration-3000"
+              value={value}
+            >
+              {label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {tabsContent.map(({ value, component }) => (
+          <TabsContent key={value} value={value} className="mt-10">
+            {component}
+          </TabsContent>
+        ))}
+      </Tabs>
+    </main>
+  );
 };
 
-export default page;
+export default CreateElection;

@@ -18,7 +18,7 @@ export default function DashboardLayout({
       <Sidebar />
       <div className="flex flex-col w-full relative">
         <Header />
-        {children}
+        <div className="w-full grow overflow-y-auto py-12">{children}</div>
       </div>
     </div>
   );
