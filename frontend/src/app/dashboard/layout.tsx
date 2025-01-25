@@ -1,4 +1,5 @@
 import Sidebar from "@/components/dashboard/Sidebar";
+import Header from "@/components/dashboard/Header";
 import { Metadata } from "next";
 import React from "react";
 
@@ -15,7 +16,10 @@ export default function DashboardLayout({
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex flex-col w-full">{children}</div>
+      <div className="flex flex-col w-full relative">
+        <Header />
+        {children}
+      </div>
     </div>
   );
 }
