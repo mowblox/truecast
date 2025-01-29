@@ -7,7 +7,7 @@ import SocialLink from "./SocialLink";
 
 export default function Header() {
   return (
-    <header className="w-full px-4 lg:px-8 py-5 text-dark dark:text-white">
+    <header className="w-full px-4 lg:px-8 py-5 text-dark dark:text-white z-10 sticky top-0">
       <nav className="flex justify-between items-center gap-5">
         <Logo />
         <div className="hidden md:flex gap-9">
