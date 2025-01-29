@@ -2,10 +2,7 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomicfoundation/hardhat-verify";
 import "@nomicfoundation/hardhat-ignition-ethers";
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
+import "dotenv/config";
 
 const config: HardhatUserConfig = {
   solidity: "0.8.24",
@@ -19,7 +16,7 @@ const config: HardhatUserConfig = {
     },
     ethereum_mainnet: {
       url: `https://ethereum-rpc.publicnode.com`,
-      accounts: [process.env.MAINNET_PRIVATE_KEY as string],
+      accounts: [process.env.PRIVATE_KEY as string],
     },
     linea_sepolia: {
       url: `https://rpc.sepolia.linea.build`,
