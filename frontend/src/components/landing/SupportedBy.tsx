@@ -9,11 +9,6 @@ const SupportedBy = () => {
 
   const supporters = [
     {
-      name: "Mowblox",
-      image: "/images/logos/sponsors/mowblox_light.png",
-      imageDark: "/images/logos/sponsors/mowblox_dark.png",
-    },
-    {
       name: "Scroll",
       image: "/images/logos/sponsors/scroll_light.png",
       imageDark: "/images/logos/sponsors/scroll_dark.png",
