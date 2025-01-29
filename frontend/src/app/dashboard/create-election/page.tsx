@@ -1,6 +1,7 @@
 import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Election from "./_components/Election";
+import Candidates from "./_components/Candidates";
 
 const tabHeaders = [
   { value: "election", label: "Election" },
@@ -9,7 +10,10 @@ const tabHeaders = [
   { value: "summary", label: "Summary" },
 ];
 
-const tabsContent = [{ value: "election", component: <Election /> }];
+const tabsContent = [
+  { value: "election", component: <Election /> },
+  { value: "candidates", component: <Candidates /> },
+];
 
 const CreateElection = () => {
   return (
