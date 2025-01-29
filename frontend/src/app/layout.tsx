@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { Space_Grotesk, Roboto_Flex, Afacad, Abel } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import Header from "@/components/Header/Header";
 import WalletProvider from "@/components/WalletProvider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";

@@ -1,4 +1,4 @@
-import Header from "../Header";
+import Header from "../Header/Header";
 
 const LandingLayout = ({ children }: { children: React.ReactNode }) => {
   return (
