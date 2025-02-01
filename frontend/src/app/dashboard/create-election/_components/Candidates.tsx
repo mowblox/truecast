@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import TextInput from "./inputs/TextInput";
+import ImagePicker from "./inputs/ImagePicker";
 
 const Candidates = () => {
   const arr = [1, 2, 3];
@@ -28,6 +29,7 @@ const CandidateForm = ({ i }: { i: number }) => {
         <form className="flex flex-col gap-16 pt-[42px] pb-12">
           <TextInput name="name" label="Full Name" placeholder="Eg. John Doe" />
           <TextInput name="name" label="Team" placeholder="Eg. Dreamweaver" />
+          <ImagePicker />
         </form>
       </AccordionContent>
     </AccordionItem>
