@@ -26,7 +26,14 @@ const page = () => {
     "Actions",
   ];
 
-  const data = [
+  type Field = {
+    election: string;
+    voters: string;
+    candidates: string;
+    status: "Ongoing" | "Closed";
+    winner: string;
+  };
+  const data: Field[] = [
     {
       election: "SRC President 2024",
       voters: "25",
@@ -168,8 +175,6 @@ const InfoCard = ({
 };
 
 const StatusPill = ({ status }: { status: "Ongoing" | "Closed" }) => {
-  const statuses = ["Ongoing", "Completed"];
-
   const colors = {
     Ongoing: "bg-success/10 border-success/30 text-success",
     Closed: "bg-danger/10 border-danger/30 text-danger",
