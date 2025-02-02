@@ -17,7 +17,7 @@ select:focus {
   transition: background-color 0.3s ease-in-out;
   background-color: #1b1a23; /* bg-dark */
 }
-@layer base {
+/* @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
@@ -35,7 +35,8 @@ select:focus {
     --accent-foreground: 219, 72%, 44%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --success: 120, 60%, 40% --success-foreground: 120, 60%, 90%;
+    --success: 120, 60%, 40%;
+    --success-foreground: 120, 60%, 90%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
@@ -88,15 +89,15 @@ select:focus {
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-}
-@layer base {
+} */
+/* @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
   }
-}
+} */
 
 .PopoverContent {
   animation-duration: 0.6s;

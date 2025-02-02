@@ -1,5 +1,11 @@
 import { Metadata } from "next";
-import { Space_Grotesk, Roboto_Flex, Afacad, Abel } from "next/font/google";
+import {
+  Space_Grotesk,
+  Roboto_Flex,
+  Afacad,
+  Abel,
+  Mulish,
+} from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import WalletProvider from "@/components/WalletProvider";
@@ -23,8 +29,13 @@ const abel = Abel({
   variable: "--font-abel",
   weight: "400",
 });
+const mulish = Mulish({
+  subsets: ["latin"],
+  variable: "--font-abel",
+  weight: "400",
+});
 
-const fonts = [afacad, space_grotesk, roboto_flex, abel];
+const fonts = [afacad, space_grotesk, roboto_flex, abel, mulish];
 const fontClasses = fonts.map((font) => font.variable).join(" ");
 
 export const metadata: Metadata = {
