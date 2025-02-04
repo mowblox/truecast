@@ -1,6 +1,5 @@
 import React from "react";
 import InputWrapper from "../create-election/_components/inputs/InputWrapper";
-import TextInput from "../create-election/_components/inputs/TextInput";
 
 const page = () => {
   return (
