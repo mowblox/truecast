@@ -52,10 +52,10 @@ export default function RootLayout({
     <html lang="en" className={fontClasses} suppressHydrationWarning>
       <body className="bg-white dark:bg-dark min-h-dvh font-afacad">
         <ThemeProvider attribute="class">
-          {/* <WalletProvider> */}
-          {children}
-          <Toaster position="top-center" richColors />
-          {/* </WalletProvider> */}
+          <WalletProvider>
+            {children}
+            <Toaster position="top-center" richColors />
+          </WalletProvider>
         </ThemeProvider>
       </body>
     </html>

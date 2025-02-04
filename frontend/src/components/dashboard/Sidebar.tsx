@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode } from "react";
+import { Fragment, ReactNode } from "react";
 import Logo from "../landing/Logo";
 import Link from "next/link";
 import {
@@ -73,12 +73,12 @@ const Sidebar = () => {
 
       <div className="nav-blocks flex flex-col gap-4">
         {navBlocks.map((block, i) => (
-          <>
-            <NavBlock key={block.title} block={block} />
+          <Fragment key={block.title}>
+            <NavBlock block={block} />
             {i !== navBlocks.length - 1 ? (
               <div className="w-full h-[1px] bg-dark/60 dark:bg-white/60"></div>
             ) : null}
-          </>
+          </Fragment>
         ))}
       </div>
     </div>

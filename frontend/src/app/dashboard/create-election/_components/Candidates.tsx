@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import TextInput from "./inputs/TextInput";
 import ImagePicker from "./inputs/ImagePicker";
+import Link from "next/link";
 
 const Candidates = () => {
   const arr = [1, 2, 3];
@@ -19,9 +20,9 @@ const Candidates = () => {
       <div className="flex flex-col items-end mt-8">
         <button className="border-b-4 border-secondary">Add more</button>
 
-        <button className="bg-secondary dark:bg-primary rounded-full px-12 text-white py-2.5 mt-24">
+        <Link href={'?tab=voters'} className="bg-secondary dark:bg-primary rounded-full px-12 text-white py-2.5 mt-24">
           Next
-        </button>
+        </Link>
       </div>
     </Accordion>
   );

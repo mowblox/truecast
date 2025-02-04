@@ -1,12 +1,23 @@
+"use client";
 import { DatePicker } from "@/components/ui/date-picker";
 import { RadioGroupItem, RadioGroup } from "@/components/ui/radio-group";
 import React from "react";
 import TextInput from "./inputs/TextInput";
 import InputWrapper from "./inputs/InputWrapper";
+import { useRouter } from "next/navigation";
 
 const Election = () => {
+  const router = useRouter();
+
+  const createElection = (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    router.push('?tab=candidates');
+  }
+
   return (
-    <form className="flex flex-col gap-14 w-full">
+    <form
+      onSubmit={createElection}
+      className="flex flex-col gap-14 w-full">
       <TextInput
         name="title"
         label="Election Title"
