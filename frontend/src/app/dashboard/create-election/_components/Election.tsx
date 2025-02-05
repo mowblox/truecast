@@ -5,13 +5,42 @@ import React from "react";
 import TextInput from "./inputs/TextInput";
 import InputWrapper from "./inputs/InputWrapper";
 import { useRouter } from "next/navigation";
+import { useChainId, useWatchContractEvent, useWriteContract } from "wagmi";
+import { ELECTION_FACTORY_ABI, getFactoryAddress } from "@/contracts/ElectionFactory";
 
 const Election = () => {
   const router = useRouter();
+  const chainId = useChainId();
+  const { writeContract } = useWriteContract();
+
+  useWatchContractEvent({
+    address: getFactoryAddress(chainId),
+    abi: ELECTION_FACTORY_ABI,
+    eventName: 'ElectionCreated',
+    onLogs(logs) {
+      // console.log('New logs!', logs);
+      if (logs.length) {
+        // @ts-expect-error
+        router.push(`?tab=candidates&election=${logs[0]?.args?.electionAddress}`);
+      }
+    },
+  });
 
   const createElection = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.push('?tab=candidates');
+    const formData = new FormData(event.target as HTMLFormElement);
+    writeContract({
+      abi: ELECTION_FACTORY_ABI,
+      address: getFactoryAddress(chainId),
+      functionName: 'createElection',
+      args: [
+        formData.get('title'),
+        formData.get('description'),
+        true,
+        new Date().valueOf(),
+        new Date().setDate(28).valueOf(),
+      ],
+    });
   }
 
   return (
@@ -40,7 +69,7 @@ const Election = () => {
       </div>
 
       <InputWrapper name="election-type" label="Election Type">
-        <RadioGroup defaultValue="option-one" className="flex gap-10">
+        <RadioGroup name="election-type" defaultValue="option-one" className="flex gap-10">
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="option-one" id="option-one" />
             <label htmlFor="option-one">Public</label>
