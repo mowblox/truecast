@@ -11,7 +11,7 @@ import { Search } from "lucide-react";
 const Header = () => {
   return (
     <header className="flex justify-between items-center gap-3 md:gap-5">
-      <div className="w-full h-10 flex items-center rounded-full border border-white/30 relative overflow-hidden px-5 py-3 text-white/60">
+      <div className="w-full h-10 flex items-center rounded-full border border-gray/30 dark:border-white/30 relative overflow-hidden px-5 py-3 text-dark dark:text-white/60">
         <Search className="size-4" />
         <input
           type="text"
@@ -21,7 +21,7 @@ const Header = () => {
       </div>
 
       <Select>
-        <SelectTrigger className=" w-[116px] rounded-full bg-primary py-2.5 border-none outline-none">
+        <SelectTrigger className=" w-[116px] rounded-full bg-secondary dark:bg-primary text-white py-2.5 border-none outline-none">
           <SelectValue placeholder="Private" />
         </SelectTrigger>
         <SelectContent>
