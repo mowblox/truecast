@@ -14,7 +14,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex">
+    <div className="flex h-screen relative">
       <Sidebar />
       <div className="flex flex-col w-full relative">
         <Header />

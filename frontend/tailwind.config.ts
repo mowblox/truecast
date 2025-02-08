@@ -1,3 +1,4 @@
+import { m } from "framer-motion";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -26,6 +27,7 @@ const config: Config = {
       "roboto-flex": ["var(--font-roboto-flex)"],
       afacad: ["var(--font-afacad)"],
       abel: ["var(--font-abel)"],
+      mulish: ["var(--font-mulish)"],
     },
     extend: {
       screens: {
