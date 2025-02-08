@@ -88,17 +88,19 @@ const page = () => {
   );
 };
 
-const Election = ({ title, description, id, status }: Election) => {
+const Election = ({ title, description, id }: Election) => {
   return (
-    <article className="flex justify-between items-center gap-7 py-5 border-b border-[#9393934D] text-white/60 pr-5">
+    <Link
+      href={`/dashboard/results/${id}`}
+      className="flex justify-between items-center gap-7 py-5 border-b border-[#9393934D] text-white/60 pr-5"
+    >
       <div className="w-full">
         <h5 className="text-xl">{title}</h5>
         <p className="mt-3 text-sm">{description}</p>
       </div>
-      <Link href={`/dashboard/my-elections/${id}`}>
-        <ChevronRight className="size-6" />
-      </Link>
-    </article>
+
+      <ChevronRight className="size-6" />
+    </Link>
   );
 };
 

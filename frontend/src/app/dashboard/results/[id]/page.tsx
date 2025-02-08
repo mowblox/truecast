@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import React, { ReactNode } from "react";
 import { StatusPill } from "../../page";
+import BackButton from "@/components/dashboard/BackButton";
 
 const standings = [
   { name: "Lisa Mensah", voteCount: 29 },
@@ -25,10 +26,7 @@ const electionDetails = [
 const page = () => {
   return (
     <main className="mx-4 md:ml-[117px] md:mr-8">
-      <button className="flex text-white/60 gap-4 items-center text-sm">
-        <ArrowLeft className="size-6" />
-        <span>back</span>
-      </button>
+      <BackButton />
 
       <div className="election-details flex flex-col md:flex-row justify-between gap-x-24 gap-y-12 mt-10">
         <section className="flex flex-col gap-8 md:gap-[60px] text-white/60 md:flex-1">
