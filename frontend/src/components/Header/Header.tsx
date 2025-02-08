@@ -14,9 +14,7 @@ export default function Header() {
           <Socials />
           <ThemeSwitcher />
         </div>
-        <div className="md:hidden">
-          <MobileNavigation />
-        </div>
+        <MobileNavigation />
       </nav>
     </header>
   );
