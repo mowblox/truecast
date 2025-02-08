@@ -14,14 +14,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex h-screen relative">
-      <Sidebar />
-      <div className="flex flex-col w-full relative h-screen">
-        <Header />
-        <div className="w-full grow overflow-y-auto py-6 md:py-12">
-          <Suspense>{children}</Suspense>
+    <React.Suspense>
+      <div className="flex h-screen relative">
+        <Sidebar />
+        <div className="flex flex-col w-full relative">
+          <Header />
+          <div className="w-full grow overflow-y-auto py-12">{children}</div>
         </div>
       </div>
-    </div>
+    </React.Suspense>
   );
 }

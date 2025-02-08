@@ -4,9 +4,17 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Voters = () => {
+  const router = useRouter();
+
+  const addVoters = (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    router.push('?tab=summary');
+  }
+
   return (
     <Accordion value="voters" type="single" className="flex flex-col text-base">
       <AccordionItem value="voters" className="border-none">
@@ -14,7 +22,9 @@ const Voters = () => {
           Enter Voters Manually
         </AccordionTrigger>
         <AccordionContent>
-          <form className="flex flex-col gap-6 pt-[42px] pb-12">
+          <form
+            onSubmit={addVoters}
+            className="flex flex-col gap-6 pt-[42px] pb-12">
             <textarea
               className="border border-[#EAEAEA]/30 focus:border-primary outline-none rounded-lg p-4 resize-none bg-transparent"
               rows={12}
