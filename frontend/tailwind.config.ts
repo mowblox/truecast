@@ -20,6 +20,8 @@ const config: Config = {
       gray: "#0B0F12",
       white: "#FFFFFF",
       transparent: "transparent",
+      success: "#14CA74",
+      danger: "#FF5A65",
     },
     fontFamily: {
       sans: ["var(--font-roboto-flex)"],

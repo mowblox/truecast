@@ -29,7 +29,7 @@ const CreateElection = () => {
   return (
     <main className="flex flex-col ml-[117px] w-full max-w-[672px] max-md:px-4">
       <Tabs value={tab} className="w-full">
-        <TabsList className="w-full flex justify-between border-b px-0 border-gray/30 dark:border-[#EAEAEA]/15">
+        <TabsList className="w-full flex justify-between border-b px-0 border-gray/30 dark:border-[#EAEAEA]/15 rounded-none">
           {tabHeaders.map(({ value, label }) => (
             <TabsTrigger
               disabled // can be removed if you want to control with tabs
