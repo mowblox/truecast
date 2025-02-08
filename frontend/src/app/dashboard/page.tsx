@@ -74,7 +74,7 @@ const page = () => {
   return (
     <main className="flex flex-col mx-11 max-md:mx-4 gap-12">
       <section className="flex flex-col lg:flex-row gap-x-8 gap-y-4">
-        <article className="flex-1 bg-primary/10 dark:bg-[#1D57C21A] px-5 py-4 rounded-lg flex flex-col gap-8">
+        <article className="flex-1 bg-primary/5 dark:bg-[#1D57C21A] px-5 py-4 rounded-lg flex flex-col gap-8">
           <div className="top">
             <h1 className="text-[42px] text-secondary">Hi there!</h1>
             <p className="text-lg text-dark dark:text-white/60 max-w-md">
@@ -113,7 +113,7 @@ const page = () => {
         </article>
       </section>
 
-      <section className="flex-1 bg-primary/10 dark:bg-[#1D57C21A] py-4 rounded-lg flex flex-col gap-8 text-dark dark:text-white/60">
+      <section className="flex-1 bg-primary/5 dark:bg-[#1D57C21A] py-4 rounded-lg flex flex-col gap-8 text-dark dark:text-white/60">
         <header className="flex justify-between px-5">
           <p className="uppercase">Elections</p>
 

@@ -15,7 +15,9 @@ const NavigationDrawer = ({
           <Icon size={34} className="dark:text-white" />
         </DrawerTrigger>
         <DrawerContent className="bg-[#F9FAFB] dark:bg-[#070707]">
-          <div className="py-24 px-7 flex flex-col gap-10">{children}</div>
+          <div className="py-16 px-7 flex flex-col gap-10 max-h-[700px] overflow-y-auto">
+            {children}
+          </div>
         </DrawerContent>
       </Drawer>
     </div>

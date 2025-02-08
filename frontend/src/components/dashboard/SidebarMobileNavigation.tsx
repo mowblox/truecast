@@ -19,12 +19,12 @@ const SidebarMobileNavigation = () => {
         <Logo />
       </DialogTitle>
 
-      <div className="flex flex-col gap-3.5 text-xl">
+      <div className="flex flex-col gap-2 text-xl">
         {navBlocks.map((block) =>
           block.links.map((link) => <NavLink link={link} />)
         )}
 
-        <div className="px-4 py-3 bg-white  dark:bg-[#181818] rounded-[8px] flex items-center gap-2 justify-between">
+        <div className="px-4 py-3 bg-primary/[3%]  dark:bg-[#181818] rounded-[8px] flex items-center gap-2 justify-between">
           <span>{mode}</span>
           <ThemeSwitcher />
         </div>
