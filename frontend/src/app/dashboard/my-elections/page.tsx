@@ -92,7 +92,7 @@ const Election = ({ title, description, id }: Election) => {
   return (
     <Link
       href={`/dashboard/results/${id}`}
-      className="flex justify-between items-center gap-7 py-5 border-b border-[#9393934D] text-white/60 pr-5"
+      className="flex justify-between items-center gap-7 py-5 border-b  border-[#9393934D] text-dark dark:text-white/60 pr-5"
     >
       <div className="w-full">
         <h5 className="text-xl">{title}</h5>

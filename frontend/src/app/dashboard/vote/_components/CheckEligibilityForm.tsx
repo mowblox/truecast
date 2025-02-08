@@ -3,7 +3,7 @@ import InputWrapper from "../../create-election/_components/inputs/InputWrapper"
 import { cn } from "@/lib/utils";
 
 const CheckEligibilityForm = ({ labelClass }: { labelClass?: string }) => {
-  const labelClasses = cn("text-white/60 text-3xl mb-1", labelClass);
+  const labelClasses = cn("dark:text-white/60 text-3xl mb-1", labelClass);
   return (
     <form className="flex flex-col gap-24">
       <InputWrapper

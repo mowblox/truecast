@@ -1,70 +1,9 @@
 "use client";
-import { ReactNode } from "react";
 import Logo from "../landing/Logo";
 import Link from "next/link";
-import {
-  TrophyIcon,
-  Home,
-  ThumbsUp,
-  Folder,
-  UserPlus2,
-  PhoneCall,
-} from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-type NavLink = {
-  title: string;
-  href: string;
-  icon: ReactNode;
-};
-
-type NavBlock = {
-  title: string;
-  links: NavLink[];
-};
-
-const navBlocks: NavBlock[] = [
-  {
-    title: "Dashboard",
-    links: [
-      {
-        title: "Overview",
-        href: "/dashboard",
-        icon: <Home />,
-      },
-      {
-        title: "Create election",
-        href: "/dashboard/create-election",
-        icon: <UserPlus2 />,
-      },
-      {
-        title: "Vote",
-        href: "/dashboard/vote",
-        icon: <ThumbsUp />,
-      },
-      {
-        title: "Election hub",
-        href: "/dashboard/elections",
-        icon: <TrophyIcon />,
-      },
-      {
-        title: "My elections",
-        href: "/dashboard/my-elections",
-        icon: <Folder />,
-      },
-    ],
-  },
-  {
-    title: "Support",
-    links: [
-      {
-        title: "Support",
-        href: "/dashboard/settings/support",
-        icon: <PhoneCall />,
-      },
-    ],
-  },
-];
+import { navBlocks, type NavItem } from "@/data/navigation/dashboard";
 
 const Sidebar = () => {
   return (
@@ -95,7 +34,7 @@ const NavBlock = ({ block }: { block: (typeof navBlocks)["0"] }) => {
   );
 };
 
-const NavLink = ({ link }: { link: NavLink }) => {
+export const NavLink = ({ link }: { link: NavItem }) => {
   const currentPath = usePathname();
   const isActive =
     link.href === "/dashboard"
@@ -110,7 +49,7 @@ const NavLink = ({ link }: { link: NavLink }) => {
         isActive && "bg-opacity-10 text-secondary dark:text-secondary"
       )}
     >
-      {link.icon}
+      <link.Icon></link.Icon>
       {link.title}
       {isActive}
     </Link>
