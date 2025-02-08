@@ -44,7 +44,7 @@ const navBlocks: NavBlock[] = [
       },
       {
         title: "Election hub",
-        href: "/dashboard/election-hub",
+        href: "/dashboard/elections",
         icon: <TrophyIcon />,
       },
       {
