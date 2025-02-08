@@ -55,7 +55,7 @@ describe("Election Contract", function () {
     await hre.ethers.provider.send("evm_mine", []);
 
     await expect(
-        election.addCandidate("Invalid", "Team X", "invalid.jpg")
+      election.addCandidate("Invalid", "Team X", "invalid.jpg")
     ).to.be.revertedWithCustomError(election, "ElectionEnded");
   });
 
@@ -107,7 +107,7 @@ describe("Election Contract", function () {
     await hre.ethers.provider.send("evm_mine", []);
 
     await election.addCandidate("Alice", "Team A", "alice.jpg");
-    await election.addVoter(voter1.address);
+    await election.addVoters([voter1.address]);
 
     await expect(election.connect(voter1).castVote(999))
       .to.be.revertedWith("Invalid candidate. Please enter a valid candidate ID");
@@ -124,7 +124,7 @@ describe("Election Contract", function () {
     await hre.ethers.provider.send("evm_mine", []);
 
     await election.addCandidate("Alice", "Team A", "alice.jpg");
-    await election.addVoter(voter1.address);
+    await election.addVoters([voter1.address]);
 
     // Cast the first vote
     await election.connect(voter1).castVote(1);
@@ -144,7 +144,7 @@ describe("Election Contract", function () {
     await hre.ethers.provider.send("evm_increaseTime", [timeToAdvance]);
     await hre.ethers.provider.send("evm_mine", []);
 
-    await expect(election.addVoter(voter1.address))
+    await expect(election.addVoters([voter1.address]))
       .to.be.revertedWithCustomError(election, "ElectionEnded");
   });
 
@@ -152,7 +152,7 @@ describe("Election Contract", function () {
     const { election, startDate, voter1 } = await loadFixture(deployElectionFixture);
 
     // Attempt to add a voter before the election starts
-    await expect(election.addVoter(voter1.address))
+    await expect(election.addVoters([voter1.address]))
       .to.be.revertedWithCustomError(election, "ElectionNotStarted");
   });
 
@@ -168,7 +168,7 @@ describe("Election Contract", function () {
 
     // Add a candidate and a voter
     await election.addCandidate("Alice", "Team A", "alice.jpg");
-    await election.addVoter(voter1.address);
+    await election.addVoters([voter1.address]);
 
     // Cast a vote
     await election.connect(voter1).castVote(1);
