@@ -91,7 +91,7 @@ contract Election {
         uint length = _voterAddresses.length;
         for (uint i = 0; i < length; i++) {
             require(
-                !voters[_voterAddresses[i]].voted,
+                !voters[_voterAddresses[i]].registered,
                 "Voter is already registered"
             );
             voters[_voterAddresses[i]] = Voter(true, false, 0);
