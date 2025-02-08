@@ -1,7 +1,7 @@
 import Sidebar from "@/components/dashboard/Sidebar";
 import Header from "@/components/dashboard/Header";
 import { Metadata } from "next";
-import React from "react";
+import React, { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Truecast | Landing",
@@ -19,7 +19,7 @@ export default function DashboardLayout({
       <div className="flex flex-col w-full relative h-screen">
         <Header />
         <div className="w-full grow overflow-y-auto py-6 md:py-12">
-          {children}
+          <Suspense>{children}</Suspense>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import InputWrapper from "../../create-election/_components/inputs/InputWrapper";
-import { StatusPill } from "../../page";
 import CheckEligibilityForm from "../../vote/_components/CheckEligibilityForm";
+import { StatusPill } from "@/components/dashboard/StatusPill";
 
 const items = [
   {

@@ -24,33 +24,33 @@ const elections: Election[] = [
     title: "Vel consequat",
     description:
       "Ut consectetur metus diam eu mauris orci. Dictum tellus consectetur dignissim id eleifend. Etiam massa vitae iaculis ipsum dictumst libero. Id consequat at et condimentum.",
-    id: "25",
+    id: "1",
     status: "ongoing",
   },
   {
     title: "Vel consequat",
     description:
       "Ut consectetur metus diam eu mauris orci. Dictum tellus consectetur dignissim id eleifend. Etiam massa vitae iaculis ipsum dictumst libero. Id consequat at et condimentum.",
-    id: "25",
+    id: "3",
     status: "ongoing",
   },
   {
     title: "Vel consequat",
     description:
       "Ut consectetur metus diam eu mauris orci. Dictum tellus consectetur dignissim id eleifend. Etiam massa vitae iaculis ipsum dictumst libero. Id consequat at et condimentum.",
-    id: "25",
+    id: "8",
     status: "ongoing",
   },
   {
     title: "Vel consequat",
     description:
       "Ut consectetur metus diam eu mauris orci. Dictum tellus consectetur dignissim id eleifend. Etiam massa vitae iaculis ipsum dictumst libero. Id consequat at et condimentum.",
-    id: "25",
+    id: "32",
     status: "closed",
   },
 ];
 
-const page = () => {
+const ElectionsPage = () => {
   const searchParams = useSearchParams();
   let tab = searchParams.get("tab");
   tab = tabHeaders.find(({ value }) => value === tab)?.value || "all";
@@ -79,7 +79,7 @@ const page = () => {
             className="flex flex-col gap-6"
           >
             {filteredElections.map((election) => (
-              <Election {...election} />
+              <Election key={election.id} {...election} />
             ))}
           </TabsContent>
         ))}
@@ -104,4 +104,4 @@ const Election = ({ title, description, id }: Election) => {
   );
 };
 
-export default page;
+export default ElectionsPage;

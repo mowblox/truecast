@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import React, { ReactNode } from "react";
-import { StatusPill } from "../../page";
+import { StatusPill } from "@/components/dashboard/StatusPill";
 import BackButton from "@/components/dashboard/BackButton";
 
 const standings = [
@@ -52,14 +52,14 @@ const page = () => {
           <AsideContainer title="Results">
             <div className="flex flex-col gap-8">
               {standings.map((standing) => (
-                <Standing {...standing} />
+                <Standing key={standing.name} {...standing} />
               ))}
             </div>
           </AsideContainer>
           <AsideContainer title="Election Information">
             <div className="flex flex-col gap-8">
               {electionDetails.map((detail) => (
-                <div className="flex justify-between">
+                <div key={detail.value} className="flex justify-between">
                   <p className="text-white/60">{detail.label}</p>
                   <p className="text-secondary">{detail.value}</p>
                 </div>
