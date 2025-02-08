@@ -21,7 +21,7 @@ const Header = () => {
       </div>
 
       <Select>
-        <SelectTrigger className=" w-[116px] rounded-full bg-primary text-white py-2.5 border-none outline-none">
+        <SelectTrigger className=" w-[116px] rounded-full bg-secondary dark:bg-primary text-white py-2.5 border-none outline-none">
           <SelectValue placeholder="Private" />
         </SelectTrigger>
         <SelectContent>

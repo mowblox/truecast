@@ -144,7 +144,7 @@ const page = () => {
               {data.map((item) => (
                 <tr
                   key={item.election}
-                  className="odd:bg-[#0B1739] odd:text-white/60"
+                  className="odd:bg-secondary odd:dark:bg-[#0B1739] odd:text-white/60"
                 >
                   <td className="py-3.5 pl-6">{item.election}</td>
                   <td className="py-3.5 ">{item.voters}</td>
@@ -156,7 +156,7 @@ const page = () => {
                   <td className="py-3.5 ">
                     <Link
                       href={"/dashboard/results/" + item.id}
-                      className="text-secondary pr-6"
+                      className="dark:text-secondary pr-6"
                     >
                       View results
                     </Link>
@@ -181,7 +181,7 @@ const InfoCard = ({
   icon: React.ComponentType<{ className?: string }>;
 }) => {
   return (
-    <article className="w-full bg-[#0B1739] px-3.5 py-2 rounded-lg text-white/60">
+    <article className="w-full bg-secondary dark:bg-[#0B1739] px-3.5 py-2 rounded-lg text-white/60">
       <div className="flex items-center gap-2.5">
         <Icon className="size-5" />
         <h2>{title}</h2>
