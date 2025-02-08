@@ -21,7 +21,7 @@ const SidebarMobileNavigation = () => {
 
       <div className="flex flex-col gap-2 text-xl">
         {navBlocks.map((block) =>
-          block.links.map((link) => <NavLink link={link} />)
+          block.links.map((link) => <NavLink key={link.title} link={link} />)
         )}
 
         <div className="px-4 py-3 bg-primary/[3%]  dark:bg-[#181818] rounded-[8px] flex items-center gap-2 justify-between">
