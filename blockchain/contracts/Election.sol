@@ -86,9 +86,15 @@ contract Election {
         return allCandidates;
     }
 
-    function addVoter(address _voterAddress) public onlyWhileOpen {
-        require(!voters[_voterAddress].voted, "Voter is already registered");
-        voters[_voterAddress] = Voter(false, 0);
+    function addVoter(address[] memory _voterAddresses) public onlyWhileOpen {
+        uint length = _voterAddresses.length;
+        for (uint i = 0; i < length; i++) {
+            require(
+                !voters[_voterAddresses[i]].voted,
+                "Voter is already registered"
+            );
+            voters[_voterAddresses[i]] = Voter(false, 0);
+        }
     }
 
     function getVoter(address _voterAddress) public view returns (bool, uint) {
