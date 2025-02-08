@@ -25,6 +25,7 @@ contract Election {
         string image;
     }
     struct Voter {
+        bool registered;
         bool voted;
         uint candidateId;
     }
@@ -86,14 +87,14 @@ contract Election {
         return allCandidates;
     }
 
-    function addVoter(address[] memory _voterAddresses) public onlyWhileOpen {
+    function addVoters(address[] memory _voterAddresses) public onlyWhileOpen {
         uint length = _voterAddresses.length;
         for (uint i = 0; i < length; i++) {
             require(
                 !voters[_voterAddresses[i]].voted,
                 "Voter is already registered"
             );
-            voters[_voterAddresses[i]] = Voter(false, 0);
+            voters[_voterAddresses[i]] = Voter(true, false, 0);
         }
     }
 
