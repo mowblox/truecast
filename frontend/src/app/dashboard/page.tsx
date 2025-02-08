@@ -174,7 +174,7 @@ const InfoCard = ({
   );
 };
 
-const StatusPill = ({ status }: { status: "Ongoing" | "Closed" }) => {
+export const StatusPill = ({ status }: { status: "Ongoing" | "Closed" }) => {
   const colors = {
     Ongoing: "bg-success/10 border-success/30 text-success",
     Closed: "bg-danger/10 border-danger/30 text-danger",

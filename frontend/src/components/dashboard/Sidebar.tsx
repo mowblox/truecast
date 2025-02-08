@@ -68,7 +68,7 @@ const navBlocks: NavBlock[] = [
 
 const Sidebar = () => {
   return (
-    <div className="w-[268px] h-screen px-8 py-6 flex flex-col gap-12 border-r-[0.5px] border-[#EAEAEA]/15">
+    <div className="w-[268px] h-screen px-8 py-6 hidden md:flex flex-col gap-12 border-r-[0.5px] border-[#EAEAEA]/15">
       <Logo />
 
       <div className="nav-blocks flex flex-col gap-4">
