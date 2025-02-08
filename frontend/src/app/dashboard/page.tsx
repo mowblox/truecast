@@ -3,6 +3,7 @@ import { Trophy, ThumbsUp, PlusIcon, Dot } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { StatusPill } from "@/components/dashboard/StatusPill";
+import Link from "next/link";
 
 const page = () => {
   const info = [
@@ -28,6 +29,7 @@ const page = () => {
   ];
 
   type Field = {
+    id: number;
     election: string;
     voters: string;
     candidates: string;
@@ -36,6 +38,7 @@ const page = () => {
   };
   const data: Field[] = [
     {
+      id: 1,
       election: "SRC President 2024",
       voters: "25",
       candidates: "3",
@@ -43,6 +46,7 @@ const page = () => {
       winner: "Undetermined",
     },
     {
+      id: 1,
       election: "SRC President 2024",
       voters: "25",
       candidates: "3",
@@ -50,6 +54,7 @@ const page = () => {
       winner: "Undetermined",
     },
     {
+      id: 1,
       election: "SRC President 2024",
       voters: "25",
       candidates: "3",
@@ -57,6 +62,7 @@ const page = () => {
       winner: "Undetermined",
     },
     {
+      id: 1,
       election: "SRC President 2024",
       voters: "25",
       candidates: "3",
@@ -97,9 +103,12 @@ const page = () => {
           />
 
           <div className="flex justify-end">
-            <button className="bg-secondary dark:bg-primary rounded-full px-6 text-white py-2.5">
+            <Link
+              href={"/dashboard/vote"}
+              className="bg-secondary dark:bg-primary rounded-full px-6 text-white py-2.5"
+            >
               Cast vote
-            </button>
+            </Link>
           </div>
         </article>
       </section>
@@ -108,10 +117,13 @@ const page = () => {
         <header className="flex justify-between px-5">
           <p className="uppercase">Elections</p>
 
-          <div className="flex items-center gap-3">
+          <Link
+            href={"dashboard/create-election"}
+            className="flex items-center gap-3"
+          >
             <p className="text-secondary">Create election</p>
             <PlusIcon className="size-6" />
-          </div>
+          </Link>
         </header>
 
         <div className="table-container w-full overflow-x-auto">
@@ -139,9 +151,12 @@ const page = () => {
                   </td>
                   <td className="py-3.5 ">{item.winner}</td>
                   <td className="py-3.5 ">
-                    <button className="text-secondary pr-6">
+                    <Link
+                      href={"/dashboard/results/" + item.id}
+                      className="text-secondary pr-6"
+                    >
                       View results
-                    </button>
+                    </Link>
                   </td>
                 </tr>
               ))}
