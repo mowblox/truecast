@@ -29,7 +29,7 @@ const page = () => {
       <BackButton />
 
       <div className="election-details flex flex-col md:flex-row justify-between gap-x-24 gap-y-12 mt-10">
-        <section className="flex flex-col gap-8 md:gap-[60px] text-white/60 md:flex-1">
+        <section className="flex flex-col gap-8 md:gap-[60px] md:flex-1">
           <header className="flex flex-col gap-3">
             <StatusPill status="Closed" />
             <h1 className="text-[32px]">2024 SRC President - UG</h1>
@@ -60,7 +60,7 @@ const page = () => {
             <div className="flex flex-col gap-8">
               {electionDetails.map((detail) => (
                 <div key={detail.value} className="flex justify-between">
-                  <p className="text-white/60">{detail.label}</p>
+                  <p>{detail.label}</p>
                   <p className="text-secondary">{detail.value}</p>
                 </div>
               ))}
@@ -81,7 +81,7 @@ const AsideContainer = ({
 }) => {
   return (
     <article className="px-7 py-5 rounded-xl border border-[#EAEAEA]/30 flex flex-col gap-6">
-      <h4 className="text-white/60 text-2xl">{title}</h4>
+      <h4 className="text-2xl">{title}</h4>
       {children}
     </article>
   );
@@ -92,7 +92,7 @@ const Standing = ({ name, voteCount }: { name: string; voteCount: number }) => {
   return (
     <div className="w-full">
       <div className="flex items-center w-full justify-between">
-        <p className="text-lg text-white/60">{name}</p>
+        <p className="text-lg">{name}</p>
 
         <div className="mr-1.5 flex gap-3 text-secondary">
           <p>{`${voteCount} votes`}</p>

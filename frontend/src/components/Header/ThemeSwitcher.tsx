@@ -5,13 +5,16 @@ import Image from "next/image";
 import React from "react";
 
 const ThemeSwitcher = () => {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme: theme, setTheme } = useTheme();
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
   return (
     <button
-      className="w-[67px] h-[30px] rounded-full bg-gradient-to-b from-[#66FFED] to-[#FFEEB2] dark:from-[#2B4485] dark:to-[#AFCAFF] transition-all duration-1000 relative flex items-center z-10"
+      className={cn(
+        "w-[67px] h-[30px] rounded-full bg-gradient-to-b from-[#66FFED] to-[#FFEEB2] transition-all duration-1000 relative flex items-center z-10",
+        theme === "dark" && "from-[#2B4485] to-[#AFCAFF]"
+      )}
       onClick={toggleTheme}
     >
       <Image
