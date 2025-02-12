@@ -15,7 +15,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <React.Suspense>
-      <div className="flex h-screen relative">
+      <div className="flex h-screen relative text-dark dark:text-white/60">
         <Sidebar />
         <div className="flex flex-col w-full relative">
           <Header />
