@@ -1,7 +1,7 @@
 "use client";
 import '@rainbow-me/rainbowkit/styles.css';
 import { darkTheme, getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import { rainbowWeb3AuthConnector } from "./RainbowWeb3AuthConnector";
+// import { rainbowWeb3AuthConnector } from "./RainbowWeb3AuthConnector";
 import { WagmiProvider, http } from 'wagmi';
 import { rainbowWallet, metaMaskWallet, walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -22,7 +22,7 @@ const config = getDefaultConfig({
     groupName: 'Recommended',
     wallets: [
       rainbowWallet,
-      rainbowWeb3AuthConnector,
+      // rainbowWeb3AuthConnector,
       metaMaskWallet,
       walletConnectWallet
     ],
