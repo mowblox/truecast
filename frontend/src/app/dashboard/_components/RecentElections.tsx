@@ -4,6 +4,7 @@ import { StatusPill } from "@/components/dashboard/StatusPill";
 import { Link } from "lucide-react";
 import { useChainId, useReadContract } from "wagmi";
 import { ELECTION_FACTORY_ABI, getFactoryAddress } from "@/contracts/ElectionFactory";
+import { ElectionTitle } from "@/components/web3/ElectionTitle";
 
 const headers = [
   "Election",
@@ -45,12 +46,14 @@ export const RecentElections = () => {
               <td>No elections found!</td>
             </tr>
           ) :
-            (result.data as string[]).map((item) => (
+            (result.data as string[]).map((address) => (
               <tr
-                key={item}
+                key={address}
                 className="odd:bg-secondary odd:dark:bg-[#0B1739] odd:text-white/60"
               >
-                <td className="py-3.5 pl-6">SRC President 2024</td>
+                <td className="py-3.5 pl-6">
+                  <ElectionTitle address={address} />
+                </td>
                 <td className="py-3.5 ">25</td>
                 <td className="py-3.5 ">3</td>
                 <td className="py-3.5 ">
@@ -59,7 +62,7 @@ export const RecentElections = () => {
                 <td className="py-3.5 ">Undetermined</td>
                 <td className="py-3.5 ">
                   <Link
-                    href={"/dashboard/results/" + item}
+                    href={"/dashboard/results/" + address}
                     className="dark:text-secondary pr-6"
                   >
                     View results

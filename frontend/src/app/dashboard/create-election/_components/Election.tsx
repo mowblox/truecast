@@ -27,6 +27,8 @@ const Election = () => {
   });
 
   const createElection = (event: React.SyntheticEvent<HTMLFormElement>) => {
+    const startDate = Math.floor(Date.now() / 1000) + 3600; // 1 hour in the future
+    const endDate = startDate + 86400; // 1 day after start date
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     writeContract({
@@ -37,8 +39,8 @@ const Election = () => {
         formData.get('title'),
         formData.get('description'),
         true,
-        new Date().valueOf(),
-        new Date().setDate(28).valueOf(),
+        startDate,
+        endDate,
       ],
     });
   }
