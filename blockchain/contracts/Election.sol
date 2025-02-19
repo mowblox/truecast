@@ -60,7 +60,7 @@ contract Election {
         string memory _name,
         string memory _team,
         string memory _image
-    ) public onlyWhileOpen {
+    ) public {
         for (uint i = 1; i <= candidatesCount; i++) {
             if (
                 keccak256(abi.encodePacked(candidates[i].name)) ==
@@ -87,7 +87,7 @@ contract Election {
         return allCandidates;
     }
 
-    function addVoters(address[] memory _voterAddresses) public onlyWhileOpen {
+    function addVoters(address[] memory _voterAddresses) public {
         uint length = _voterAddresses.length;
         for (uint i = 0; i < length; i++) {
             require(

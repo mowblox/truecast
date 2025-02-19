@@ -1,13 +1,13 @@
 export const getFactoryAddress = (chainId: number) => {
   switch (chainId) {
     case 11155111:
-      return '0xe96e8F2A1A3c4a6464d51a645CFFA3306c16c456'; //sepolia
+      return '0xe96e8F2A1A3c4a6464d51a645CFFA3306c16c456'; // sepolia
     case 534351:
-      return '0xa5d67391AC8d560B5f94175868961C306942cF59'; //linea
+      return '0x73d7175176e8297db4Ac92eAD6521Ff440f25F13'; // scroll_sepolia
     case 59141:
-      return '0xa5d67391AC8d560B5f94175868961C306942cF59' //scroll
+      return '0xa5d67391AC8d560B5f94175868961C306942cF59' // linea_sepolia
     case 17000:
-      return '0xDdF0f6f45d7Ee134779C6c05c7eE6a9231BD8Aea' //holesky
+      return '0xDdF0f6f45d7Ee134779C6c05c7eE6a9231BD8Aea' // holesky
     default:
       return '0x0000000000000000000000000000000000000000';
   }
