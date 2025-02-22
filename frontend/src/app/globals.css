@@ -3,13 +3,19 @@
 @tailwind utilities;
 
 .gradient-text {
-  background: linear-gradient(to right, white 20%, rgba(141, 137, 137, 0.7) 100%);
+  background: linear-gradient(
+    to right,
+    white 20%,
+    rgba(141, 137, 137, 0.7) 100%
+  );
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-text-vertical {
   background: linear-gradient(to bottom, white 20%, rgba(0, 0, 0, 0.7) 100%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -17,6 +23,14 @@ select:focus {
   transition: background-color 0.3s ease-in-out;
   background-color: #1b1a23; /* bg-dark */
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 50000s ease-in-out 0s, color 5000s ease-in-out 0s;
+}
+
 /* @layer base {
   :root {
     --background: 0 0% 100%;
@@ -145,7 +159,6 @@ select:focus {
     @apply animate-l24Slower;
   }
 }
-
 
 /* hide scrollbar but allow scrolling */
 .hide-scrollbar {

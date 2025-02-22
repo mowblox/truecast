@@ -16,10 +16,7 @@ const InputWrapper = ({
 }) => {
   return (
     <div className={cn("flex flex-col gap-3", className)}>
-      <label
-        htmlFor={name}
-        className={cn("text-lg text-dark dark:text-white/87", labelClass)}
-      >
+      <label htmlFor={name} className={cn("text-lg", labelClass)}>
         {label}
       </label>
       {children}
