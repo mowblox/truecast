@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  transition: all 1s ease;
+}
+
 .gradient-text {
   background: linear-gradient(
     to right,
