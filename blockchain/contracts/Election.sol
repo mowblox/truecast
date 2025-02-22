@@ -2,11 +2,14 @@
 pragma solidity ^0.8.24;
 // Custom errors
 error ElectionNotStarted();
+error ElectionAlreadyStarted();
 error ElectionEnded();
 error CandidateAlreadyExists();
 error AlreadyVoted();
 error VoterAlreadyRegistered();
 error InvalidCandidateID();
+error Unauthorized();
+error UnknownCandidate();
 
 contract Election {
     string public title;
@@ -14,6 +17,8 @@ contract Election {
     bool public isPublic;
     uint public startDate;
     uint public endDate;
+
+    address public owner;
 
     uint public candidatesCount;
 
@@ -34,7 +39,10 @@ contract Election {
     mapping(address => Voter) voters;
 
     event VoteCast(address indexed voter, uint indexed candidateId);
-
+    event CandidateAdded(uint id, string name);
+    event VotersAdded(address[] voters);
+     event ElectionExtended(uint newEndDate);
+     
     constructor(
         string memory _title,
         string memory _description,
@@ -48,6 +56,7 @@ contract Election {
         isPublic = _isPublic;
         startDate = _startDate;
         endDate = _endDate;
+        owner = msg.sender;
     }
 
     modifier onlyWhileOpen() {
@@ -56,11 +65,22 @@ contract Election {
         _;
     }
 
+    modifier isElectionActive() {
+        if (block.timestamp >= startDate) revert ElectionAlreadyStarted();
+        if (block.timestamp >= endDate) revert ElectionEnded();
+        _;
+    }
+
+    modifier onlyOwner() {
+        if (msg.sender != owner) revert Unauthorized();
+        _;
+    }
+
     function addCandidate(
         string memory _name,
         string memory _team,
         string memory _image
-    ) public {
+    ) public onlyOwner isElectionActive {
         for (uint i = 1; i <= candidatesCount; i++) {
             if (
                 keccak256(abi.encodePacked(candidates[i].name)) ==
@@ -77,6 +97,7 @@ contract Election {
             _team,
             _image
         );
+        emit CandidateAdded(candidatesCount, _name)
     }
 
     function getCandidates() public view returns (Candidate[] memory) {
@@ -87,15 +108,16 @@ contract Election {
         return allCandidates;
     }
 
-    function addVoters(address[] memory _voterAddresses) public {
+    function addVoters(
+        address[] memory _voterAddresses
+    ) public onlyOwner isElectionActive {
         uint length = _voterAddresses.length;
         for (uint i = 0; i < length; i++) {
-            require(
-                !voters[_voterAddresses[i]].registered,
-                "Voter is already registered"
-            );
+            if (voters[_voterAddresses[i]].registered)
+                revert VoterAlreadyRegistered();
             voters[_voterAddresses[i]] = Voter(true, false, 0);
         }
+        emit VotersAdded(_voterAddresses);
     }
 
     function getVoter(address _voterAddress) public view returns (bool, uint) {
@@ -104,11 +126,9 @@ contract Election {
     }
 
     function castVote(uint _candidateId) public onlyWhileOpen {
-        require(!voters[msg.sender].voted, "You have already voted.");
-        require(
-            _candidateId > 0 && _candidateId <= candidatesCount,
-            "Invalid candidate. Please enter a valid candidate ID"
-        );
+        if (voters[msg.sender].voted) revert AlreadyVoted();
+        if (_candidateId == 0 || _candidateId > candidatesCount)
+            revert UnknownCandidate();
 
         voters[msg.sender].voted = true;
         voters[msg.sender].candidateId = _candidateId;
@@ -116,5 +136,26 @@ contract Election {
         candidates[_candidateId].voteCount++;
 
         emit VoteCast(msg.sender, _candidateId);
+    }
+
+    function getElectionSummary() public view returns (Candidate[] memory, uint) {
+        uint totalVotes = 0;
+        Candidate[] memory allCandidates = new Candidate[](candidatesCount);
+
+        for (uint i = 1; i <= candidatesCount; ) {
+            allCandidates[i - 1] = candidates[i];
+            unchecked {
+                totalVotes += candidates[i].voteCount;
+            }
+            i++;
+        }
+
+        return (allCandidates, totalVotes);
+    }
+
+     function extendElectionDate(uint newEndDate) public onlyOwner {
+        if (newEndDate <= endDate) revert ElectionEnded();
+        endDate = newEndDate;
+        emit ElectionExtended(newEndDate);
     }
 }
