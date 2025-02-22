@@ -1,27 +1,41 @@
 "use client";
 import { DatePicker } from "@/components/ui/date-picker";
 import { RadioGroupItem, RadioGroup } from "@/components/ui/radio-group";
-import React from "react";
+import React, { useState } from "react";
 import TextInput from "./inputs/TextInput";
 import InputWrapper from "./inputs/InputWrapper";
 import { useRouter } from "next/navigation";
 import { useChainId, useWatchContractEvent, useWriteContract } from "wagmi";
-import { ELECTION_FACTORY_ABI, getFactoryAddress } from "@/contracts/ElectionFactory";
+import {
+  ELECTION_FACTORY_ABI,
+  getFactoryAddress,
+} from "@/contracts/ElectionFactory";
+
+type Period = {
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+};
 
 const Election = () => {
   const router = useRouter();
   const chainId = useChainId();
   const { writeContract } = useWriteContract();
+  const [period, setPeriod] = useState<Period>({
+    startDate: undefined,
+    endDate: undefined,
+  });
 
   useWatchContractEvent({
     address: getFactoryAddress(chainId),
     abi: ELECTION_FACTORY_ABI,
-    eventName: 'ElectionCreated',
+    eventName: "ElectionCreated",
     onLogs(logs) {
       // console.log('New logs!', logs);
       if (logs.length) {
-        // @ts-expect-error
-        router.push(`?tab=candidates&election=${logs[0]?.args?.electionAddress}`);
+        router.push(
+          // @ts-expect-error
+          `?tab=candidates&election=${logs[0]?.args?.electionAddress}`
+        );
       }
     },
   });
@@ -34,21 +48,19 @@ const Election = () => {
     writeContract({
       abi: ELECTION_FACTORY_ABI,
       address: getFactoryAddress(chainId),
-      functionName: 'createElection',
+      functionName: "createElection",
       args: [
-        formData.get('title'),
-        formData.get('description'),
+        formData.get("title"),
+        formData.get("description"),
         true,
         startDate,
         endDate,
       ],
     });
-  }
+  };
 
   return (
-    <form
-      onSubmit={createElection}
-      className="flex flex-col gap-14 w-full">
+    <form onSubmit={createElection} className="flex flex-col gap-14 w-full">
       <TextInput
         name="title"
         label="Election Title"
@@ -65,13 +77,25 @@ const Election = () => {
           Election Period
         </label>
         <div className="grid md:grid-cols-2 gap-x-8">
-          <DatePicker placeholder="Start date" />
-          <DatePicker placeholder="End date" />
+          <DatePicker
+            selected={period.startDate}
+            onSelect={(value) => setPeriod({ ...period, startDate: value })}
+            placeholder="Start date"
+          />
+          <DatePicker
+            selected={period.endDate}
+            onSelect={(value) => setPeriod({ ...period, endDate: value })}
+            placeholder="End date"
+          />
         </div>
       </div>
 
       <InputWrapper name="election-type" label="Election Type">
-        <RadioGroup name="election-type" defaultValue="option-one" className="flex gap-10">
+        <RadioGroup
+          name="election-type"
+          defaultValue="option-one"
+          className="flex gap-10"
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="option-one" id="option-one" />
             <label htmlFor="option-one">Public</label>
