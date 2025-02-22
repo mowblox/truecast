@@ -42,7 +42,7 @@ contract Election {
     event CandidateAdded(uint id, string name);
     event VotersAdded(address[] voters);
      event ElectionExtended(uint newEndDate);
-     
+
     constructor(
         string memory _title,
         string memory _description,
@@ -97,7 +97,7 @@ contract Election {
             _team,
             _image
         );
-        emit CandidateAdded(candidatesCount, _name)
+        emit CandidateAdded(candidatesCount, _name);
     }
 
     function getCandidates() public view returns (Candidate[] memory) {
