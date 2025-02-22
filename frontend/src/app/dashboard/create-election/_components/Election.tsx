@@ -76,7 +76,7 @@ const Election = () => {
         <label htmlFor="period" className="text-lg dark:text-white/87">
           Election Period
         </label>
-        <div className="grid md:grid-cols-2 gap-x-8">
+        <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
           <DatePicker
             selected={period.startDate}
             onSelect={(value) => setPeriod({ ...period, startDate: value })}
