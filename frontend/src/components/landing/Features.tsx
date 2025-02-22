@@ -29,15 +29,8 @@ const features = [
 
 const Features = () => {
   return (
-    <section className="relative">
+    <section className="relative mt-20 lg:mt-28">
       <div className="flex flex-col items-center gap-20 lg:gap-28 w-full max-w-6xl mx-auto">
-        <h1 className="text-text dark:text-dark-text text-[32px] lg:text-[52px] font-bold lg:font-normal text-center">
-          Your elections{" "}
-          <span className="text-secondary-foreground dark:text-primary">
-            secured, anywhere, anytime.
-          </span>
-        </h1>
-
         <LightSource className="left-0" />
         <LightSource
           position="right"
