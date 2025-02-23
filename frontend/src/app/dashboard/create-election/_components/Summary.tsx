@@ -1,5 +1,6 @@
 import React from "react";
 import InputWrapper from "./inputs/InputWrapper";
+import Link from "next/link";
 
 const items = [
   {
@@ -50,9 +51,9 @@ const Summary = () => {
         </InputWrapper>
       ))}
       <div className="flex justify-end mt-24">
-        <button className="bg-secondary dark:bg-primary rounded-full px-12 text-white py-2.5">
+        <Link href={'/dashboard'} className="bg-secondary dark:bg-primary rounded-full px-12 text-white py-2.5">
           Next
-        </button>
+        </Link>
       </div>
     </div>
   );

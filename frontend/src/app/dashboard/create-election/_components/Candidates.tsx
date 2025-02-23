@@ -14,7 +14,7 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useWriteContract } from "wagmi";
+import { useReadContract, useWriteContract } from "wagmi";
 import { ELECTION_ABI } from "@/contracts/Election";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -35,27 +35,35 @@ const CandidateForm = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { writeContract } = useWriteContract();
+  const formRef = React.useRef<HTMLFormElement>();
+
+  const result = useReadContract({
+    abi: ELECTION_ABI,
+    address: searchParams.get("election") as any,
+    functionName: 'getCandidates',
+  });
+  // console.log(result?.data);
 
   const onConfirmCandidates = () =>
-    router.push("/dashboard/create-election?tab=voters"); //implement confirm candidates logic here...
+    router.push(`?tab=voters&election=${searchParams.get("election")}`); //implement confirm candidates logic here...
 
-  const addCandidate = (event: React.SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.target as HTMLFormElement);
+  const addCandidate = () => {
+    const formData = new FormData(formRef.current);
     writeContract({
       abi: ELECTION_ABI,
       address: searchParams.get("election") as any,
       functionName: "addCandidate",
       args: [formData.get("name"), formData.get("team"), formData.get("team")],
+    }, {
+      onSuccess() {
+        window.location.reload();
+      },
+      onError(error) {
+        console.log(error);
+      }
     });
   };
 
-  const placeholderCandidates = [
-    "Joshua Mensah",
-    "Alisson Newton",
-    "James Hammond",
-    "Michael Brown",
-  ];
 
   return (
     <AccordionItem value="candidate" className="border-none">
@@ -64,7 +72,7 @@ const CandidateForm = () => {
       </AccordionTrigger>
       <AccordionContent>
         <form
-          onSubmit={addCandidate}
+          ref={formRef as React.LegacyRef<HTMLFormElement> | undefined}
           className="flex flex-col gap-16 pt-[42px] pb-12"
         >
           <TextInput name="name" label="Full Name" placeholder="Eg. John Doe" />
@@ -78,8 +86,8 @@ const CandidateForm = () => {
           <h4 className="dark:text-white text-xl">Uploaded Candidates</h4>
 
           <div className="flex flex-col gap-2 text-lg">
-            {placeholderCandidates.map((candidate, i) => (
-              <p key={"candidate" + i}>{candidate}</p>
+            {(result?.data as any[])?.map((candidate) => (
+              <p key={candidate.id}>{candidate.name}</p>
             ))}
           </div>
 
