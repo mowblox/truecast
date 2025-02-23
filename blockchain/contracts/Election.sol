@@ -4,12 +4,12 @@ pragma solidity ^0.8.24;
 error ElectionNotStarted();
 error ElectionAlreadyStarted();
 error ElectionEnded();
+error InvalidEndDate();
 error CandidateAlreadyExists();
 error AlreadyVoted();
 error VoterAlreadyRegistered();
-error InvalidCandidateID();
+error InvalidCandidate(uint candidateId);
 error Unauthorized();
-error UnknownCandidate();
 
 contract Election {
     string public title;
@@ -50,7 +50,7 @@ contract Election {
         uint _startDate,
         uint _endDate
     ) {
-        if (_startDate >= _endDate) revert ElectionEnded();
+        if (_startDate >= _endDate) revert InvalidEndDate();
         title = _title;
         description = _description;
         isPublic = _isPublic;
@@ -66,10 +66,10 @@ contract Election {
     }
 
     modifier isElectionActive() {
-        if (block.timestamp >= startDate) revert ElectionAlreadyStarted();
-        if (block.timestamp >= endDate) revert ElectionEnded();
-        _;
-    }
+    if (block.timestamp >= startDate && block.timestamp < endDate) revert ElectionAlreadyStarted();
+    if (block.timestamp >= endDate) revert ElectionEnded();
+    _;
+}
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert Unauthorized();
@@ -128,7 +128,7 @@ contract Election {
     function castVote(uint _candidateId) public onlyWhileOpen {
         if (voters[msg.sender].voted) revert AlreadyVoted();
         if (_candidateId == 0 || _candidateId > candidatesCount)
-            revert UnknownCandidate();
+            revert InvalidCandidate(_candidateId);
 
         voters[msg.sender].voted = true;
         voters[msg.sender].candidateId = _candidateId;
