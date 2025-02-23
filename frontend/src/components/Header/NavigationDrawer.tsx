@@ -1,4 +1,5 @@
-import React, { ElementType, ReactNode } from "react";
+"use client";
+import React, { ElementType, ReactNode, useState } from "react";
 import { Drawer, DrawerTrigger, DrawerContent } from "../ui/drawer";
 
 const NavigationDrawer = ({
@@ -8,9 +9,10 @@ const NavigationDrawer = ({
   children: ReactNode;
   Icon: ElementType;
 }) => {
+  const [open, setOpen] = useState(false);
   return (
     <div className="md:hidden">
-      <Drawer>
+      <Drawer open={open} onOpenChange={setOpen}>
         <DrawerTrigger>
           <Icon size={34} className="dark:text-white" />
         </DrawerTrigger>
