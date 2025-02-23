@@ -53,8 +53,8 @@ const Election = () => {
         formData.get("title"),
         formData.get("description"),
         true,
-        startDate,
-        endDate,
+        period.startDate?.valueOf(),
+        period.endDate?.valueOf(),
       ],
     });
   };

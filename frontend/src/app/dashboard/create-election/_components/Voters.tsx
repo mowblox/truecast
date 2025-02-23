@@ -4,15 +4,33 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import { useRouter } from "next/navigation";
+import { ELECTION_ABI } from "@/contracts/Election";
+import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { useWriteContract } from "wagmi";
 
 const Voters = () => {
+  const searchParams = useSearchParams();
   const router = useRouter();
+  const { writeContract } = useWriteContract();
 
   const addVoters = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.push('?tab=summary');
+    const formData = new FormData(event.target as HTMLFormElement);
+    // console.log(formData.get('voters')?.toString().split('\n').map(voter => voter.trim()));
+    writeContract({
+      abi: ELECTION_ABI,
+      address: searchParams.get("election") as any,
+      functionName: "addVoters",
+      args: [formData.get('voters')?.toString().split('\n').map(voter => voter.trim())],
+    }, {
+      onSuccess() {
+        router.push(`?tab=summary&election=${searchParams.get("election")}`);
+      },
+      onError(error) {
+        console.log(error);
+      }
+    });
   }
 
   return (
@@ -28,8 +46,8 @@ const Voters = () => {
             <textarea
               className="border border-[#EAEAEA]/30 focus:border-primary outline-none rounded-lg p-4 resize-none bg-transparent"
               rows={12}
-              placeholder="Enter addresses here"
-            ></textarea>
+              name="voters"
+              placeholder="Enter addresses here"></textarea>
 
             <div className="flex justify-between gap-2 items-center">
               <label
