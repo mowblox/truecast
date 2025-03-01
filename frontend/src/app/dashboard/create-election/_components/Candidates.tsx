@@ -90,23 +90,25 @@ const CandidateForm = () => {
             <SubmitDialog onAddCandidate={addCandidate} />
           </div>
         </form>
-        <section className="flex flex-col mt-8 gap-6">
-          <h4 className="dark:text-white text-xl">Uploaded Candidates</h4>
+        {result?.data ? (
+          <section className="flex flex-col mt-8 gap-6">
+            <h4 className="dark:text-white text-xl">Uploaded Candidates</h4>
 
-          <div className="flex flex-col gap-2 text-lg">
-            {(result?.data as any[])?.map((candidate) => (
-              <p key={candidate.id}>{candidate.name}</p>
-            ))}
-          </div>
+            <div className="flex flex-col gap-2 text-lg">
+              {(result?.data as any[])?.map((candidate) => (
+                <p key={candidate.id}>{candidate.name}</p>
+              ))}
+            </div>
 
-          <Button
-            variant="outline"
-            className="px-12 ml-auto"
-            onClick={onConfirmCandidates}
-          >
-            Confirm candidates
-          </Button>
-        </section>
+            <Button
+              variant="outline"
+              className="px-12 ml-auto"
+              onClick={onConfirmCandidates}
+            >
+              Confirm candidates
+            </Button>
+          </section>
+        ) : null}
       </AccordionContent>
     </AccordionItem>
   );

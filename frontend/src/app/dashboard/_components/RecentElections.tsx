@@ -1,9 +1,12 @@
 "use client";
 import React from "react";
 import { StatusPill } from "@/components/dashboard/StatusPill";
-import { Link } from "lucide-react";
+import { Link, Search } from "lucide-react";
 import { useChainId, useReadContract } from "wagmi";
-import { ELECTION_FACTORY_ABI, getFactoryAddress } from "@/contracts/ElectionFactory";
+import {
+  ELECTION_FACTORY_ABI,
+  getFactoryAddress,
+} from "@/contracts/ElectionFactory";
 import { ElectionTitle } from "@/components/web3/ElectionTitle";
 
 const headers = [
@@ -15,15 +18,13 @@ const headers = [
   "Actions",
 ];
 
-
 export const RecentElections = () => {
   const chainId = useChainId();
   const result = useReadContract({
     abi: ELECTION_FACTORY_ABI,
     address: getFactoryAddress(chainId),
-    functionName: 'getElections',
+    functionName: "getElections",
   });
-  console.log(result.data);
 
   return (
     <div className="table-container w-full overflow-x-auto">
@@ -43,9 +44,22 @@ export const RecentElections = () => {
         <tbody>
           {!result.data ? (
             <tr>
-              <td>No elections found!</td>
+              <td colSpan={6}>
+                <div className="px-5 py-24 text-center flex flex-col justify-center items-center w-full">
+                  <span className="rounded-full p-4">
+                    <Search className="size-20 inline-block" />
+                  </span>
+                  <h4 className="text-2xl font-medium text-white mt-2">
+                    Nope, nothing to see here
+                  </h4>
+                  <p>
+                    There are no running elections currently. Please check back
+                    later
+                  </p>
+                </div>
+              </td>
             </tr>
-          ) :
+          ) : (
             (result.data as string[]).map((address) => (
               <tr
                 key={address}
@@ -69,9 +83,10 @@ export const RecentElections = () => {
                   </Link>
                 </td>
               </tr>
-            ))}
+            ))
+          )}
         </tbody>
       </table>
     </div>
   );
-}
+};
