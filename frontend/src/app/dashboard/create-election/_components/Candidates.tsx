@@ -12,11 +12,13 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useReadContract, useWriteContract } from "wagmi";
 import { ELECTION_ABI } from "@/contracts/Election";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const Candidates = () => {
   return (
@@ -40,7 +42,7 @@ const CandidateForm = () => {
   const result = useReadContract({
     abi: ELECTION_ABI,
     address: searchParams.get("election") as any,
-    functionName: 'getCandidates',
+    functionName: "getCandidates",
   });
   // console.log(result?.data);
 
@@ -49,21 +51,27 @@ const CandidateForm = () => {
 
   const addCandidate = () => {
     const formData = new FormData(formRef.current);
-    writeContract({
-      abi: ELECTION_ABI,
-      address: searchParams.get("election") as any,
-      functionName: "addCandidate",
-      args: [formData.get("name"), formData.get("team"), formData.get("team")],
-    }, {
-      onSuccess() {
-        window.location.reload();
+    writeContract(
+      {
+        abi: ELECTION_ABI,
+        address: searchParams.get("election") as any,
+        functionName: "addCandidate",
+        args: [
+          formData.get("name"),
+          formData.get("team"),
+          formData.get("team"),
+        ],
       },
-      onError(error) {
-        console.log(error);
+      {
+        onSuccess() {
+          window.location.reload();
+        },
+        onError(error) {
+          console.log(error);
+        },
       }
-    });
+    );
   };
-
 
   return (
     <AccordionItem value="candidate" className="border-none">
@@ -91,12 +99,13 @@ const CandidateForm = () => {
             ))}
           </div>
 
-          <button
+          <Button
+            variant="outline"
+            className="px-12 ml-auto"
             onClick={onConfirmCandidates}
-            className="border border-text dark:border-dark-text rounded-full px-12 dark:text-white py-2.5 ml-auto"
           >
             Confirm candidates
-          </button>
+          </Button>
         </section>
       </AccordionContent>
     </AccordionItem>
@@ -107,29 +116,28 @@ const SubmitDialog = ({ onAddCandidate }: { onAddCandidate: Function }) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <span className="rounded-full px-12 dark:text-white py-2.5 bg-primary ml-auto">
-          Add Candidate
-        </span>
+        <Button as="div" className="px-12 ml-auto">
+          <div>Add Candidate</div>
+        </Button>
       </DialogTrigger>
 
       <DialogContent className="bg-dark text-center border border-[#EAEAEA]/30 py-16 px-[52px] sm:rounded-[18px]">
-        <h1 className="text-[32px] font-semibold">Are you sure?</h1>
+        <DialogTitle className="text-[32px] font-semibold">
+          Are you sure?
+        </DialogTitle>
         <p className="text-white/60 text-lg">
           Once you add a candidate, you will not be able to make changes to it.
         </p>
 
         <div className="flex items-center justify-center gap-5 mt-12">
           <DialogClose>
-            <button className="px-8 py-3 bg-dark border border-[#EAEAEA]/30 rounded-full w-fit">
+            <Button as="span" size="lg" variant="outline">
               Cancel
-            </button>
+            </Button>
           </DialogClose>
-          <button
-            onClick={() => onAddCandidate()}
-            className="px-8 py-3 bg-primary rounded-full w-fit"
-          >
-            Add candidate
-          </button>
+          <Button as="span" size="lg" onClick={() => onAddCandidate()}>
+            Add Candidate
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
