@@ -59,7 +59,7 @@ const ElectionsPage = () => {
       ? elections
       : elections.filter((election) => election.status === tab);
   return (
-    <main className="flex flex-col lg:ml-[117px] w-full max-w-[672px] max-md:px-4">
+    <main className="flex flex-col lg:ml-[117px] w-full lg:max-w-[672px] max-md:px-4 max-lg:px-12">
       <Tabs value={tab} className="w-full">
         <TabsList className="w-full flex justify-between border-b px-0 border-gray/30 dark:border-[#EAEAEA]/15 rounded-none">
           {tabHeaders.map(({ value, label }) => (
