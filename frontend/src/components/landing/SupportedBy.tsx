@@ -1,5 +1,5 @@
 "use client";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { Separator } from "@radix-ui/react-select";
@@ -7,6 +7,16 @@ import { sponsors } from "@/data/sponsors";
 
 const SupportedBy = () => {
   const { resolvedTheme } = useTheme();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div className="w-full flex flex-col gap-4 items-center mt-10 lg:mt-[208px]">
       <h1 className="font-afacad text-xl lg:text-2xl">Supported by</h1>
