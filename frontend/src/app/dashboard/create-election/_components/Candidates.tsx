@@ -75,7 +75,7 @@ const CandidateForm = () => {
 
   return (
     <AccordionItem value="candidate" className="border-none">
-      <AccordionTrigger className="bg-primary py-3 px-[18px] rounded-t-xl text-white/60">
+      <AccordionTrigger className="bg-secondary dark:bg-primary py-3 px-[18px] rounded-t-xl text-white dark:text-white/60">
         Candidate
       </AccordionTrigger>
       <AccordionContent>
