@@ -1,6 +1,7 @@
 import React from "react";
 import InputWrapper from "../../create-election/_components/inputs/InputWrapper";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const CheckEligibilityForm = ({ labelClass }: { labelClass?: string }) => {
   const labelClasses = cn("dark:text-white/60 text-3xl mb-1", labelClass);
@@ -19,12 +20,9 @@ const CheckEligibilityForm = ({ labelClass }: { labelClass?: string }) => {
       </InputWrapper>
 
       <div className="flex justify-end">
-        <button
-          type="submit"
-          className="w-fit px-8 py-2.5 rounded-full bg-primary text-white text-lg"
-        >
+        <Button type="submit" size="lg">
           Verify
-        </button>
+        </Button>
       </div>
     </form>
   );

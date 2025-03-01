@@ -10,6 +10,7 @@ import {
   ELECTION_FACTORY_ABI,
   getFactoryAddress,
 } from "@/contracts/ElectionFactory";
+import { Button } from "@/components/ui/button";
 
 type Period = {
   startDate: Date | undefined;
@@ -108,12 +109,9 @@ const Election = () => {
       </InputWrapper>
 
       <div className="mt-5 flex justify-end">
-        <button
-          type="submit"
-          className="bg-secondary dark:bg-primary rounded-full px-12 text-white py-2.5"
-        >
+        <Button type="submit" className="px-12" size="lg">
           Next
-        </button>
+        </Button>
       </div>
     </form>
   );
