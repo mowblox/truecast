@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import React, { ReactNode } from "react";
 import { StatusPill } from "@/components/dashboard/StatusPill";
 import BackButton from "@/components/dashboard/BackButton";
+import ElectionDetail from "./_components/ElectionDetail";
 
 const standings = [
   { name: "Lisa Mensah", voteCount: 29 },
@@ -29,25 +30,7 @@ const page = () => {
       <BackButton />
 
       <div className="election-details flex flex-col md:flex-row justify-between gap-x-24 gap-y-12 mt-10">
-        <section className="flex flex-col gap-8 md:gap-[60px] md:flex-1">
-          <header className="flex flex-col gap-3">
-            <StatusPill status="Closed" />
-            <h1 className="text-[32px]">2024 SRC President - UG</h1>
-          </header>
-
-          <article className="flex flex-col gap-3">
-            <p className="text-2xl">Description</p>
-            <p>
-              This election is being held to elect a new SRC president for the
-              University of Ghana.
-            </p>
-          </article>
-
-          <article className="flex flex-col gap-3">
-            <p className="text-2xl">Outcome</p>
-            <p className="text-success">Lisa Mensah</p>
-          </article>
-        </section>
+        <ElectionDetail />
         <aside className="flex flex-col gap-9 md:flex-[0.7]">
           <AsideContainer title="Results">
             <div className="flex flex-col gap-8">

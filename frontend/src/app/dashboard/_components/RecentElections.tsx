@@ -1,13 +1,14 @@
 "use client";
 import React from "react";
 import { StatusPill } from "@/components/dashboard/StatusPill";
-import { Link, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useChainId, useReadContract } from "wagmi";
 import {
   ELECTION_FACTORY_ABI,
   getFactoryAddress,
 } from "@/contracts/ElectionFactory";
 import { ElectionTitle } from "@/components/web3/ElectionTitle";
+import Link from "next/link";
 
 const headers = [
   "Election",
@@ -34,7 +35,7 @@ export const RecentElections = () => {
             {headers.map((header) => (
               <th
                 key={header}
-                className="first:pl-6 last:pr-6 text-left text-lg last:sr-only pb-5"
+                className="first:pl-6 last:pr-6 text-left text-lg pb-5"
               >
                 {header}
               </th>
@@ -76,9 +77,7 @@ export const RecentElections = () => {
                 <td className="py-3.5 ">Undetermined</td>
                 <td className="py-3.5 ">
                   <Link
-                    href={"/dashboard/results/" + address}
-                    className="dark:text-secondary pr-6"
-                  >
+                    href={"/dashboard/results/" + address}>
                     View results
                   </Link>
                 </td>

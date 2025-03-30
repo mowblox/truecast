@@ -1,10 +1,10 @@
 "use client";
 import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import { TabsTrigger } from "@radix-ui/react-tabs";
-import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
+import MyElections from "./_components/MyElections";
 
 const tabHeaders = [
   { value: "all", label: "All" },
@@ -12,52 +12,11 @@ const tabHeaders = [
   { value: "closed", label: "Closed" },
 ];
 
-type Election = {
-  title: string;
-  description: string;
-  id: string;
-  status: "ongoing" | "closed";
-};
-
-const elections: Election[] = [
-  {
-    title: "Vel consequat",
-    description:
-      "Ut consectetur metus diam eu mauris orci. Dictum tellus consectetur dignissim id eleifend. Etiam massa vitae iaculis ipsum dictumst libero. Id consequat at et condimentum.",
-    id: "1",
-    status: "ongoing",
-  },
-  {
-    title: "Vel consequat",
-    description:
-      "Ut consectetur metus diam eu mauris orci. Dictum tellus consectetur dignissim id eleifend. Etiam massa vitae iaculis ipsum dictumst libero. Id consequat at et condimentum.",
-    id: "3",
-    status: "ongoing",
-  },
-  {
-    title: "Vel consequat",
-    description:
-      "Ut consectetur metus diam eu mauris orci. Dictum tellus consectetur dignissim id eleifend. Etiam massa vitae iaculis ipsum dictumst libero. Id consequat at et condimentum.",
-    id: "8",
-    status: "ongoing",
-  },
-  {
-    title: "Vel consequat",
-    description:
-      "Ut consectetur metus diam eu mauris orci. Dictum tellus consectetur dignissim id eleifend. Etiam massa vitae iaculis ipsum dictumst libero. Id consequat at et condimentum.",
-    id: "32",
-    status: "closed",
-  },
-];
-
 const ElectionsPage = () => {
   const searchParams = useSearchParams();
   let tab = searchParams.get("tab");
   tab = tabHeaders.find(({ value }) => value === tab)?.value || "all";
-  const filteredElections =
-    tab === "all"
-      ? elections
-      : elections.filter((election) => election.status === tab);
+
   return (
     <main className="flex flex-col lg:ml-[117px] w-full lg:max-w-[672px] max-md:px-4 max-lg:px-12">
       <Tabs value={tab} className="w-full">
@@ -78,29 +37,11 @@ const ElectionsPage = () => {
             value={header.value}
             className="flex flex-col gap-6"
           >
-            {filteredElections.map((election) => (
-              <Election key={election.id} {...election} />
-            ))}
+            <MyElections />
           </TabsContent>
         ))}
       </Tabs>
     </main>
-  );
-};
-
-const Election = ({ title, description, id }: Election) => {
-  return (
-    <Link
-      href={`/dashboard/results/${id}`}
-      className="flex justify-between items-center gap-7 py-5 border-b  border-[#9393934D] text-dark dark:text-white/60 pr-5"
-    >
-      <div className="w-full">
-        <h5 className="text-xl">{title}</h5>
-        <p className="mt-3 text-sm">{description}</p>
-      </div>
-
-      <ChevronRight className="size-6" />
-    </Link>
   );
 };
 

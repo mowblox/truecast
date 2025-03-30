@@ -2,14 +2,14 @@
 import { ELECTION_ABI } from "@/contracts/Election";
 import { useReadContract } from "wagmi";
 
-export const ElectionTitle = ({ address }: {
+export const ElectionStartDate = ({ address }: {
   address: string | any
 }) => {
   const result = useReadContract({
     abi: ELECTION_ABI,
     address: address,
-    functionName: 'title',
+    functionName: 'startDate',
   });
 
-  return <span>{result?.data as string}</span>
+  return <span>{new Date(Number(result?.data as string)).toDateString()}</span>
 }
