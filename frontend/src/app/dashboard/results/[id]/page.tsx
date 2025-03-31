@@ -29,7 +29,7 @@ const page = () => {
     <main className="mx-4 md:ml-[117px] md:mr-8">
       <BackButton />
 
-      <div className="election-details flex flex-col md:flex-row justify-between gap-x-24 gap-y-12 mt-10">
+      <div className="election-details flex flex-col lg:flex-row justify-between gap-x-24 gap-y-12 mt-10">
         <ElectionDetail />
         <aside className="flex flex-col gap-9 md:flex-[0.7]">
           <AsideContainer title="Results">
