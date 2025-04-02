@@ -8,7 +8,7 @@ const page = () => {
     <main className="mx-4 md:mx-[117px] max-w-xl flex flex-col gap-24">
       <div className="flex flex-col gap-3">
         <StatusPill status="Ongoing" />
-        <Summary />
+        <Summary isPublished />
       </div>
 
       <CheckEligibilityForm labelClass="text-xl" />
