@@ -44,10 +44,14 @@ const CandidateForm = () => {
     address: searchParams.get("election") as any,
     functionName: "getCandidates",
   });
-  // console.log(result?.data);
+  console.log(result?.data);
 
-  const onConfirmCandidates = () =>
-    router.push(`?tab=voters&election=${searchParams.get("election")}`); //implement confirm candidates logic here...
+  const onConfirmCandidates = () => {
+    // Ensure minimum of 2 candidates
+    // Skip Voters and Goto Summary Page if Election Type is Public
+    // Move on to add voters
+    router.push(`?tab=voters&election=${searchParams.get("election")}`);
+  }
 
   const addCandidate = () => {
     const formData = new FormData(formRef.current);

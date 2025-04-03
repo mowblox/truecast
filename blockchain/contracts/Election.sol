@@ -66,7 +66,7 @@ contract Election {
     }
 
     modifier isElectionActive() {
-    if (block.timestamp >= startDate && block.timestamp < endDate) revert ElectionAlreadyStarted();
+    if (block.timestamp >= startDate) revert ElectionAlreadyStarted();
     if (block.timestamp >= endDate) revert ElectionEnded();
     _;
 }

@@ -26,6 +26,7 @@ export const RecentElections = () => {
     address: getFactoryAddress(chainId),
     functionName: "getElections",
   });
+  // console.log(result)
 
   return (
     <div className="table-container w-full overflow-x-auto">
@@ -43,7 +44,7 @@ export const RecentElections = () => {
           </tr>
         </thead>
         <tbody>
-          {!result.data ? (
+          {!result || !result.data || !(result.data as string[]).length ? (
             <tr>
               <td colSpan={6}>
                 <div className="px-5 py-24 text-center flex flex-col justify-center items-center w-full">
