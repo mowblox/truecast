@@ -2,21 +2,22 @@
 import { StatusPill } from "@/components/dashboard/StatusPill";
 import { ElectionDescription } from "@/components/web3/ElectionDescription";
 import { ElectionTitle } from "@/components/web3/ElectionTitle";
-import useElectionSummary from "@/hooks/use-election-summary";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function ElectionDetail() {
   const { id } = useParams();
-  const electionSummary = useElectionSummary({ address: id });
-  console.log(electionSummary);
-
-  const url = `https://truecast.com/elections/${id}`;
+  const [url, setUrl] = useState('');
 
   const copyUrl = async () => {
     await navigator.clipboard.writeText(url);
     toast.success("URL copied to clipboard!");
   };
+
+  useEffect(() => {
+    setUrl(`${location.origin}/dashboard/vote/${id}`);
+  }, [id]);
 
   return (
     <section className="flex flex-col gap-8 md:gap-[60px] md:flex-1">

@@ -33,11 +33,11 @@ export const navBlocks: NavBlock[] = [
         href: "/dashboard/create-election",
         Icon: UserPlus2,
       },
-      {
-        title: "Vote",
-        href: "/dashboard/vote",
-        Icon: ThumbsUp,
-      },
+      // {
+      //   title: "Vote",
+      //   href: "/dashboard/vote",
+      //   Icon: ThumbsUp,
+      // },
       {
         title: "Election hub",
         href: "/dashboard/elections",

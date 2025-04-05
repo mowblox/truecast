@@ -1,15 +1,15 @@
+"use client";
 import { ELECTION_ABI } from "@/contracts/Election";
 import { useReadContract } from "wagmi";
 
-export default function useElectionSummary({ address }: {
+export const ElectionOwner = ({ address }: {
   address: string | any
-}) {
+}) => {
   const result = useReadContract({
     abi: ELECTION_ABI,
     address: address,
-    functionName: 'getElectionSummary',
+    functionName: 'owner',
   });
-  // console.log(result?.data);
 
-  return result?.data;
+  return <span>{(result?.data as string)?.substring(0, 6)}...{(result?.data as string)?.substring(36)}</span>
 }
