@@ -21,7 +21,7 @@ const ElectionCard = ({
 
       <div className="flex justify-end">
         <Link
-          href={`/dashboard/elections/${address}`}
+          href={`/dashboard/results/${address}`}
           className="rounded-full px-6 py-2 text-sm font-mulish bg-secondary dark:bg-white group-hover:bg-white dark:group-hover:text-dark text-white dark:text-dark group-hover:text-dark"
         >
           See details

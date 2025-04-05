@@ -35,10 +35,10 @@ const page = () => {
 
           <div className="flex justify-end">
             <Link
-              href={"/dashboard/vote"}
+              href={"/dashboard/elections"}
               className="bg-secondary dark:bg-primary rounded-full px-6 text-white py-2.5"
             >
-              Cast vote
+              Explore the Hub
             </Link>
           </div>
         </article>

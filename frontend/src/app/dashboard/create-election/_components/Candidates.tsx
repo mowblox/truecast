@@ -20,6 +20,7 @@ import { ELECTION_ABI } from "@/contracts/Election";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import useElectionType from "@/hooks/use-election-type";
+import { toast } from "sonner";
 
 const Candidates = () => {
   return (
@@ -53,7 +54,7 @@ const CandidateForm = () => {
   const onConfirmCandidates = () => {
     // Ensure minimum of 2 candidates
     if (!((result.data as any[]).length >= 2)) {
-      return alert('Minimum of 2 candidates are required.');
+      return toast.info('Minimum of 2 candidates are required.');
     }
     // Skip Voters and Goto Summary Page if Election Type is Public
     if (isPublic) {

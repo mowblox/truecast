@@ -2,18 +2,7 @@ import React, { ReactNode } from "react";
 import BackButton from "@/components/dashboard/BackButton";
 import ElectionDetail from "./_components/ElectionDetail";
 import Standings from "./_components/Standings";
-
-const standings = [
-  { name: "Lisa Mensah", voteCount: 29 },
-  { name: "Alisson Newton", voteCount: 6 },
-  { name: "James Hammond", voteCount: 4 },
-  { name: "Michael Brown", voteCount: 3 },
-];
-
-const total = standings.reduce((prev, current) => ({
-  name: "Total",
-  voteCount: prev.voteCount + current.voteCount,
-}));
+import ElectionSummary from "./_components/ElectionSummary";
 
 const electionDetails = [
   { label: "Created by", value: "0x4d...39dd" },
@@ -38,12 +27,7 @@ const page = () => {
           </AsideContainer>
           <AsideContainer title="Election Information">
             <div className="flex flex-col gap-8">
-              {electionDetails.map((detail) => (
-                <div key={detail.value} className="flex justify-between">
-                  <p>{detail.label}</p>
-                  <p className="text-secondary">{detail.value}</p>
-                </div>
-              ))}
+              <ElectionSummary />
             </div>
           </AsideContainer>
         </aside>
