@@ -42,10 +42,9 @@ const Election = () => {
   });
 
   const createElection = (event: React.SyntheticEvent<HTMLFormElement>) => {
-    const startDate = Math.floor(Date.now() / 1000) + 3600; // 1 hour in the future
-    const endDate = startDate + 86400; // 1 day after start date
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
+    // console.log(formData.get("election-type"));
     writeContract({
       abi: ELECTION_FACTORY_ABI,
       address: getFactoryAddress(chainId),
@@ -53,7 +52,7 @@ const Election = () => {
       args: [
         formData.get("title"),
         formData.get("description"),
-        true,
+        formData.get("election-type") === 'public',
         period.startDate?.valueOf(),
         period.endDate?.valueOf(),
       ],
@@ -94,16 +93,16 @@ const Election = () => {
       <InputWrapper name="election-type" label="Election Type">
         <RadioGroup
           name="election-type"
-          defaultValue="option-one"
+          defaultValue="public"
           className="flex gap-10"
         >
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="option-one" id="option-one" />
-            <label htmlFor="option-one">Public</label>
+            <RadioGroupItem value="public" id="public" />
+            <label htmlFor="public">Public</label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="option-two" id="option-two" />
-            <label htmlFor="option-two">Private</label>
+            <RadioGroupItem value="private" id="private" />
+            <label htmlFor="private">Private</label>
           </div>
         </RadioGroup>
       </InputWrapper>

@@ -1,5 +1,5 @@
 import React from "react";
-import CheckEligibilityForm from "../../vote/_components/CheckEligibilityForm";
+// import CheckEligibilityForm from "../../vote/_components/CheckEligibilityForm";
 import { StatusPill } from "@/components/dashboard/StatusPill";
 import Summary from "../../create-election/_components/Summary";
 
@@ -11,7 +11,7 @@ const page = () => {
         <Summary isPublished />
       </div>
 
-      <CheckEligibilityForm labelClass="text-xl" />
+      {/* <CheckEligibilityForm labelClass="text-xl" /> */}
     </main>
   );
 };

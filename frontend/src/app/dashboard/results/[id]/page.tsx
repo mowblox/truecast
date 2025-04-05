@@ -1,8 +1,7 @@
-import { ArrowLeft } from "lucide-react";
 import React, { ReactNode } from "react";
-import { StatusPill } from "@/components/dashboard/StatusPill";
 import BackButton from "@/components/dashboard/BackButton";
 import ElectionDetail from "./_components/ElectionDetail";
+import Standings from "./_components/Standings";
 
 const standings = [
   { name: "Lisa Mensah", voteCount: 29 },
@@ -34,9 +33,7 @@ const page = () => {
         <aside className="flex flex-col gap-9 md:flex-[0.7]">
           <AsideContainer title="Results">
             <div className="flex flex-col gap-8">
-              {standings.map((standing) => (
-                <Standing key={standing.name} {...standing} />
-              ))}
+              <Standings />
             </div>
           </AsideContainer>
           <AsideContainer title="Election Information">
@@ -67,28 +64,6 @@ const AsideContainer = ({
       <h4 className="text-2xl">{title}</h4>
       {children}
     </article>
-  );
-};
-
-const Standing = ({ name, voteCount }: { name: string; voteCount: number }) => {
-  const percentage = Math.floor((voteCount / total.voteCount) * 100);
-  return (
-    <div className="w-full">
-      <div className="flex items-center w-full justify-between">
-        <p className="text-lg">{name}</p>
-
-        <div className="mr-1.5 flex gap-3 text-secondary">
-          <p>{`${voteCount} votes`}</p>
-          <p>{`${percentage}%`}</p>
-        </div>
-      </div>
-      <div className="rounded-full h-2 bg-white/10 w-full overflow-hidden">
-        <div
-          style={{ width: `${percentage}%` }}
-          className="bg-secondary rounded-full h-2"
-        ></div>
-      </div>
-    </div>
   );
 };
 

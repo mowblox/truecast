@@ -1,15 +1,15 @@
 import { ELECTION_ABI } from "@/contracts/Election";
 import { useReadContract } from "wagmi";
 
-export default function useElectionSummary({ address }: {
+export default function useElectionType({ address }: {
   address: string | any
 }) {
   const result = useReadContract({
     abi: ELECTION_ABI,
     address: address,
-    functionName: 'getElectionSummary',
+    functionName: 'isPublic',
   });
-  // console.log(result?.data);
+  // console.log(result);
 
   return result?.data;
 }

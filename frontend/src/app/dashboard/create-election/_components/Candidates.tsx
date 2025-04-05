@@ -19,6 +19,7 @@ import { useReadContract, useWriteContract } from "wagmi";
 import { ELECTION_ABI } from "@/contracts/Election";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import useElectionType from "@/hooks/use-election-type";
 
 const Candidates = () => {
   return (
@@ -44,11 +45,20 @@ const CandidateForm = () => {
     address: searchParams.get("election") as any,
     functionName: "getCandidates",
   });
-  console.log(result?.data);
+  // console.log(result?.data);
+
+  const isPublic = useElectionType({ address: searchParams.get("election") as any });
+  // console.log(isPublic);
 
   const onConfirmCandidates = () => {
     // Ensure minimum of 2 candidates
+    if (!((result.data as any[]).length >= 2)) {
+      return alert('Minimum of 2 candidates are required.');
+    }
     // Skip Voters and Goto Summary Page if Election Type is Public
+    if (isPublic) {
+      return router.push(`?tab=summary&election=${searchParams.get("election")}`);
+    }
     // Move on to add voters
     router.push(`?tab=voters&election=${searchParams.get("election")}`);
   }
