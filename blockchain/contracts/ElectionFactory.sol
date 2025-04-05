@@ -39,7 +39,8 @@ contract ElectionFactory {
             _description,
             _isPublic,
             _startDate,
-            _endDate
+            _endDate,
+            msg.sender
         );
 
         // Store the address of the newly created election

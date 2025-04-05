@@ -41,14 +41,15 @@ contract Election {
     event VoteCast(address indexed voter, uint indexed candidateId);
     event CandidateAdded(uint id, string name);
     event VotersAdded(address[] voters);
-     event ElectionExtended(uint newEndDate);
+    event ElectionExtended(uint newEndDate);
 
     constructor(
         string memory _title,
         string memory _description,
         bool _isPublic,
         uint _startDate,
-        uint _endDate
+        uint _endDate,
+        address _owner
     ) {
         if (_startDate >= _endDate) revert InvalidEndDate();
         title = _title;
@@ -56,7 +57,7 @@ contract Election {
         isPublic = _isPublic;
         startDate = _startDate;
         endDate = _endDate;
-        owner = msg.sender;
+        owner = _owner;
     }
 
     modifier onlyWhileOpen() {
@@ -66,10 +67,10 @@ contract Election {
     }
 
     modifier isElectionActive() {
-    if (block.timestamp >= startDate) revert ElectionAlreadyStarted();
-    if (block.timestamp >= endDate) revert ElectionEnded();
-    _;
-}
+        if (block.timestamp >= startDate) revert ElectionAlreadyStarted();
+        if (block.timestamp >= endDate) revert ElectionEnded();
+        _;
+    }
 
     modifier onlyOwner() {
         if (msg.sender != owner) revert Unauthorized();
@@ -138,7 +139,11 @@ contract Election {
         emit VoteCast(msg.sender, _candidateId);
     }
 
-    function getElectionSummary() public view returns (Candidate[] memory, uint) {
+    function getElectionSummary()
+        public
+        view
+        returns (Candidate[] memory, uint)
+    {
         uint totalVotes = 0;
         Candidate[] memory allCandidates = new Candidate[](candidatesCount);
 
@@ -153,7 +158,7 @@ contract Election {
         return (allCandidates, totalVotes);
     }
 
-     function extendElectionDate(uint newEndDate) public onlyOwner {
+    function extendElectionDate(uint newEndDate) public onlyOwner {
         if (newEndDate <= endDate) revert ElectionEnded();
         endDate = newEndDate;
         emit ElectionExtended(newEndDate);
