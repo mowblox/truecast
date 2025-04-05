@@ -33,7 +33,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
   const onConfirmPublish = () => {
     // Implement publish logic here...
     router.push(
-      `/dashboard/elections/${searchParams.get("election") || electionAddress}`
+      `/dashboard/results/${searchParams.get("election") || electionAddress}`
     );
   };
 

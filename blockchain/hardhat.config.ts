@@ -10,34 +10,34 @@ const config: HardhatUserConfig = {
     enabled: true
   },
   networks: {
-    sepolia_testnet: {
+    mainnet: {
+      url: `https://ethereum-rpc.publicnode.com`,
+      accounts: [process.env.PRIVATE_KEY as string],
+    },
+    sepolia: {
       url: `https://ethereum-sepolia-rpc.publicnode.com`,
       accounts: [process.env.PRIVATE_KEY as string],
     },
-    ethereum_mainnet: {
-      url: `https://ethereum-rpc.publicnode.com`,
+    hoodi: {
+      url: 'https://ethereum-hoodi-rpc.publicnode.com',
+      accounts: [process.env.PRIVATE_KEY as string]
+    },
+    linea_mainnet: {
+      url: `https://rpc.linea.build/`,
       accounts: [process.env.PRIVATE_KEY as string],
     },
     linea_sepolia: {
       url: `https://rpc.sepolia.linea.build`,
       accounts: [process.env.PRIVATE_KEY as string],
     },
-    linea_mainnet: {
-      url: `https://rpc.linea.build/`,
+    scroll_mainnet: {
+      url: `https://rpc.scroll.io/`,
       accounts: [process.env.PRIVATE_KEY as string],
     },
     scroll_sepolia: {
       url: `https://sepolia-rpc.scroll.io/`,
       accounts: [process.env.PRIVATE_KEY as string],
     },
-    scroll_mainnet: {
-      url: `https://rpc.scroll.io/`,
-      accounts: [process.env.PRIVATE_KEY as string],
-    },
-    holesky: {
-      url: 'https://1rpc.io/holesky',
-      accounts: [process.env.PRIVATE_KEY as string]
-    }
   },
   etherscan: {
     apiKey: {

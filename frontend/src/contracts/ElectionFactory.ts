@@ -1,13 +1,11 @@
 export const getFactoryAddress = (chainId: number) => {
   switch (chainId) {
     case 11155111:
-      return '0xe96e8F2A1A3c4a6464d51a645CFFA3306c16c456'; // sepolia
+      return '0xdB78718Db7EE8D2cFd57c27FdB4Ae5B00A656DBe'; // sepolia
     case 534351:
       return '0x48Ff06D4D317b4030A90b26F9916eE9D04E1f868'; // scroll_sepolia
     case 59141:
-      return '0xa5d67391AC8d560B5f94175868961C306942cF59' // linea_sepolia
-    case 17000:
-      return '0xDdF0f6f45d7Ee134779C6c05c7eE6a9231BD8Aea' // holesky
+      return '0x4494b1e9Af1591D4d1E93AA154ded3EB0E7f8f99' // linea_sepolia
     default:
       return '0x0000000000000000000000000000000000000000';
   }
