@@ -67,8 +67,8 @@ contract Election {
     }
 
     modifier isElectionActive() {
-        if (block.timestamp >= startDate) revert ElectionAlreadyStarted("Error:: [Election has already started]");
         if (block.timestamp >= endDate) revert ElectionEnded("Error:: [Election has ended]");
+        if (block.timestamp >= startDate) revert ElectionAlreadyStarted("Error:: [Election has already started]");
         _;
     }
 
@@ -129,7 +129,7 @@ contract Election {
     function castVote(uint _candidateId) public onlyWhileOpen {
         if (voters[msg.sender].voted) revert AlreadyVoted("Failed to cast vote:: [Voter already voted]");
         if (_candidateId == 0 || _candidateId > candidatesCount)
-            revert InvalidCandidate(_candidateId, "Failed to cast vote:[Invalid candidate]:");
+            revert InvalidCandidate(_candidateId, "Failed to cast vote:: [Invalid candidate]");
 
         voters[msg.sender].voted = true;
         voters[msg.sender].candidateId = _candidateId;

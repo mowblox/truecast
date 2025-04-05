@@ -12,7 +12,7 @@ describe("Election Contract", function () {
     const startDate = Math.floor(Date.now() / 1000) + 3600; // 1 hour in the future
     const endDate = startDate + 86400; // 1 day after start date
 
-    const election = await Election.deploy(title, description, true, startDate, endDate);
+    const election = await Election.deploy(title, description, true, startDate, endDate, owner);
 
     return { election, owner, voter1, voter2, nonOwner, title, description, startDate, endDate };
   }
@@ -29,7 +29,7 @@ describe("Election Contract", function () {
     const startDate = Math.floor(Date.now() / 1000) + 3600; // 1 hour in the future
     const invalidEndDate = startDate - 3600; // 1 hour before start date
   
-    await expect(Election.deploy(title, description, isPublic, startDate, invalidEndDate))
+    await expect(Election.deploy(title, description, isPublic, startDate, invalidEndDate, owner))
       .to.be.revertedWithCustomError(Election, "InvalidEndDate");
   });
   
@@ -155,7 +155,7 @@ describe("Election Contract", function () {
     const invalidCandidateId = 99;
     await expect(election.connect(voter1).castVote(invalidCandidateId))
       .to.be.revertedWithCustomError(election, "InvalidCandidate")
-      .withArgs(invalidCandidateId);
+      .withArgs(invalidCandidateId, 'Failed to cast vote:: [Invalid candidate]');
   });
 
 });
