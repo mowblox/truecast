@@ -11,21 +11,20 @@ import {
   getFactoryAddress,
 } from "@/contracts/ElectionFactory";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type Period = {
   startDate: Date | undefined;
   endDate: Date | undefined;
-  error: string;
 };
 
 const Election = () => {
   const router = useRouter();
   const chainId = useChainId();
-  const { writeContract } = useWriteContract();
+  const { writeContract, isPending } = useWriteContract();
   const [period, setPeriod] = useState<Period>({
     startDate: undefined,
     endDate: undefined,
-    error: "",
   });
 
   useWatchContractEvent({
@@ -61,22 +60,29 @@ const Election = () => {
     const formData = new FormData(event.target as HTMLFormElement);
     const result = validatePeriod(period);
     if (!result.status) {
-      setPeriod({ ...period, error: result.message });
+      toast.error(result.message);
       return;
     }
     // console.log(formData.get("election-type"));
-    writeContract({
-      abi: ELECTION_FACTORY_ABI,
-      address: getFactoryAddress(chainId),
-      functionName: "createElection",
-      args: [
-        formData.get("title"),
-        formData.get("description"),
-        formData.get("election-type") === "public",
-        period.startDate?.valueOf(),
-        period.endDate?.valueOf(),
-      ],
-    });
+    writeContract(
+      {
+        abi: ELECTION_FACTORY_ABI,
+        address: getFactoryAddress(chainId),
+        functionName: "createElection",
+        args: [
+          formData.get("title"),
+          formData.get("description"),
+          formData.get("election-type") === "public",
+          period.startDate?.valueOf(),
+          period.endDate?.valueOf(),
+        ],
+      },
+      {
+        onSuccess: () => {
+          toast.success("Election created successfully.");
+        },
+      }
+    );
   };
 
   return (
@@ -110,7 +116,6 @@ const Election = () => {
             placeholder="End date"
           />
         </div>
-        <p className="text-danger">{period.error}</p>
       </div>
 
       <InputWrapper name="election-type" label="Election Type">
@@ -131,7 +136,7 @@ const Election = () => {
       </InputWrapper>
 
       <div className="mt-5 flex justify-end">
-        <Button type="submit" className="px-12" size="lg">
+        <Button loading={isPending} type="submit" className="px-12" size="lg">
           Next
         </Button>
       </div>
