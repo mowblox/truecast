@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/button";
 import { ELECTION_ABI } from "@/contracts/Election";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 import { useWriteContract } from "wagmi";
 
 const Voters = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { writeContract } = useWriteContract();
+  const { writeContract, isPending } = useWriteContract();
 
   const addVoters = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,10 +35,12 @@ const Voters = () => {
       },
       {
         onSuccess() {
+          toast.success("Voters added successfully.");
           router.push(`?tab=summary&election=${searchParams.get("election")}`);
         },
         onError(error) {
-          console.log(error);
+          toast.error(error.message); //TODO: Format error messages
+          console.log(error.message);
         },
       }
     );
@@ -73,7 +76,7 @@ const Voters = () => {
             </div>
 
             <div className="flex justify-end">
-              <Button size="lg" className="px-12">
+              <Button loading={isPending} size="lg" className="px-12">
                 Submit
               </Button>
             </div>
