@@ -2,9 +2,11 @@
 import { ELECTION_ABI } from "@/contracts/Election";
 import { ThumbsUp } from "lucide-react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
 import { useReadContract, useWriteContract } from "wagmi";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 function getRandomNumber() {
   return Math.floor(Math.random() * 3) + 1;
@@ -16,28 +18,30 @@ export const Candidates = () => {
   const result = useReadContract({
     abi: ELECTION_ABI,
     address: id as any,
-    functionName: 'getCandidates',
+    functionName: "getCandidates",
   });
   console.log(result?.data);
 
   return (
     <>
-      {(result.data as any[])?.map(candidate => {
-        return {
-          id: candidate.id,
-          name: candidate.name,
-          team: candidate.team,
-          image: `/images/candidate${getRandomNumber()}.png`,
-        }
-      }).map((candidate) => (
-        <React.Fragment key={candidate.id}>
-          <CandidateCard {...candidate} />
-          <div className="w-full h-[1px] bg-[#9393934D] last:hidden"></div>
-        </React.Fragment>
-      ))}
+      {(result.data as any[])
+        ?.map((candidate) => {
+          return {
+            id: candidate.id,
+            name: candidate.name,
+            team: candidate.team,
+            image: `/images/candidate${getRandomNumber()}.png`,
+          };
+        })
+        .map((candidate) => (
+          <React.Fragment key={candidate.id}>
+            <CandidateCard {...candidate} />
+            <div className="w-full h-[1px] bg-[#9393934D] last:hidden"></div>
+          </React.Fragment>
+        ))}
     </>
   );
-}
+};
 
 const CandidateCard = ({
   name,
@@ -51,23 +55,30 @@ const CandidateCard = ({
   id: number;
 }) => {
   const { id } = useParams();
-  const { writeContract } = useWriteContract();
+  const { writeContract, isPending } = useWriteContract();
+  const router = useRouter();
 
   const castVote = () => {
-    writeContract({
-      abi: ELECTION_ABI,
-      address: id as any,
-      functionName: "castVote",
-      args: [candidateId],
-    }, {
-      onSuccess() {
-        // router.push(`?tab=summary&election=${id}`);
+    writeContract(
+      {
+        abi: ELECTION_ABI,
+        address: id as any,
+        functionName: "castVote",
+        args: [candidateId],
       },
-      onError(error) {
-        console.log(error);
+      {
+        onSuccess() {
+          toast.success("Your vote has been casted successfully!");
+          setTimeout(() => {
+            router.push(`/dashboard/results/${id}`);
+          }, 2000);
+        },
+        onError(error) {
+          console.log(error);
+        },
       }
-    });
-  }
+    );
+  };
 
   return (
     <article className="flex justify-between">
@@ -77,21 +88,24 @@ const CandidateCard = ({
           height={80}
           alt={name}
           src={image}
-          className="size-20 rounded-[11px] bg-subtle-text"
+          className="size-20 rounded-[11px] bg-subtle-text text-text dark:text-white/90"
         />
 
         <div>
-          <p className="font-mullish text-white/90 text-xl">{name}</p>
-          <p className="mt-1.5 text-white/60">{team}</p>
+          <p className="font-mullish text-xl">{name}</p>
+          <p className="mt-1.5 dark:text-white/60">{team}</p>
         </div>
       </div>
 
-      <button
+      <Button
+        loading={isPending}
+        variant={"outline"}
+        icon={<ThumbsUp className="size-[18px]" />}
         onClick={castVote}
-        className="flex items-center gap-3 justify-center px-10 py-2.5 border-[0.5px] border-[#EAEAEA]/15 rounded-full h-fit text-base">
-        <span>Vote</span>
-        <ThumbsUp className="size-[18px]" />
-      </button>
+        className="px-10 py-2.5 text-base flex-row-reverse"
+      >
+        Vote
+      </Button>
     </article>
   );
 };

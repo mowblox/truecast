@@ -41,8 +41,8 @@ const Dropzone = () => {
     <div
       {...getRootProps()}
       className={cn(
-        "w-full border-[0.5px] cursor-pointer border-[#EAEAEA]/30 border-dashed rounded-lg h-[178px] overflow-hidden relative",
-        isDragActive && "bg-gray border-primary"
+        "w-full border-[0.5px] cursor-pointer dark:border-[#EAEAEA]/30 border-dashed rounded-lg h-[178px] overflow-hidden relative",
+        isDragActive && "bg-[#EAEAEA] dark:bg-gray border-primary"
       )}
     >
       {image?.preview ? (
@@ -55,7 +55,7 @@ const Dropzone = () => {
       ) : null}
       <div
         className={cn(
-          "p-8 flex flex-col items-center gap-2 justify-center text-white/60",
+          "p-8 flex flex-col items-center gap-2 justify-center text-text dark:text-white/60",
           image?.preview && "opacity-0"
         )}
       >

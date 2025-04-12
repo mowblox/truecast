@@ -15,7 +15,7 @@ const ElectionCard = ({
           <ElectionTitle address={address} />
         </h5>
         <p className="text-lg">
-          <ElectionDescription address={address} />
+          <ElectionDescription address={address} trim />
         </p>
       </div>
 

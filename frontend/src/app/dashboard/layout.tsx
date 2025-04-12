@@ -15,11 +15,13 @@ export default function DashboardLayout({
 }>) {
   return (
     <React.Suspense>
-      <div className="flex h-screen relative text-dark dark:text-white/60">
+      <div className="flex h-screen relative text-dark dark:text-white/60 max-w-screen-2xl mx-auto">
         <Sidebar />
         <div className="flex flex-col w-full relative">
           <Header />
-          <div className="w-full grow overflow-y-auto py-12">{children}</div>
+          <div className="w-full grow overflow-y-auto py-12 hide-scrollbar">
+            {children}
+          </div>
         </div>
       </div>
     </React.Suspense>

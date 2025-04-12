@@ -11,6 +11,7 @@ import {
   getFactoryAddress,
 } from "@/contracts/ElectionFactory";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 type Period = {
   startDate: Date | undefined;
@@ -20,7 +21,7 @@ type Period = {
 const Election = () => {
   const router = useRouter();
   const chainId = useChainId();
-  const { writeContract } = useWriteContract();
+  const { writeContract, isPending } = useWriteContract();
   const [period, setPeriod] = useState<Period>({
     startDate: undefined,
     endDate: undefined,
@@ -41,22 +42,47 @@ const Election = () => {
     },
   });
 
+  const validatePeriod = (period: Period) => {
+    if (!(period.startDate && period.endDate)) {
+      return { status: false, message: "Please select a start and end date." };
+    }
+    if (period.startDate.getTime() > period.endDate.getTime()) {
+      return {
+        status: false,
+        message: "Start date must come before end date.",
+      };
+    }
+    return { status: true, message: "" };
+  };
+
   const createElection = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
+    const result = validatePeriod(period);
+    if (!result.status) {
+      toast.error(result.message);
+      return;
+    }
     // console.log(formData.get("election-type"));
-    writeContract({
-      abi: ELECTION_FACTORY_ABI,
-      address: getFactoryAddress(chainId),
-      functionName: "createElection",
-      args: [
-        formData.get("title"),
-        formData.get("description"),
-        formData.get("election-type") === 'public',
-        period.startDate?.valueOf(),
-        period.endDate?.valueOf(),
-      ],
-    });
+    writeContract(
+      {
+        abi: ELECTION_FACTORY_ABI,
+        address: getFactoryAddress(chainId),
+        functionName: "createElection",
+        args: [
+          formData.get("title"),
+          formData.get("description"),
+          formData.get("election-type") === "public",
+          period.startDate?.valueOf(),
+          period.endDate?.valueOf(),
+        ],
+      },
+      {
+        onSuccess: () => {
+          toast.success("Election created successfully.");
+        },
+      }
+    );
   };
 
   return (
@@ -78,11 +104,13 @@ const Election = () => {
         </label>
         <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
           <DatePicker
+            disabled={{ before: new Date() }}
             selected={period.startDate}
             onSelect={(value) => setPeriod({ ...period, startDate: value })}
             placeholder="Start date"
           />
           <DatePicker
+            disabled={{ before: new Date(period.startDate || "") }}
             selected={period.endDate}
             onSelect={(value) => setPeriod({ ...period, endDate: value })}
             placeholder="End date"
@@ -108,7 +136,7 @@ const Election = () => {
       </InputWrapper>
 
       <div className="mt-5 flex justify-end">
-        <Button type="submit" className="px-12" size="lg">
+        <Button loading={isPending} type="submit" className="px-12" size="lg">
           Next
         </Button>
       </div>

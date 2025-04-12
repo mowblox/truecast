@@ -29,7 +29,7 @@ const features = [
 
 const Features = () => {
   return (
-    <section className="relative mt-20 lg:mt-28">
+    <section className=" mt-20 lg:mt-28">
       <div className="flex flex-col items-center gap-20 lg:gap-28 w-full max-w-6xl mx-auto">
         <LightSource className="left-0" />
         <LightSource

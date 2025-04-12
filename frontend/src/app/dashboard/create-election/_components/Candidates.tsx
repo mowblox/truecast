@@ -38,7 +38,7 @@ const Candidates = () => {
 const CandidateForm = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { writeContract } = useWriteContract();
+  const { writeContract, isPending } = useWriteContract();
   const formRef = React.useRef<HTMLFormElement>();
 
   const result = useReadContract({
@@ -48,21 +48,25 @@ const CandidateForm = () => {
   });
   // console.log(result?.data);
 
-  const isPublic = useElectionType({ address: searchParams.get("election") as any });
+  const isPublic = useElectionType({
+    address: searchParams.get("election") as any,
+  });
   // console.log(isPublic);
 
   const onConfirmCandidates = () => {
     // Ensure minimum of 2 candidates
     if (!((result.data as any[]).length >= 2)) {
-      return toast.info('Minimum of 2 candidates are required.');
+      return toast.info("Minimum of 2 candidates are required.");
     }
     // Skip Voters and Goto Summary Page if Election Type is Public
     if (isPublic) {
-      return router.push(`?tab=summary&election=${searchParams.get("election")}`);
+      return router.push(
+        `?tab=summary&election=${searchParams.get("election")}`
+      );
     }
     // Move on to add voters
     router.push(`?tab=voters&election=${searchParams.get("election")}`);
-  }
+  };
 
   const addCandidate = () => {
     const formData = new FormData(formRef.current);
@@ -79,7 +83,11 @@ const CandidateForm = () => {
       },
       {
         onSuccess() {
-          window.location.reload();
+          toast.success("Candidate added successfully.");
+          result.refetch();
+          setTimeout(() => {
+            window.location.reload(); // TODO: Very hacky, and very much not ideal. Why does result.refetch not work?
+          }, 2000);
         },
         onError(error) {
           console.log(error);
@@ -99,10 +107,14 @@ const CandidateForm = () => {
           className="flex flex-col gap-16 pt-[42px] pb-12"
         >
           <TextInput name="name" label="Full Name" placeholder="Eg. John Doe" />
-          <TextInput name="team" label="Team" placeholder="Eg. Dreamweaver" />
+          <TextInput
+            name="team"
+            label="Team (Optional)"
+            placeholder="Eg. Dreamweaver"
+          />
           <ImagePicker />
           <div className="flex justify-end">
-            <SubmitDialog onAddCandidate={addCandidate} />
+            <SubmitDialog onAddCandidate={addCandidate} loading={isPending} />
           </div>
         </form>
         {result?.data ? (
@@ -129,11 +141,21 @@ const CandidateForm = () => {
   );
 };
 
-const SubmitDialog = ({ onAddCandidate }: { onAddCandidate: Function }) => {
+const SubmitDialog = ({
+  onAddCandidate,
+  loading,
+}: {
+  onAddCandidate: Function;
+  loading: boolean;
+}) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button as="div" className="px-12 ml-auto">
+        <Button
+          loading={loading}
+          as="div"
+          className="px-12 ml-auto cursor-pointer"
+        >
           <div>Add Candidate</div>
         </Button>
       </DialogTrigger>
@@ -148,13 +170,26 @@ const SubmitDialog = ({ onAddCandidate }: { onAddCandidate: Function }) => {
 
         <div className="flex items-center justify-center gap-5 mt-12">
           <DialogClose>
-            <Button as="span" size="lg" variant="outline">
+            <Button
+              as="span"
+              size="lg"
+              variant="outline"
+              className="cursor-pointer"
+            >
               Cancel
             </Button>
           </DialogClose>
-          <Button as="span" size="lg" onClick={() => onAddCandidate()}>
-            Add Candidate
-          </Button>
+          <DialogClose>
+            <Button
+              loading={loading}
+              as="span"
+              size="lg"
+              onClick={() => onAddCandidate()}
+              className="cursor-pointer"
+            >
+              Add Candidate
+            </Button>
+          </DialogClose>
         </div>
       </DialogContent>
     </Dialog>

@@ -18,7 +18,7 @@ const ThemeSwitcher = () => {
     return (
       <button
         className={cn(
-          "w-[67px] h-[30px] rounded-full bg-gradient-to-b from-[#66FFED] to-[#FFEEB2] transition-all duration-1000 ease-in relative flex items-center z-10",
+          "w-[67px] h-[30px] rounded-full bg-linear-to-b from-[#66FFED] to-[#FFEEB2] transition-all duration-1000 ease-in relative flex items-center z-10",
           resolvedTheme === "dark" && "from-[#2B4485] to-[#AFCAFF]"
         )}
         onClick={toggleTheme}

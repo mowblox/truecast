@@ -27,8 +27,9 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
     address: searchParams.get("election") || (electionAddress as any),
     functionName: "getCandidates",
   });
-  const summary = useElectionSummary({ address: searchParams.get("election") || (electionAddress as any) });
-  // console.log(summary);
+  const summary = useElectionSummary({
+    address: searchParams.get("election") || (electionAddress as any),
+  });
 
   const onConfirmPublish = () => {
     // Implement publish logic here...
@@ -90,7 +91,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
       <div className="flex flex-col gap-3">
         <label className="text-lg">Voter Count</label>
         <div className="flex flex-col gap-2 text-white/40 text-lg">
-          <p>{summary ? Number((summary as any[])[1]) : 0}</p>
+          <p>{summary ? Number((summary as any[])[1]) || "unlimited" : 0}</p>
         </div>
       </div>
 
