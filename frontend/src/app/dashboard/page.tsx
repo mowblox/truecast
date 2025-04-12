@@ -20,7 +20,7 @@ const page = () => {
 
           <OverallInfo />
         </article>
-        <article className="flex-1 border rounded-lg border-gray/15 dark:border-[#4C9FE41A] flex flex-col justify-between relative text-white/60 p-8">
+        <article className="flex-1 border rounded-lg border-gray/15 dark:border-[#4C9FE41A] flex flex-col justify-between relative dark:text-white/60 p-8">
           <div className="top">
             <h1 className="text-2xl mb-2.5">Got a voting link?</h1>
             <p className="text-base">Check eligibitlity and vote.</p>
