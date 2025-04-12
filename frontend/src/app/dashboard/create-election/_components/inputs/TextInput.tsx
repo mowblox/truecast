@@ -18,7 +18,7 @@ const TextInput = ({
   return (
     <InputWrapper name={name} label={label}>
       <input
-        className="w-full bg-transparent border-b text-base dark:border-white/60 py-2 outline-none focus:border-primary placeholder:italic placeholder:font-normal dark:placeholder:text-white/60"
+        className="w-full bg-transparent border-b text-base dark:border-white/60 py-2 outline-hidden focus:border-primary placeholder:italic placeholder:font-normal dark:placeholder:text-white/60"
         type={type}
         placeholder={placeholder}
         name={name}

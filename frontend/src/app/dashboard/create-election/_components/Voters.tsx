@@ -55,7 +55,7 @@ const Voters = () => {
             className="flex flex-col gap-6 pt-[42px] pb-12"
           >
             <textarea
-              className="border border-[#EAEAEA]/30 focus:border-primary outline-none rounded-lg p-4 resize-none bg-transparent"
+              className="border border-[#EAEAEA]/30 focus:border-primary outline-hidden rounded-lg p-4 resize-none bg-transparent"
               rows={12}
               name="voters"
               placeholder="Enter addresses here"

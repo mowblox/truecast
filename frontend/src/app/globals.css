@@ -1,41 +1,138 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-html, body {
-  transition: all 1s ease;
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-*: initial;
+  --color-primary: #1d57c2;
+  --color-secondary: #4c9fe4;
+  --color-text: #413f3f;
+  --color-dark-text: #f5f5f5;
+  --color-subtle-text: #939393;
+  --color-light-shade: #1d57c21a;
+  --color-dark: #070707;
+  --color-gray: #0b0f12;
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-success: #14ca74;
+  --color-danger: #ff5a65;
+
+  --font-*: initial;
+  --font-sans: var(--font-roboto-flex);
+  --font-space-grotesk: var(--font-space-grotesk);
+  --font-roboto-flex: var(--font-roboto-flex);
+  --font-afacad: var(--font-afacad);
+  --font-abel: var(--font-abel);
+  --font-mulish: var(--font-mulish);
+
+  --breakpoint-xs: 320px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1440px;
+  --breakpoint-2xl: 1920px;
+  --breakpoint-3xl: 3840px;
+
+  --animate-l24: l24 1s linear infinite;
+  --animate-l24Slow: l24 2s linear infinite;
+  --animate-l24Slower: l24 4s linear infinite;
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes l24 {
+    100% {
+      transform: rotate(1turn);
+    }
+  }
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
 }
 
-.gradient-text {
-  background: linear-gradient(
-    to right,
-    white 20%,
-    rgba(141, 137, 137, 0.7) 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
 
-.gradient-text-vertical {
-  background: linear-gradient(to bottom, white 20%, rgba(0, 0, 0, 0.7) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-select:focus {
-  transition: background-color 0.3s ease-in-out;
-  background-color: #1b1a23; /* bg-dark */
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  transition: background-color 50000s ease-in-out 0s, color 5000s ease-in-out 0s;
+@utility loader {
+  @apply w-12 aspect-square rounded-full border-8 border-none border-r-[#ffa50097] relative animate-l24;
+  &:before {
+    content: '';
+    @apply absolute inset-[-8px] rounded-full animate-l24Slow;
+  }
+  &:after {
+    content: '';
+    @apply absolute inset-[-8px] rounded-full animate-l24Slow;
+  }
+  &:after {
+    @apply animate-l24Slower;
+  }
 }
 
-/* @layer base {
+@layer utilities {
+  html,
+  body {
+    transition: all 1s ease;
+  }
+
+  .gradient-text {
+    background: linear-gradient(
+      to right,
+      white 20%,
+      rgba(141, 137, 137, 0.7) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-text-vertical {
+    background: linear-gradient(to bottom, white 20%, rgba(0, 0, 0, 0.7) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  select:focus {
+    transition: background-color 0.3s ease-in-out;
+    background-color: #1b1a23; /* bg-dark */
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition:
+      background-color 50000s ease-in-out 0s,
+      color 5000s ease-in-out 0s;
+  }
+
+  /* @layer base {
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
@@ -108,7 +205,7 @@ input:-webkit-autofill:active {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 } */
-/* @layer base {
+  /* @layer base {
   * {
     @apply border-border;
   }
@@ -117,50 +214,37 @@ input:-webkit-autofill:active {
   }
 } */
 
-.PopoverContent {
-  animation-duration: 0.6s;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-}
-.PopoverContent[data-side="top"] {
-  animation-name: slideUp;
-}
-.PopoverContent[data-side="bottom"] {
-  animation-name: slideDown;
-}
+  .PopoverContent {
+    animation-duration: 0.6s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .PopoverContent[data-side='top'] {
+    animation-name: slideUp;
+  }
+  .PopoverContent[data-side='bottom'] {
+    animation-name: slideDown;
+  }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@layer components {
-  .loader {
-    @apply w-12 aspect-square rounded-full border-8 border-none border-r-[#ffa50097] relative animate-l24;
-  }
-  .loader:before,
-  .loader:after {
-    content: "";
-    @apply absolute inset-[-8px] rounded-full animate-l24Slow;
-  }
-  .loader:after {
-    @apply animate-l24Slower;
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 

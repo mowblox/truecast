@@ -65,7 +65,7 @@ export const RecentElections = () => {
             (result.data as string[]).map((address) => (
               <tr
                 key={address}
-                className="odd:bg-secondary odd:dark:bg-[#0B1739] odd:text-white/60"
+                className="odd:bg-secondary dark:odd:bg-[#0B1739] odd:text-white/60"
               >
                 <td className="py-3.5 pl-6">
                   <ElectionTitle address={address} />

@@ -14,7 +14,7 @@ const CheckEligibilityForm = ({ labelClass }: { labelClass?: string }) => {
       >
         <input
           required
-          className="p-6 bg-[#1D57C21A] rounded-md text-secondary placeholder:italic placeholder:text-secondary outline-none"
+          className="p-6 bg-[#1D57C21A] rounded-md text-secondary placeholder:italic placeholder:text-secondary outline-hidden"
           placeholder="Type or paste unique voting link"
         />
       </InputWrapper>

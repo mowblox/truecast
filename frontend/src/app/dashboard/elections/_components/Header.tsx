@@ -15,13 +15,13 @@ const Header = () => {
         <Search className="size-4" />
         <input
           type="text"
-          className="absolute inset-0 outline-none bg-transparent pl-10 md:pl-14 pr-8"
+          className="absolute inset-0 outline-hidden bg-transparent pl-10 md:pl-14 pr-8"
           placeholder="search for election eg. SRC 2024 election"
         />
       </div>
 
       <Select>
-        <SelectTrigger className=" w-[116px] rounded-full bg-secondary dark:bg-primary text-white py-2.5 border-none outline-none">
+        <SelectTrigger className=" w-[116px] rounded-full bg-secondary dark:bg-primary text-white py-2.5 border-none outline-hidden">
           <SelectValue placeholder="Private" />
         </SelectTrigger>
         <SelectContent>

@@ -26,7 +26,7 @@ export default function PanelComponent({ children, title, icon, index, callback 
   return (
     <Fragment>
       <div
-        className="w-full h-12 flex items-center justify-between px-4 rounded-md bg-gradient-to-r from-primary to-secondary cursor-pointer mt-6"
+        className="w-full h-12 flex items-center justify-between px-4 rounded-md bg-linear-to-r from-primary to-secondary cursor-pointer mt-6"
         onClick={handlePanelClick}
       >
         <span className="text-white text-lg font-space-grotesk">
