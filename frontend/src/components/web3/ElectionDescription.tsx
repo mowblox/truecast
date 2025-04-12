@@ -19,7 +19,7 @@ export const ElectionDescription = ({
 
   return (
     <span>
-      {trim && value.length > 100 ? value.slice(0, 100) + "..." : value}
+      {trim && value?.length > 100 ? value.slice(0, 100) + "..." : value}
     </span>
   );
 };
