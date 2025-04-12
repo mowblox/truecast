@@ -42,7 +42,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
     <div className="w-full flex flex-col gap-12">
       <div className="flex flex-col gap-3">
         <label className="text-lg">Election Title</label>
-        <div className="flex flex-col gap-2 text-white/40 text-lg">
+        <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
           <ElectionTitle
             address={searchParams.get("election") || electionAddress}
           />
@@ -50,7 +50,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
       </div>
       <div className="flex flex-col gap-3">
         <label className="text-lg">Election Description</label>
-        <div className="flex flex-col gap-2 text-white/40 text-lg">
+        <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
           <ElectionDescription
             address={searchParams.get("election") || electionAddress}
           />
@@ -58,7 +58,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
       </div>
       <div className="flex flex-col gap-3">
         <label className="text-lg">Election Period</label>
-        <div className="flex flex-col gap-2 text-white/40 text-lg">
+        <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
           <p>
             <ElectionStartDate
               address={searchParams.get("election") || electionAddress}
@@ -72,7 +72,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
       </div>
       <div className="flex flex-col gap-3">
         <label className="text-lg">Election Type</label>
-        <div className="flex flex-col gap-2 text-white/40 text-lg">
+        <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
           <ElectionType
             address={searchParams.get("election") || electionAddress}
           />
@@ -82,7 +82,10 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
         <label className="text-lg">Candidates</label>
         <div className="flex flex-col gap-2">
           {(result?.data as any[])?.map((candidate) => (
-            <p key={candidate.id} className="text-white/40 text-lg">
+            <p
+              key={candidate.id}
+              className="text-text dark:text-white/40 text-lg"
+            >
               {candidate.name}
             </p>
           ))}
@@ -90,7 +93,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
       </div>
       <div className="flex flex-col gap-3">
         <label className="text-lg">Voter Count</label>
-        <div className="flex flex-col gap-2 text-white/40 text-lg">
+        <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
           <p>{summary ? Number((summary as any[])[1]) || "unlimited" : 0}</p>
         </div>
       </div>
@@ -113,11 +116,11 @@ const SubmitDialog = ({ onConfirmPublish }: { onConfirmPublish: Function }) => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="bg-dark text-center border border-[#EAEAEA]/30 py-16 px-[52px] sm:rounded-[18px]">
+      <DialogContent className="bg-white dark:bg-dark text-center border border-gray/30 dark:border-[#EAEAEA]/30 py-16 px-[52px] sm:rounded-[18px]">
         <DialogTitle className="text-[32px] font-semibold">
           Are you sure?
         </DialogTitle>
-        <p className="text-white/60 text-lg">
+        <p className="dark:text-white/60 text-lg">
           This action cannot be reversed. Once you publish, you will not be able
           to make changes. Cancel, to make changes or publish to generate
           election link.

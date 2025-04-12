@@ -160,11 +160,11 @@ const SubmitDialog = ({
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="bg-dark text-center border border-[#EAEAEA]/30 py-16 px-[52px] sm:rounded-[18px]">
+      <DialogContent className="bg-white dark:text-white/60 dark:bg-dark text-center border border-[#EAEAEA]/30 py-16 px-[52px] sm:rounded-[18px]">
         <DialogTitle className="text-[32px] font-semibold">
           Are you sure?
         </DialogTitle>
-        <p className="text-white/60 text-lg">
+        <p className="text-lg">
           Once you add a candidate, you will not be able to make changes to it.
         </p>
 
