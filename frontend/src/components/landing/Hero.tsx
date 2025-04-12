@@ -36,7 +36,7 @@ const HeroBg = () => (
     alt="Background"
     width={1440}
     height={900}
-    className="hidden lg:block absolute inset-0 w-full object-cover object-right-bottom -z-10 h-screen max-h-[1200px] scale-3 transition duration-700 dark:opacity-[0.02]"
+    className="hidden lg:block absolute inset-0 w-full object-cover object-right-bottom -z-10 h-screen max-h-[1200px] scale-[300%] transition duration-700 dark:opacity-[0.02]"
   />
 );
 
