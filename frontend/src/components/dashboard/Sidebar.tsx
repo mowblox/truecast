@@ -62,8 +62,8 @@ export const NavLink = ({
       <button
         onClick={() => router.push(link.href)}
         className={cn(
-          "flex items-center gap-4 text-nowrap px-5 py-4 rounded-[15px] bg-primary bg-opacity-0 dark:text-white/60 transition-colors duration-300 w-full",
-          isActive && "bg-opacity-10 text-secondary dark:text-secondary"
+          "flex items-center gap-4 text-nowrap px-5 py-4 rounded-[15px] bg-primary/0 dark:text-white/60 transition-colors duration-300 w-full",
+          isActive && "bg-primary/10 text-secondary dark:text-secondary"
         )}
       >
         <link.Icon></link.Icon>
@@ -76,8 +76,8 @@ export const NavLink = ({
     <Link
       href={link.href}
       className={cn(
-        "flex items-center gap-4 text-nowrap px-5 py-4 rounded-[15px] bg-primary bg-opacity-0 dark:text-white/60 transition-colors duration-300",
-        isActive && "bg-opacity-10 text-secondary dark:text-secondary"
+        "flex items-center gap-4 text-nowrap px-5 py-4 rounded-[15px] bg-primary/0 dark:text-white/60 transition-colors duration-300",
+        isActive && "bg-primary/10 text-secondary dark:text-secondary"
       )}
     >
       <link.Icon></link.Icon>
