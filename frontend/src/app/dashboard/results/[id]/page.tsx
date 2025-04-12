@@ -44,7 +44,7 @@ const AsideContainer = ({
   title: string;
 }) => {
   return (
-    <article className="px-7 py-5 rounded-xl border border-[#EAEAEA]/30 flex flex-col gap-6">
+    <article className="px-7 py-5 rounded-xl border border-gray/30 dark:border-[#EAEAEA]/30 flex flex-col gap-6">
       <h4 className="text-2xl">{title}</h4>
       {children}
     </article>
