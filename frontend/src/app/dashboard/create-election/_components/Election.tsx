@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 type Period = {
   startDate: Date | undefined;
   endDate: Date | undefined;
+  error: string;
 };
 
 const Election = () => {
@@ -24,6 +25,7 @@ const Election = () => {
   const [period, setPeriod] = useState<Period>({
     startDate: undefined,
     endDate: undefined,
+    error: "",
   });
 
   useWatchContractEvent({
@@ -41,9 +43,27 @@ const Election = () => {
     },
   });
 
+  const validatePeriod = (period: Period) => {
+    if (!(period.startDate && period.endDate)) {
+      return { status: false, message: "Please select a start and end date." };
+    }
+    if (period.startDate.getTime() > period.endDate.getTime()) {
+      return {
+        status: false,
+        message: "Start date must come before end date.",
+      };
+    }
+    return { status: true, message: "" };
+  };
+
   const createElection = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
+    const result = validatePeriod(period);
+    if (!result.status) {
+      setPeriod({ ...period, error: result.message });
+      return;
+    }
     // console.log(formData.get("election-type"));
     writeContract({
       abi: ELECTION_FACTORY_ABI,
@@ -52,7 +72,7 @@ const Election = () => {
       args: [
         formData.get("title"),
         formData.get("description"),
-        formData.get("election-type") === 'public',
+        formData.get("election-type") === "public",
         period.startDate?.valueOf(),
         period.endDate?.valueOf(),
       ],
@@ -78,16 +98,19 @@ const Election = () => {
         </label>
         <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
           <DatePicker
+            disabled={{ before: new Date() }}
             selected={period.startDate}
             onSelect={(value) => setPeriod({ ...period, startDate: value })}
             placeholder="Start date"
           />
           <DatePicker
+            disabled={{ before: new Date(period.startDate || "") }}
             selected={period.endDate}
             onSelect={(value) => setPeriod({ ...period, endDate: value })}
             placeholder="End date"
           />
         </div>
+        <p className="text-danger">{period.error}</p>
       </div>
 
       <InputWrapper name="election-type" label="Election Type">
