@@ -12,7 +12,7 @@ export default function ElectionDetail() {
 
   const copyUrl = async () => {
     await navigator.clipboard.writeText(url);
-    toast.success("URL copied to clipboard!");
+    toast.info("URL copied to clipboard!");
   };
 
   useEffect(() => {
