@@ -12,6 +12,7 @@ import {
 } from "@/contracts/ElectionFactory";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { DateTimePicker } from "@/components/ui/datetime-picker";
 
 type Period = {
   startDate: Date | undefined;
@@ -103,17 +104,19 @@ const Election = () => {
           Election Period
         </label>
         <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
-          <DatePicker
+          <DateTimePicker
             disabled={{ before: new Date() }}
             selected={period.startDate}
             onSelect={(value) => setPeriod({ ...period, startDate: value })}
             placeholder="Start date"
+            required
           />
-          <DatePicker
+          <DateTimePicker
             disabled={{ before: new Date(period.startDate || "") }}
             selected={period.endDate}
             onSelect={(value) => setPeriod({ ...period, endDate: value })}
             placeholder="End date"
+            required
           />
         </div>
       </div>
