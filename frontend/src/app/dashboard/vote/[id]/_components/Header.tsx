@@ -11,7 +11,9 @@ export default function Header() {
 
   return (
     <header className="flex items-center justify-between border-b-[0.5px] border-[#9393934D]">
-      <p className="text-secondary text-2xl">Total votes: {summary ? Number((summary as any[])[1]) : 0}</p>
+      <p className="text-secondary text-2xl">
+        Total votes: {summary ? Number((summary as any[])[1]) : 0}
+      </p>
       <p className="text-[52px]">
         {endDate ? <Countdown date={Number(endDate as number)} /> : null}
       </p>
