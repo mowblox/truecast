@@ -11,5 +11,5 @@ export const ElectionStartDate = ({ address }: {
     functionName: 'startDate',
   });
 
-  return <span>{new Date(Number(result?.data as string)).toDateString()}</span>
+  return <span>{new Date(Number(result?.data as string)).toLocaleString()}</span>
 }
