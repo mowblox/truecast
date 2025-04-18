@@ -37,6 +37,7 @@ contract Election {
 
     mapping(uint => Candidate) candidates;
     mapping(address => Voter) voters;
+    mapping(address => address[]) public voterElections;
 
     event VoteCast(address indexed voter, uint indexed candidateId);
     event CandidateAdded(uint id, string name);
@@ -154,6 +155,9 @@ contract Election {
 
         candidates[_candidateId].voteCount++;
 
+        // Record this election in the voter's history
+        voterElections[msg.sender].push(address(this));
+
         emit VoteCast(msg.sender, _candidateId);
     }
 
@@ -184,4 +188,9 @@ contract Election {
         endDate = newEndDate;
         emit ElectionExtended(newEndDate);
     }
+
+    function getVoterElections(address _voterAddress) public view returns (address[] memory) {
+        return voterElections[_voterAddress];
+    }
+
 }

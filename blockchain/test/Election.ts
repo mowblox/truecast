@@ -123,7 +123,8 @@ describe("Election Contract", function () {
     );
     const latestBlock = await hre.ethers.provider.getBlock("latest");
     if (!latestBlock) throw new Error("Failed to fetch latest block");
-    const timeToAdvance = Math.floor(startDate / 1000) - latestBlock.timestamp + 1;
+    const timeToAdvance =
+      Math.floor(startDate / 1000) - latestBlock.timestamp + 1;
     await hre.ethers.provider.send("evm_increaseTime", [timeToAdvance]);
     await hre.ethers.provider.send("evm_mine", []);
 
@@ -153,7 +154,8 @@ describe("Election Contract", function () {
     );
     const latestBlock = await hre.ethers.provider.getBlock("latest");
     if (!latestBlock) throw new Error("Failed to fetch latest block");
-    const timeToAdvance = Math.floor(startDate / 1000) - latestBlock.timestamp + 1;
+    const timeToAdvance =
+      Math.floor(startDate / 1000) - latestBlock.timestamp + 1;
     await hre.ethers.provider.send("evm_increaseTime", [timeToAdvance]);
     await hre.ethers.provider.send("evm_mine", []);
 
@@ -185,7 +187,8 @@ describe("Election Contract", function () {
 
     const latestBlock = await hre.ethers.provider.getBlock("latest");
     if (!latestBlock) throw new Error("Failed to fetch latest block");
-    const timeToAdvance = Math.floor(startDate / 1000) - latestBlock.timestamp + 1;
+    const timeToAdvance =
+      Math.floor(startDate / 1000) - latestBlock.timestamp + 1;
     await hre.ethers.provider.send("evm_increaseTime", [timeToAdvance]);
     await hre.ethers.provider.send("evm_mine", []);
 
@@ -202,7 +205,8 @@ describe("Election Contract", function () {
 
     const latestBlock = await hre.ethers.provider.getBlock("latest");
     if (!latestBlock) throw new Error("Failed to fetch latest block");
-    const timeToAdvance = Math.floor(startDate / 1000) - latestBlock.timestamp + 1;
+    const timeToAdvance =
+      Math.floor(startDate / 1000) - latestBlock.timestamp + 1;
     await hre.ethers.provider.send("evm_increaseTime", [timeToAdvance]);
     await hre.ethers.provider.send("evm_mine", []);
 
@@ -213,5 +217,20 @@ describe("Election Contract", function () {
         invalidCandidateId,
         "Failed to cast vote:: [Invalid candidate]"
       );
+  });
+
+  it("should return all elections voter partook in", async function () {
+    const { election, voter1, startDate } = await loadFixture(
+      deployElectionFixture
+    );
+
+    const latestBlock = await hre.ethers.provider.getBlock("latest");
+    if (!latestBlock) throw new Error("Failed to fetch latest block");
+    const timeToAdvance =
+      Math.floor(startDate / 1000) - latestBlock.timestamp + 1;
+    await hre.ethers.provider.send("evm_increaseTime", [timeToAdvance]);
+    await hre.ethers.provider.send("evm_mine", []);
+
+    expect(election.connect(voter1).getVoterElections(voter1));
   });
 });
