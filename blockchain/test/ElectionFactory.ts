@@ -100,4 +100,23 @@ describe("ElectionFactory Contract", function () {
     // Check total elections count after creating one
     expect(await electionFactory.getTotalElections()).to.equal(1);
   });
+
+  it("should return elections created by the caller", async function () {
+    const { electionFactory } = await loadFixture(deployElectionFactoryFixture);
+    // Create an election
+    const tx = await electionFactory.createElection(
+      "Presidential Election",
+      "Vote for president",
+      true,
+      1713302400, 
+      1715908800 
+    );
+    await tx.wait();
+
+    // Call getOwnerElections
+    const elections = await electionFactory.getOwnerElections();
+
+    // Should return at least one address (the election contract)
+    expect(elections.length).to.be.greaterThan(0);
+  });
 });
