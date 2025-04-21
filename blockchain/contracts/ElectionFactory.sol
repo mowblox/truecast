@@ -55,9 +55,9 @@ contract ElectionFactory {
     }
 
     // return just elections created by owner
-    function getOwnerElections() public view returns (address[] memory) {
-        require(ownerElections[msg.sender].length > 0, "No elections found for this address");
-        return ownerElections[msg.sender];
+    function getOwnerElections(address account) public view returns (address[] memory) {
+        require(ownerElections[account].length > 0, "No elections found for this address");
+        return ownerElections[account];
     }
 
     // Function to get addresses of all elections
