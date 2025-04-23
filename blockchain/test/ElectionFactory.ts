@@ -101,8 +101,8 @@ describe("ElectionFactory Contract", function () {
     expect(await electionFactory.getTotalElections()).to.equal(1);
   });
 
-  it("should return elections created by the caller", async function () {
-    const { electionFactory } = await loadFixture(deployElectionFactoryFixture);
+  it("should return all elections created by the owner", async function () {
+    const { electionFactory, owner } = await loadFixture(deployElectionFactoryFixture);
     // Create an election
     const tx = await electionFactory.createElection(
       "Presidential Election",
@@ -114,7 +114,7 @@ describe("ElectionFactory Contract", function () {
     await tx.wait();
 
     // Call getOwnerElections
-    const elections = await electionFactory.getOwnerElections();
+    const elections = await electionFactory.getOwnerElections(owner);
 
     // Should return at least one address (the election contract)
     expect(elections.length).to.be.greaterThan(0);
