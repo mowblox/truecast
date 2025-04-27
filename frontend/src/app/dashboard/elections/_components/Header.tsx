@@ -20,7 +20,7 @@ const Header = () => {
         />
       </div>
 
-      <Select>
+      {/* <Select>
         <SelectTrigger className=" w-[116px] rounded-full bg-secondary dark:bg-primary text-white py-2.5 border-none outline-hidden">
           <SelectValue placeholder="Private" />
         </SelectTrigger>
@@ -30,7 +30,7 @@ const Header = () => {
             <SelectItem value="public">Public</SelectItem>
           </SelectGroup>
         </SelectContent>
-      </Select>
+      </Select> */}
     </header>
   );
 };

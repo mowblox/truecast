@@ -7,6 +7,7 @@ contract ElectionFactory {
 
     // Array to keep track of the elections
     address[] elections;
+    address[] _publicElections;
     mapping(address => address[]) private ownerElections;
 
     constructor() {
@@ -50,19 +51,34 @@ contract ElectionFactory {
         // Store under owner address
         ownerElections[msg.sender].push(address(newElection));
 
+        // Store if public election
+        if (_isPublic) {
+            _publicElections.push(address(newElection));
+        }
+
         // Emit an event for the creation of the new contract
         emit ElectionCreated(address(newElection));
     }
 
     // return just elections created by owner
-    function getOwnerElections(address account) public view returns (address[] memory) {
-        require(ownerElections[account].length > 0, "No elections found for this address");
+    function getOwnerElections(
+        address account
+    ) public view returns (address[] memory) {
+        require(
+            ownerElections[account].length > 0,
+            "No elections found for this address"
+        );
         return ownerElections[account];
     }
 
     // Function to get addresses of all elections
     function getElections() public view returns (address[] memory) {
         return elections;
+    }
+
+    // Function to get addresses of all elections
+    function getPublicElections() public view returns (address[] memory) {
+        return _publicElections;
     }
 
     // Function to delete an election
