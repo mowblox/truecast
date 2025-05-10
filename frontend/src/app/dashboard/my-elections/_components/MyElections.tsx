@@ -15,7 +15,7 @@ export default function MyElections() {
 
   return (
     <div>
-      {(result.data as string[] || []).map((address) => <ElectionTile address={address} />)}
+      {(result.data as string[] || []).map((address) => <ElectionTile key={address} address={address} />)}
     </div>
   );
 }

@@ -36,7 +36,7 @@ const Dropzone = ({ onImage }: { onImage: (file: File) => void }) => {
       };
       reader.readAsArrayBuffer(file);
     });
-  }, []);
+  }, [onImage]);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
   return (
     <div
