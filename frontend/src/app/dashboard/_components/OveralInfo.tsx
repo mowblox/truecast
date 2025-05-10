@@ -34,7 +34,7 @@ export const OverallInfo = () => {
     },
     {
       title: "Total Votes",
-      description: "127",
+      description: "0",
       icon: ThumbsUp,
     },
   ];

@@ -9,6 +9,7 @@ import {
 } from "@/contracts/ElectionFactory";
 import { ElectionTitle } from "@/components/web3/ElectionTitle";
 import Link from "next/link";
+import { ElectionStatus } from "@/components/web3/ElectionStatus";
 
 const headers = [
   "Election",
@@ -24,7 +25,7 @@ export const RecentElections = () => {
   const result = useReadContract({
     abi: ELECTION_FACTORY_ABI,
     address: getFactoryAddress(chainId),
-    functionName: "getElections",
+    functionName: "getPublicElections",
   });
   // console.log(result)
 
@@ -73,7 +74,7 @@ export const RecentElections = () => {
                 <td className="py-3.5 ">25</td>
                 <td className="py-3.5 ">3</td>
                 <td className="py-3.5 ">
-                  <StatusPill status={"Ongoing"} />
+                  <ElectionStatus address={address} />
                 </td>
                 <td className="py-3.5 ">Undetermined</td>
                 <td className="py-3.5 ">

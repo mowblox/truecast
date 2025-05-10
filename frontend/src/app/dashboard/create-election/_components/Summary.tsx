@@ -30,6 +30,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
   const summary = useElectionSummary({
     address: searchParams.get("election") || (electionAddress as any),
   });
+  console.log(summary);
 
   const onConfirmPublish = () => {
     // Implement publish logic here...

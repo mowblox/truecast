@@ -2,6 +2,7 @@
 import { StatusPill } from "@/components/dashboard/StatusPill";
 import { ElectionDescription } from "@/components/web3/ElectionDescription";
 import { ElectionTitle } from "@/components/web3/ElectionTitle";
+import useElectionStatus from "@/hooks/use-election-status";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -9,6 +10,7 @@ import { toast } from "sonner";
 export default function ElectionDetail() {
   const { id } = useParams();
   const [url, setUrl] = useState('');
+  const status = useElectionStatus({ address: id });
 
   const copyUrl = async () => {
     await navigator.clipboard.writeText(url);
@@ -22,7 +24,7 @@ export default function ElectionDetail() {
   return (
     <section className="flex flex-col gap-8 md:gap-[60px] md:flex-1">
       <header className="flex flex-col gap-3">
-        <StatusPill status="Closed" />
+        <StatusPill status={status} />
         <h1 className="text-[32px]">
           <ElectionTitle address={id} />
         </h1>
@@ -35,10 +37,10 @@ export default function ElectionDetail() {
         </p>
       </article>
 
-      <article className="flex flex-col gap-3">
+      {/* <article className="flex flex-col gap-3">
         <p className="text-2xl">Outcome</p>
         <p className="text-success">Lisa Mensah</p>
-      </article>
+      </article> */}
 
       <article className="flex flex-col gap-3 lg:max-w-[672px]">
         <p className="text-2xl">Your election sharing URL</p>

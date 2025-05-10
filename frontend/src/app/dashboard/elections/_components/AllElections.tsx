@@ -8,7 +8,7 @@ export default function AllElections() {
   const result = useReadContract({
     abi: ELECTION_FACTORY_ABI,
     address: getFactoryAddress(chainId),
-    functionName: "getElections",
+    functionName: "getPublicElections",
   });
 
   return (

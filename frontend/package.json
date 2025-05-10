@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@filebase/sdk": "^1.0.6",
     "@hookform/resolvers": "^3.9.1",
     "@magiclabs/wagmi-connector": "^2.1.0",
     "@mailchimp/mailchimp_marketing": "^3.0.80",
