@@ -1,11 +1,5 @@
 "use client";
-import React from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import React, { useState } from "react";
 import TextInput from "./inputs/TextInput";
 import ImagePicker from "./inputs/ImagePicker";
 import {
@@ -22,24 +16,15 @@ import { Button } from "@/components/ui/button";
 import useElectionType from "@/hooks/use-election-type";
 import { toast } from "sonner";
 
-const Candidates = () => {
-  return (
-    <Accordion
-      value="candidate"
-      type="single"
-      collapsible
-      className="flex flex-col gap-[18px]"
-    >
-      <CandidateForm />
-    </Accordion>
-  );
-};
+const Candidates = () => <CandidateForm />;
 
 const CandidateForm = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { writeContract, isPending } = useWriteContract();
   const formRef = React.useRef<HTMLFormElement>();
+  const [image, setImage] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   const result = useReadContract({
     abi: ELECTION_ABI,
@@ -68,7 +53,18 @@ const CandidateForm = () => {
     router.push(`?tab=voters&election=${searchParams.get("election")}`);
   };
 
-  const addCandidate = () => {
+  const addCandidate = async () => {
+    // Upload image
+    setUploading(true);
+    const uploadFormData = new FormData();
+    uploadFormData.append('image', image as File);
+    const response = await fetch('/api/filebase', {
+      method: 'POST',
+      body: uploadFormData
+    });
+    const data = await response.json();
+    setUploading(false);
+    // Proceed with form submission
     const formData = new FormData(formRef.current);
     writeContract(
       {
@@ -78,16 +74,14 @@ const CandidateForm = () => {
         args: [
           formData.get("name"),
           formData.get("team"),
-          formData.get("team"),
+          data.success ? data.cid : 'QmY2mBcJoeeghnjXRC8JmitgUkq2Tr55MP1Ufhbu1GmURC',
         ],
       },
       {
         onSuccess() {
           toast.success("Candidate added successfully.");
-          result.refetch();
-          setTimeout(() => {
-            window.location.reload(); // TODO: Very hacky, and very much not ideal. Why does result.refetch not work?
-          }, 2000);
+          // result.refetch();
+          window.location.reload();
         },
         onError(error) {
           console.log(error);
@@ -97,11 +91,29 @@ const CandidateForm = () => {
   };
 
   return (
-    <AccordionItem value="candidate" className="border-none">
-      <AccordionTrigger className="bg-secondary dark:bg-primary py-3 px-[18px] rounded-t-xl text-white dark:text-white/60">
-        Candidate
-      </AccordionTrigger>
-      <AccordionContent>
+    <>
+      {result?.data ? (
+        <section className="flex flex-col my-8 gap-6">
+          <h4 className="dark:text-white text-xl font-bold">Uploaded Candidates</h4>
+
+          <div className="flex flex-col gap-2 text-lg">
+            {(result?.data as any[])?.map((candidate) => (
+              <p key={candidate.id}>{candidate.name}</p>
+            ))}
+          </div>
+
+          <Button
+            variant="outline"
+            className="px-12 ml-auto"
+            onClick={onConfirmCandidates}
+          >
+            Confirm candidates
+          </Button>
+        </section>
+      ) : null}
+      <section className="flex flex-col my-8">
+        <h4 className="dark:text-white text-xl font-bold">Add New Candidate</h4>
+
         <form
           ref={formRef as React.LegacyRef<HTMLFormElement> | undefined}
           className="flex flex-col gap-16 pt-[42px] pb-12"
@@ -112,32 +124,13 @@ const CandidateForm = () => {
             label="Team (Optional)"
             placeholder="Eg. Dreamweaver"
           />
-          <ImagePicker />
+          <ImagePicker onImage={file => setImage(file)} />
           <div className="flex justify-end">
-            <SubmitDialog onAddCandidate={addCandidate} loading={isPending} />
+            <SubmitDialog onAddCandidate={addCandidate} loading={isPending || uploading} />
           </div>
         </form>
-        {result?.data ? (
-          <section className="flex flex-col mt-8 gap-6">
-            <h4 className="dark:text-white text-xl">Uploaded Candidates</h4>
-
-            <div className="flex flex-col gap-2 text-lg">
-              {(result?.data as any[])?.map((candidate) => (
-                <p key={candidate.id}>{candidate.name}</p>
-              ))}
-            </div>
-
-            <Button
-              variant="outline"
-              className="px-12 ml-auto"
-              onClick={onConfirmCandidates}
-            >
-              Confirm candidates
-            </Button>
-          </section>
-        ) : null}
-      </AccordionContent>
-    </AccordionItem>
+      </section>
+    </>
   );
 };
 

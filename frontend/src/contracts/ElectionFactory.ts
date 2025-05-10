@@ -7,7 +7,7 @@ export const getFactoryAddress = (chainId: number) => {
     case 59141:
       return '0x06cCB617f024e3b69aE5C777557F2174Ec111b76' // linea_sepolia
     case 31337:
-      return '0x4494b1e9Af1591D4d1E93AA154ded3EB0E7f8f99' // hardhat
+      return '0xF7E2Be9007fEaAcEB821D98011975A78034cCDC6' // hardhat
     default:
       return '0x0000000000000000000000000000000000000000';
   }

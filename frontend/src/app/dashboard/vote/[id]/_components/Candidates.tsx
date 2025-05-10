@@ -30,7 +30,7 @@ export const Candidates = () => {
             id: candidate.id,
             name: candidate.name,
             team: candidate.team,
-            image: `/images/candidate${getRandomNumber()}.png`,
+            image: `https://obliged-emerald-zebra.myfilebase.com/ipfs/${candidate.image}`,
           };
         })
         .map((candidate) => (

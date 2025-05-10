@@ -5,6 +5,14 @@ const nextConfig = {
     config.externals.push('pino-pretty', 'encoding');
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'obliged-emerald-zebra.myfilebase.com'
+      }
+    ]
+  }
 };
 
 export default nextConfig;

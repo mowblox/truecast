@@ -6,23 +6,24 @@ import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 
-const ImagePicker = () => {
+const ImagePicker = ({ onImage }: { onImage: (file: File) => void }) => {
   return (
     <InputWrapper name="image" label="Upload Image">
-      <Dropzone />
+      <Dropzone onImage={onImage} />
     </InputWrapper>
   );
 };
 
 export default ImagePicker;
 
-const Dropzone = () => {
+const Dropzone = ({ onImage }: { onImage: (file: File) => void }) => {
   const [image, setImage] = useState<{ file: File; preview: string } | null>(
     null
   );
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file) => {
+      onImage(file);
       const reader = new FileReader();
 
       reader.onabort = () => console.log("file reading was aborted");
