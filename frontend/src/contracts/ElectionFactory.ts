@@ -2,6 +2,8 @@ export const getFactoryAddress = (chainId: number) => {
   switch (chainId) {
     case 11155111:
       return '0x4adBe68A7719DC17CE4c0c69dff8CA6636dCA36d'; // sepolia
+    case 43113:
+      return '0xF7E2Be9007fEaAcEB821D98011975A78034cCDC6'; // avalanche_fuji
     case 534351:
       return '0xfE152CDAF7C0C98E026e1125B69b8B0E089594A9'; // scroll_sepolia
     case 59141:
