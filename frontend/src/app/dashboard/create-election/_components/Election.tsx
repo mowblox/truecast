@@ -1,11 +1,12 @@
 "use client";
-import { DatePicker } from "@/components/ui/date-picker";
 import { RadioGroupItem, RadioGroup } from "@/components/ui/radio-group";
 import React, { useState } from "react";
 import TextInput from "./inputs/TextInput";
 import InputWrapper from "./inputs/InputWrapper";
 import { useRouter } from "next/navigation";
-import { useChainId, useWatchContractEvent, useWriteContract } from "wagmi";
+import { useChainId, useConfig, useWriteContract } from "wagmi";
+import { waitForTransactionReceipt } from '@wagmi/core'
+import { parseEventLogs } from "viem";
 import {
   ELECTION_FACTORY_ABI,
   getFactoryAddress,
@@ -21,26 +22,12 @@ type Period = {
 
 const Election = () => {
   const router = useRouter();
+  const config = useConfig();
   const chainId = useChainId();
   const { writeContract, isPending } = useWriteContract();
   const [period, setPeriod] = useState<Period>({
     startDate: undefined,
     endDate: undefined,
-  });
-
-  useWatchContractEvent({
-    address: getFactoryAddress(chainId),
-    abi: ELECTION_FACTORY_ABI,
-    eventName: "ElectionCreated",
-    onLogs(logs) {
-      // console.log('New logs!', logs);
-      if (logs.length) {
-        router.push(
-          // @ts-expect-error
-          `?tab=candidates&election=${logs[0]?.args?.electionAddress}`
-        );
-      }
-    },
   });
 
   const validatePeriod = (period: Period) => {
@@ -79,7 +66,19 @@ const Election = () => {
         ],
       },
       {
-        onSuccess: () => {
+        onSuccess: async (data) => {
+          const receipt = await waitForTransactionReceipt(config, { hash: data })
+          const logs = parseEventLogs({
+            abi: ELECTION_FACTORY_ABI,
+            logs: receipt.logs,
+          });
+          // console.log(logs);
+          if (logs.length) {
+            router.push(
+              // @ts-expect-error
+              `?tab=candidates&election=${logs[0]?.args?.electionAddress}`
+            );
+          }
           toast.success("Election created successfully.");
         },
       }

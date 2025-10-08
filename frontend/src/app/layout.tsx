@@ -23,6 +23,7 @@ const roboto_flex = Roboto_Flex({
 const afacad = Afacad({
   subsets: ["latin"],
   variable: "--font-afacad",
+  display: 'swap',
 });
 const abel = Abel({
   subsets: ["latin"],
