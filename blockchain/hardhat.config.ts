@@ -19,12 +19,20 @@ const config: HardhatUserConfig = {
       url: `https://ethereum-rpc.publicnode.com`,
       accounts: [process.env.PRIVATE_KEY as string],
     },
+    avalanche: {
+      url: `https://avalanche-c-chain-rpc.publicnode.com`,
+      accounts: [process.env.PRIVATE_KEY as string],
+    },
     sepolia: {
       url: `https://ethereum-sepolia-rpc.publicnode.com`,
       accounts: [process.env.PRIVATE_KEY as string],
     },
-    hoodi: {
-      url: 'https://ethereum-hoodi-rpc.publicnode.com',
+    holesky: {
+      url: `https://ethereum-holesky-rpc.publicnode.com`,
+      accounts: [process.env.PRIVATE_KEY as string],
+    },
+    avalanche_fuji: {
+      url: 'https://avalanche-fuji-c-chain-rpc.publicnode.com',
       accounts: [process.env.PRIVATE_KEY as string]
     },
     linea_mainnet: {
