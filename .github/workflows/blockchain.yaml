@@ -2,6 +2,7 @@ name: Blockchain CI/CD
 
 env:
   PRIVATE_KEY: 5feb967c6a193efa3f8f208cf2d243802efa1455b359884ff99a07aeaaa22354
+  MNEMONIC: test test test test test test test test test test test junk
 
 on: [push]
 
