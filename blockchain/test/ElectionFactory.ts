@@ -59,26 +59,25 @@ describe("ElectionFactory Contract", function () {
 
     // Create an election first
     const newElection = await electionFactory.createElection(
-        "Election Title",
-        "Election Description",
-        true,
-        1234567890,
-        1234567899
+      "Election Title",
+      "Election Description",
+      true,
+      1234567890,
+      1234567899
     );
 
     await newElection.wait();
 
     // Attempt to delete the election with a non-owner account
-    await expect(electionFactory.connect(addr1).deleteElection(0)).to.be.rejectedWith(
-        "You are not the owner"
-    );
+    await expect(electionFactory.connect(addr1).deleteElection(0))
+      .to.be.revertedWithCustomError(electionFactory, "Unauthorized");
 
     // Delete the election with the owner account
     await electionFactory.connect(owner).deleteElection(0);
 
     const elections = await electionFactory.getElections();
     expect(elections[0]).to.equal(hre.ethers.ZeroAddress);  // Use ethers.constants.AddressZero to check the zero address
-});
+  });
 
   it("Should return the correct total number of elections", async function () {
     const { electionFactory } = await loadFixture(deployElectionFactoryFixture);
@@ -108,8 +107,8 @@ describe("ElectionFactory Contract", function () {
       "Presidential Election",
       "Vote for president",
       true,
-      1713302400, 
-      1715908800 
+      1713302400,
+      1715908800
     );
     await tx.wait();
 

@@ -10,11 +10,11 @@ const config: HardhatUserConfig = {
     enabled: true
   },
   networks: {
-    // hardhat: {
-    //   accounts: {
-    //     mnemonic: process.env.MNEMONIC
-    //   }
-    // },
+    hardhat: {
+      accounts: {
+        mnemonic: process.env.MNEMONIC
+      }
+    },
     mainnet: {
       url: `https://ethereum-rpc.publicnode.com`,
       accounts: [process.env.PRIVATE_KEY as string],

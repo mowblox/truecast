@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
+import "./Errors.sol";
 import "./Election.sol";
 
 contract ElectionFactory {
@@ -15,7 +16,7 @@ contract ElectionFactory {
     }
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "You are not the owner");
+        if (msg.sender != owner) revert Unauthorized();
         _;
     }
 
@@ -64,10 +65,6 @@ contract ElectionFactory {
     function getOwnerElections(
         address account
     ) public view returns (address[] memory) {
-        require(
-            ownerElections[account].length > 0,
-            "No elections found for this address"
-        );
         return ownerElections[account];
     }
 

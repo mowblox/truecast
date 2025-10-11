@@ -1,15 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.24;
-// Custom errors
-error ElectionNotStarted(string);
-error ElectionAlreadyStarted(string);
-error ElectionEnded(string);
-error InvalidEndDate(string);
-error CandidateAlreadyExists(string);
-error AlreadyVoted(string);
-error VoterAlreadyRegistered(string);
-error InvalidCandidate(uint candidateId, string);
-error Unauthorized(string);
+import "./Errors.sol";
 
 contract Election {
     string public title;
@@ -52,8 +43,7 @@ contract Election {
         uint _endDate,
         address _owner
     ) {
-        if (_startDate >= _endDate)
-            revert InvalidEndDate("Error:: [Invalid date, Please try again!]");
+        if (_startDate >= _endDate) revert InvalidEndDate();
         title = _title;
         description = _description;
         isPublic = _isPublic;
@@ -62,29 +52,21 @@ contract Election {
         owner = _owner;
     }
 
-    modifier onlyWhileOpen() {
-        if ((block.timestamp * 1000) < startDate)
-            revert ElectionNotStarted(
-                "Error:: [Election has not started, Please try again later.]"
-            );
-        if ((block.timestamp * 1000) > endDate)
-            revert ElectionEnded("Error:: [Election has ended]");
+    modifier whileOngoing() {
+        if (!(startDate < (block.timestamp * 1000)))
+            revert ElectionNotStarted();
+        if (!(endDate > (block.timestamp * 1000))) revert ElectionEnded();
         _;
     }
 
-    modifier isElectionActive() {
-        if ((block.timestamp * 1000) >= endDate)
-            revert ElectionEnded("Error:: [Election has ended]");
-        if ((block.timestamp * 1000) >= startDate)
-            revert ElectionAlreadyStarted(
-                "Error:: [Election has already started]"
-            );
+    modifier whilePending() {
+        if (!(startDate > (block.timestamp * 1000)))
+            revert ElectionAlreadyStarted();
         _;
     }
 
     modifier onlyOwner() {
-        if (msg.sender != owner)
-            revert Unauthorized("Error:: [Unauthorized, Please try again!]");
+        if (msg.sender != owner) revert Unauthorized();
         _;
     }
 
@@ -92,16 +74,12 @@ contract Election {
         string memory _name,
         string memory _team,
         string memory _image
-    ) public onlyOwner isElectionActive {
+    ) public onlyOwner whilePending {
         for (uint i = 1; i <= candidatesCount; i++) {
             if (
                 keccak256(abi.encodePacked(candidates[i].name)) ==
                 keccak256(abi.encodePacked(_name))
-            ) {
-                revert CandidateAlreadyExists(
-                    "Failed to add Candidate:: [Candidate already exists, Please try again!]"
-                );
-            }
+            ) revert CandidateAlreadyExists();
         }
         candidatesCount++;
         candidates[candidatesCount] = Candidate(
@@ -124,13 +102,11 @@ contract Election {
 
     function addVoters(
         address[] memory _voterAddresses
-    ) public onlyOwner isElectionActive {
+    ) public onlyOwner whilePending {
         uint length = _voterAddresses.length;
         for (uint i = 0; i < length; i++) {
             if (voters[_voterAddresses[i]].registered)
-                revert VoterAlreadyRegistered(
-                    "Failed to add voter(s):: [Voter(s) already registered, Please check address(es) and try again!]"
-                );
+                revert VoterAlreadyRegistered();
             voters[_voterAddresses[i]] = Voter(true, false, 0);
         }
         emit VotersAdded(_voterAddresses);
@@ -141,14 +117,10 @@ contract Election {
         return (voter.voted, voter.candidateId);
     }
 
-    function castVote(uint _candidateId) public onlyWhileOpen {
-        if (voters[msg.sender].voted)
-            revert AlreadyVoted("Failed to cast vote:: [Voter already voted]");
+    function castVote(uint _candidateId) public whileOngoing {
+        if (voters[msg.sender].voted) revert AlreadyVoted();
         if (_candidateId == 0 || _candidateId > candidatesCount)
-            revert InvalidCandidate(
-                _candidateId,
-                "Failed to cast vote:: [Invalid candidate]"
-            );
+            revert InvalidCandidate();
 
         voters[msg.sender].voted = true;
         voters[msg.sender].candidateId = _candidateId;
@@ -181,16 +153,14 @@ contract Election {
     }
 
     function extendElectionDate(uint newEndDate) public onlyOwner {
-        if (newEndDate <= endDate)
-            revert ElectionEnded(
-                "Failed to extend election:: [Election date has ended]"
-            );
+        if (newEndDate <= endDate) revert ElectionEnded();
         endDate = newEndDate;
         emit ElectionExtended(newEndDate);
     }
 
-    function getVoterElections(address _voterAddress) public view returns (address[] memory) {
+    function getVoterElections(
+        address _voterAddress
+    ) public view returns (address[] memory) {
         return voterElections[_voterAddress];
     }
-
 }

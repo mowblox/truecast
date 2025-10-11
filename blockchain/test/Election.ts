@@ -133,21 +133,6 @@ describe("Election Contract", function () {
     ).to.be.revertedWithCustomError(election, "ElectionAlreadyStarted");
   });
 
-  it("should prevent adding candidate after election ends", async function () {
-    const { election, owner, endDate } = await loadFixture(
-      deployElectionFixture
-    );
-    const latestBlock = await hre.ethers.provider.getBlock("latest");
-    if (!latestBlock) throw new Error("Failed to fetch latest block");
-    const timeToAdvance = endDate - latestBlock.timestamp + 3600;
-    await hre.ethers.provider.send("evm_increaseTime", [timeToAdvance]);
-    await hre.ethers.provider.send("evm_mine", []);
-
-    await expect(
-      election.connect(owner).addCandidate("David", "Team D", "david.jpg")
-    ).to.be.revertedWithCustomError(election, "ElectionEnded");
-  });
-
   it("should prevent adding voters during ongoing election", async function () {
     const { election, owner, startDate, voter1 } = await loadFixture(
       deployElectionFixture
@@ -162,21 +147,6 @@ describe("Election Contract", function () {
     await expect(
       election.connect(owner).addVoters([voter1.address])
     ).to.be.revertedWithCustomError(election, "ElectionAlreadyStarted");
-  });
-
-  it("should prevent adding voters after election ends", async function () {
-    const { election, owner, endDate, voter1 } = await loadFixture(
-      deployElectionFixture
-    );
-    const latestBlock = await hre.ethers.provider.getBlock("latest");
-    if (!latestBlock) throw new Error("Failed to fetch latest block");
-    const timeToAdvance = endDate - latestBlock.timestamp + 3600;
-    await hre.ethers.provider.send("evm_increaseTime", [timeToAdvance]);
-    await hre.ethers.provider.send("evm_mine", []);
-
-    await expect(
-      election.connect(owner).addVoters([voter1.address])
-    ).to.be.revertedWithCustomError(election, "ElectionEnded");
   });
 
   it("should prevent double voting", async function () {
@@ -212,11 +182,7 @@ describe("Election Contract", function () {
 
     const invalidCandidateId = 99;
     await expect(election.connect(voter1).castVote(invalidCandidateId))
-      .to.be.revertedWithCustomError(election, "InvalidCandidate")
-      .withArgs(
-        invalidCandidateId,
-        "Failed to cast vote:: [Invalid candidate]"
-      );
+      .to.be.revertedWithCustomError(election, "InvalidCandidate");
   });
 
   it("should return all elections voter partook in", async function () {
