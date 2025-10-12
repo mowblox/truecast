@@ -7,21 +7,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { ELECTION_ABI } from "@/contracts/Election";
 import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "sonner";
-import { useWriteContract } from "wagmi";
+import { useConfig } from "wagmi";
+import { simulateContract, writeContract, waitForTransactionReceipt } from "@wagmi/core";
 
 const Voters = () => {
   const searchParams = useSearchParams();
+  const config = useConfig();
   const router = useRouter();
-  const { writeContract, isPending } = useWriteContract();
+  const [isPending, setIsPending] = useState<boolean>(false);
 
-  const addVoters = (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const addVoters = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    setIsPending(true);
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     // console.log(formData.get('voters')?.toString().split('\n').map(voter => voter.trim()));
-    writeContract(
-      {
+    // Simulate transaction
+    try {
+      await simulateContract(config, {
         abi: ELECTION_ABI,
         address: searchParams.get("election") as any,
         functionName: "addVoters",
@@ -32,18 +36,29 @@ const Voters = () => {
             .split("\n")
             .map((voter) => voter.trim()),
         ],
-      },
-      {
-        onSuccess() {
-          toast.success("Voters added successfully.");
-          router.push(`?tab=summary&election=${searchParams.get("election")}`);
-        },
-        onError(error) {
-          toast.error(error.message); //TODO: Format error messages
-          console.log(error.message);
-        },
-      }
-    );
+      });
+    } catch (error: any) {
+      setIsPending(false);
+      console.log(error?.message.split('Contract Call:')[0].trim());
+      return toast.error(error?.message.split('Contract Call:')[0].trim());
+    }
+    // Perform the transaction
+    const hash = await writeContract(config, {
+      abi: ELECTION_ABI,
+      address: searchParams.get("election") as any,
+      functionName: "addVoters",
+      args: [
+        formData
+          .get("voters")
+          ?.toString()
+          .split("\n")
+          .map((voter) => voter.trim()),
+      ],
+    });
+    // Wait for transaction receipt
+    await waitForTransactionReceipt(config, { hash });
+    toast.success("Voters added successfully.");
+    router.push(`?tab=summary&election=${searchParams.get("election")}`);
   };
 
   return (

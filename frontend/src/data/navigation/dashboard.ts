@@ -55,7 +55,7 @@ export const navBlocks: NavBlock[] = [
     links: [
       {
         title: "Support",
-        href: "/dashboard/settings/support",
+        href: "mailto:truecastapp@gmail.com",
         Icon: PhoneCall,
       },
     ],
