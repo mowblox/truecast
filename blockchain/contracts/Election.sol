@@ -12,6 +12,7 @@ contract Election {
     address public owner;
 
     uint public candidatesCount;
+    uint public votersCount;
 
     struct Candidate {
         uint id;
@@ -28,11 +29,9 @@ contract Election {
 
     mapping(uint => Candidate) candidates;
     mapping(address => Voter) voters;
-    mapping(address => address[]) public voterElections;
 
     event VoteCast(address indexed voter, uint indexed candidateId);
     event CandidateAdded(uint id, string name);
-    event VotersAdded(address[] voters);
     event ElectionExtended(uint newEndDate);
 
     constructor(
@@ -107,9 +106,9 @@ contract Election {
         for (uint i = 0; i < length; i++) {
             if (voters[_voterAddresses[i]].registered)
                 revert VoterAlreadyRegistered();
+            votersCount++;
             voters[_voterAddresses[i]] = Voter(true, false, 0);
         }
-        emit VotersAdded(_voterAddresses);
     }
 
     function getVoter(address _voterAddress) public view returns (bool, uint) {
@@ -121,14 +120,12 @@ contract Election {
         if (voters[msg.sender].voted) revert AlreadyVoted();
         if (_candidateId == 0 || _candidateId > candidatesCount)
             revert InvalidCandidate();
+        if (!isPublic && !voters[msg.sender].registered) revert Unauthorized();
 
         voters[msg.sender].voted = true;
         voters[msg.sender].candidateId = _candidateId;
 
         candidates[_candidateId].voteCount++;
-
-        // Record this election in the voter's history
-        voterElections[msg.sender].push(address(this));
 
         emit VoteCast(msg.sender, _candidateId);
     }
@@ -156,11 +153,5 @@ contract Election {
         if (newEndDate <= endDate) revert ElectionEnded();
         endDate = newEndDate;
         emit ElectionExtended(newEndDate);
-    }
-
-    function getVoterElections(
-        address _voterAddress
-    ) public view returns (address[] memory) {
-        return voterElections[_voterAddress];
     }
 }

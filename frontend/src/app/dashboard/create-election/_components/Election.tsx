@@ -4,8 +4,8 @@ import React, { useState } from "react";
 import TextInput from "./inputs/TextInput";
 import InputWrapper from "./inputs/InputWrapper";
 import { useRouter } from "next/navigation";
-import { useChainId, useConfig, useWriteContract } from "wagmi";
-import { waitForTransactionReceipt } from '@wagmi/core'
+import { useChainId, useConfig } from "wagmi";
+import { waitForTransactionReceipt, simulateContract, writeContract } from '@wagmi/core'
 import { parseEventLogs } from "viem";
 import {
   ELECTION_FACTORY_ABI,
@@ -24,7 +24,7 @@ const Election = () => {
   const router = useRouter();
   const config = useConfig();
   const chainId = useChainId();
-  const { writeContract, isPending } = useWriteContract();
+  const [isPending, setIsPending] = useState<boolean>(false);
   const [period, setPeriod] = useState<Period>({
     startDate: undefined,
     endDate: undefined,
@@ -43,17 +43,16 @@ const Election = () => {
     return { status: true, message: "" };
   };
 
-  const createElection = (event: React.SyntheticEvent<HTMLFormElement>) => {
+  const createElection = async (event: React.SyntheticEvent<HTMLFormElement>) => {
+    setIsPending(true);
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
     const result = validatePeriod(period);
-    if (!result.status) {
-      toast.error(result.message);
-      return;
-    }
+    if (!result.status) return toast.error(result.message);
     // console.log(formData.get("election-type"));
-    writeContract(
-      {
+    // Simulate transaction
+    try {
+      await simulateContract(config, {
         abi: ELECTION_FACTORY_ABI,
         address: getFactoryAddress(chainId),
         functionName: "createElection",
@@ -64,25 +63,39 @@ const Election = () => {
           period.startDate?.valueOf(),
           period.endDate?.valueOf(),
         ],
-      },
-      {
-        onSuccess: async (data) => {
-          const receipt = await waitForTransactionReceipt(config, { hash: data })
-          const logs = parseEventLogs({
-            abi: ELECTION_FACTORY_ABI,
-            logs: receipt.logs,
-          });
-          // console.log(logs);
-          if (logs.length) {
-            router.push(
-              // @ts-expect-error
-              `?tab=candidates&election=${logs[0]?.args?.electionAddress}`
-            );
-          }
-          toast.success("Election created successfully.");
-        },
-      }
-    );
+      });
+    } catch (error: any) {
+      setIsPending(false);
+      console.log(error?.message.split('Contract Call:')[0].trim());
+      return toast.error(error?.message.split('Contract Call:')[0].trim());
+    }
+    // Perform transaction
+    const hash = await writeContract(config, {
+      abi: ELECTION_FACTORY_ABI,
+      address: getFactoryAddress(chainId),
+      functionName: "createElection",
+      args: [
+        formData.get("title"),
+        formData.get("description"),
+        formData.get("election-type") === "public",
+        period.startDate?.valueOf(),
+        period.endDate?.valueOf(),
+      ],
+    });
+    // Wait for transaction to complete
+    const receipt = await waitForTransactionReceipt(config, { hash })
+    const logs = parseEventLogs({
+      abi: ELECTION_FACTORY_ABI,
+      logs: receipt.logs,
+    });
+    // console.log(logs);
+    if (logs.length) {
+      router.push(
+        // @ts-expect-error
+        `?tab=candidates&election=${logs[0]?.args?.electionAddress}`
+      );
+    }
+    toast.success("Election created successfully.");
   };
 
   return (

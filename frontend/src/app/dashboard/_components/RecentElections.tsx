@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { StatusPill } from "@/components/dashboard/StatusPill";
 import { Search } from "lucide-react";
 import { useChainId, useReadContract } from "wagmi";
 import {
@@ -10,6 +9,8 @@ import {
 import { ElectionTitle } from "@/components/web3/ElectionTitle";
 import Link from "next/link";
 import { ElectionStatus } from "@/components/web3/ElectionStatus";
+import { ElectionVoters } from "@/components/web3/ElectionVoters";
+import { ElectionCandidates } from "@/components/web3/ElectionCandidates";
 
 const headers = [
   "Election",
@@ -71,8 +72,12 @@ export const RecentElections = () => {
                 <td className="py-3.5 pl-6">
                   <ElectionTitle address={address} />
                 </td>
-                <td className="py-3.5 ">25</td>
-                <td className="py-3.5 ">3</td>
+                <td className="py-3.5 ">
+                  <ElectionVoters address={address} />
+                </td>
+                <td className="py-3.5 ">
+                  <ElectionCandidates address={address} />
+                </td>
                 <td className="py-3.5 ">
                   <ElectionStatus address={address} />
                 </td>

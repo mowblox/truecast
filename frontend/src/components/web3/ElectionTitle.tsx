@@ -1,15 +1,10 @@
 "use client";
-import { ELECTION_ABI } from "@/contracts/Election";
-import { useReadContract } from "wagmi";
+import useElectionTitle from "@/hooks/use-election-title";
 
 export const ElectionTitle = ({ address }: {
   address: string | any
 }) => {
-  const result = useReadContract({
-    abi: ELECTION_ABI,
-    address: address,
-    functionName: 'title',
-  });
+  const title = useElectionTitle({ address });
 
-  return <span>{result?.data as string}</span>
+  return <span>{title as string}</span>
 }

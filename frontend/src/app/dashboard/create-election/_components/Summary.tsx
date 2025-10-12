@@ -16,7 +16,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import useElectionSummary from "@/hooks/use-election-summary";
+import useElectionVoters from "@/hooks/use-election-voters";
 
 const Summary = ({ isPublished }: { isPublished?: boolean }) => {
   const { id: electionAddress } = useParams();
@@ -27,10 +27,9 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
     address: searchParams.get("election") || (electionAddress as any),
     functionName: "getCandidates",
   });
-  const summary = useElectionSummary({
+  const voters = useElectionVoters({
     address: searchParams.get("election") || (electionAddress as any),
   });
-  console.log(summary);
 
   const onConfirmPublish = () => {
     // Implement publish logic here...
@@ -95,7 +94,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
       <div className="flex flex-col gap-3">
         <label className="text-lg">Voter Count</label>
         <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
-          <p>{summary ? Number((summary as any[])[1]) || "unlimited" : 0}</p>
+          <p>{voters ? Number(voters as string) : "unlimited".toUpperCase()}</p>
         </div>
       </div>
 

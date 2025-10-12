@@ -9,7 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useReadContract, useWriteContract } from "wagmi";
+import { useConfig, useReadContract } from "wagmi";
+import { writeContract, simulateContract, waitForTransactionReceipt } from "@wagmi/core";
 import { ELECTION_ABI } from "@/contracts/Election";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -21,10 +22,10 @@ const Candidates = () => <CandidateForm />;
 const CandidateForm = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { writeContract, isPending } = useWriteContract();
+  const config = useConfig();
   const formRef = React.useRef<HTMLFormElement>();
   const [image, setImage] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
 
   const result = useReadContract({
     abi: ELECTION_ABI,
@@ -54,40 +55,51 @@ const CandidateForm = () => {
   };
 
   const addCandidate = async () => {
-    // Upload image
-    setUploading(true);
-    const uploadFormData = new FormData();
-    uploadFormData.append('image', image as File);
-    const response = await fetch('/api/filebase', {
-      method: 'POST',
-      body: uploadFormData
-    });
-    const data = await response.json();
-    setUploading(false);
-    // Proceed with form submission
+    setIsPending(true);
+    // Access form data
     const formData = new FormData(formRef.current);
-    writeContract(
-      {
+    // Simulate transaction
+    try {
+      await simulateContract(config, {
         abi: ELECTION_ABI,
         address: searchParams.get("election") as any,
         functionName: "addCandidate",
         args: [
           formData.get("name"),
           formData.get("team"),
-          data.success ? data.cid : 'QmY2mBcJoeeghnjXRC8JmitgUkq2Tr55MP1Ufhbu1GmURC',
+          'QmY2mBcJoeeghnjXRC8JmitgUkq2Tr55MP1Ufhbu1GmURC',
         ],
-      },
-      {
-        onSuccess() {
-          toast.success("Candidate added successfully.");
-          // result.refetch();
-          window.location.reload();
-        },
-        onError(error) {
-          console.log(error);
-        },
-      }
-    );
+      });
+    } catch (error: any) {
+      setIsPending(false);
+      console.log(error?.message.split('Contract Call:')[0].trim());
+      return toast.error(error?.message.split('Contract Call:')[0].trim());
+    }
+    // Upload image
+    const uploadFormData = new FormData();
+    uploadFormData.append('image', image as File);
+    const response = await fetch('/api/filebase', {
+      method: 'POST',
+      body: uploadFormData
+    });
+    const uploadResponse = await response.json();
+    // Perform transaction
+    const hash = await writeContract(config, {
+      abi: ELECTION_ABI,
+      address: searchParams.get("election") as any,
+      functionName: "addCandidate",
+      args: [
+        formData.get("name"),
+        formData.get("team"),
+        uploadResponse.success ? uploadResponse.cid : 'QmY2mBcJoeeghnjXRC8JmitgUkq2Tr55MP1Ufhbu1GmURC',
+      ],
+    });
+    // Wait for transaction reciept
+    await waitForTransactionReceipt(config, { hash });
+    toast.success("Candidate added successfully.");
+    result.refetch();
+    formRef.current?.reset();
+    setIsPending(false);
   };
 
   return (
@@ -126,7 +138,7 @@ const CandidateForm = () => {
           />
           <ImagePicker onImage={file => setImage(file)} />
           <div className="flex justify-end">
-            <SubmitDialog onAddCandidate={addCandidate} loading={isPending || uploading} />
+            <SubmitDialog onAddCandidate={addCandidate} loading={isPending} />
           </div>
         </form>
       </section>

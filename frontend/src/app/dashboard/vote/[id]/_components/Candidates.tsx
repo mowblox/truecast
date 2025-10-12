@@ -3,14 +3,11 @@ import { ELECTION_ABI } from "@/contracts/Election";
 import { ThumbsUp } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
-import React from "react";
-import { useReadContract, useWriteContract } from "wagmi";
+import React, { useState } from "react";
+import { useConfig, useReadContract } from "wagmi";
+import { simulateContract, writeContract, waitForTransactionReceipt, SimulateContractErrorType } from "@wagmi/core";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-
-function getRandomNumber() {
-  return Math.floor(Math.random() * 3) + 1;
-}
 
 export const Candidates = () => {
   const { id } = useParams();
@@ -55,29 +52,36 @@ const CandidateCard = ({
   id: number;
 }) => {
   const { id } = useParams();
-  const { writeContract, isPending } = useWriteContract();
   const router = useRouter();
+  const config = useConfig();
+  const [isPending, setIsPending] = useState<boolean>(false);
 
-  const castVote = () => {
-    writeContract(
-      {
+  const castVote = async () => {
+    setIsPending(true);
+    // Simulate transaction
+    try {
+      await simulateContract(config, {
         abi: ELECTION_ABI,
         address: id as any,
-        functionName: "castVote",
+        functionName: 'castVote',
         args: [candidateId],
-      },
-      {
-        onSuccess() {
-          toast.success("Your vote has been casted successfully!");
-          setTimeout(() => {
-            router.push(`/dashboard/results/${id}`);
-          }, 2000);
-        },
-        onError(error) {
-          console.log(error);
-        },
-      }
-    );
+      });
+    } catch (error: any) {
+      setIsPending(false);
+      console.log(error?.message.split('Contract Call:')[0].trim());
+      return toast.error(error?.message.split('Contract Call:')[0].trim());
+    }
+    // Perform transaction
+    const hash = await writeContract(config, {
+      abi: ELECTION_ABI,
+      address: id as any,
+      functionName: "castVote",
+      args: [candidateId],
+    });
+    // Wait for transaction to complete
+    await waitForTransactionReceipt(config, { hash });
+    toast.success("Your vote has been casted successfully!");
+    router.push(`/dashboard/results/${id}`);
   };
 
   return (
