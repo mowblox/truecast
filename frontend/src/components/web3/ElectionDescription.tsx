@@ -1,6 +1,5 @@
 "use client";
-import { ELECTION_ABI } from "@/contracts/Election";
-import { useReadContract } from "wagmi";
+import useElectionDescription from "@/hooks/use-election-description";
 
 export const ElectionDescription = ({
   address,
@@ -9,13 +8,9 @@ export const ElectionDescription = ({
   address: string | any;
   trim?: boolean;
 }) => {
-  const result = useReadContract({
-    abi: ELECTION_ABI,
-    address: address,
-    functionName: "description",
-  });
+  const description = useElectionDescription({ address });
 
-  const value = result?.data as string;
+  const value = description as string;
 
   return (
     <span>

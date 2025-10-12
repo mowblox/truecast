@@ -1,15 +1,10 @@
 "use client";
-import { ELECTION_ABI } from "@/contracts/Election";
-import { useReadContract } from "wagmi";
+import useElectionEndDate from "@/hooks/use-election-end-date";
 
 export const ElectionEndDate = ({ address }: {
   address: string | any
 }) => {
-  const result = useReadContract({
-    abi: ELECTION_ABI,
-    address: address,
-    functionName: 'endDate',
-  });
+  const endDate = useElectionEndDate({ address });
 
-  return <span>{new Date(Number(result?.data as string)).toLocaleString()}</span>
+  return <span>{new Date(Number(endDate as string)).toLocaleString()}</span>
 }

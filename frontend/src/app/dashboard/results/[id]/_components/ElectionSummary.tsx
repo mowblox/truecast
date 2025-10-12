@@ -3,12 +3,12 @@ import { ElectionEndDate } from "@/components/web3/ElectionEndDate";
 import { ElectionOwner } from "@/components/web3/ElectionOwner";
 import { ElectionStartDate } from "@/components/web3/ElectionStartDate";
 import { ElectionType } from "@/components/web3/ElectionType";
-import useElectionSummary from "@/hooks/use-election-summary";
+import useElectionVoters from "@/hooks/use-election-voters";
 import { useParams } from "next/navigation";
 
 export default function ElectionSummary() {
   const { id } = useParams();
-  const summary = useElectionSummary({ address: id })
+  const voters = useElectionVoters({ address: id })
 
   return (
     <>
@@ -38,7 +38,9 @@ export default function ElectionSummary() {
       </div>
       <div className="flex justify-between">
         <p>Voters</p>
-        <p className="text-secondary">{summary ? Number((summary as any[])[1]) : 0}</p>
+        <p className="text-secondary">
+          {voters ? Number(voters as string) : "unlimited".toUpperCase()}
+        </p>
       </div>
     </>
   );

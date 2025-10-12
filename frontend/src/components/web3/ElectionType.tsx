@@ -1,15 +1,10 @@
 "use client";
-import { ELECTION_ABI } from "@/contracts/Election";
-import { useReadContract } from "wagmi";
+import useElectionType from "@/hooks/use-election-type";
 
 export const ElectionType = ({ address }: {
   address: string | any
 }) => {
-  const result = useReadContract({
-    abi: ELECTION_ABI,
-    address: address,
-    functionName: 'isPublic',
-  });
+  const type = useElectionType({ address });
 
-  return <span>{result?.data as boolean ? 'Public' : 'Private'}</span>
+  return <span>{type as boolean ? 'Public' : 'Private'}</span>
 }
