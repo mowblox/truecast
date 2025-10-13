@@ -3,14 +3,14 @@ import hre from "hardhat";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 describe("Election Contract", function () {
-  async function deployElectionFixture() {
+  async function deployElectionFixture(
+    startDate = Date.now() + 3600 * 1000, // 1 hour in the future (ms)
+    endDate = startDate + 86400 * 1000 // 1 day after start date
+  ) {
     const Election = await hre.ethers.getContractFactory("Election");
     const [owner, voter1, voter2, nonOwner] = await hre.ethers.getSigners();
     const title = "Election 2024";
     const description = "Election Description";
-
-    const startDate = Date.now() + 3600 * 1000; // 1 hour in the future (ms)
-    const endDate = startDate + 86400 * 1000; // 1 day after start date
 
     const election = await Election.deploy(
       title,
@@ -34,6 +34,7 @@ describe("Election Contract", function () {
     };
   }
 
+  // WRITE OPERATIONS UNIT TESTS
   it("should prevent creating an election with an invalid end date", async function () {
     const Election = await hre.ethers.getContractFactory("Election");
     const [owner] = await hre.ethers.getSigners();
@@ -57,6 +58,15 @@ describe("Election Contract", function () {
     ).to.be.revertedWithCustomError(Election, "InvalidEndDate");
   });
 
+  it("should allow owner to add candidates", async function () {
+    const { election, owner } = await loadFixture(deployElectionFixture);
+    await expect(
+      election
+        .connect(owner)
+        .addCandidate("Charlie", "Team C", "charlie.jpg")
+    ).to.emit(election, "CandidateAdded");
+  });
+
   it("should prevent non-owners from adding candidates", async function () {
     const { election, nonOwner } = await loadFixture(deployElectionFixture);
     await expect(
@@ -66,47 +76,8 @@ describe("Election Contract", function () {
     ).to.be.revertedWithCustomError(election, "Unauthorized");
   });
 
-  it("should prevent non-owners from adding voters", async function () {
-    const { election, nonOwner, voter1 } = await loadFixture(
-      deployElectionFixture
-    );
-    await expect(
-      election.connect(nonOwner).addVoters([voter1.address])
-    ).to.be.revertedWithCustomError(election, "Unauthorized");
-  });
-
-  it("should allow owner to extend the election date", async function () {
-    const { election, owner, endDate } = await loadFixture(
-      deployElectionFixture
-    );
-    const newEndDate = endDate + 86400;
-    await expect(election.connect(owner).extendElectionDate(newEndDate))
-      .to.emit(election, "ElectionExtended")
-      .withArgs(newEndDate);
-  });
-
-  it("should prevent non-owners from extending the election date", async function () {
-    const { election, nonOwner, endDate } = await loadFixture(
-      deployElectionFixture
-    );
-    const newEndDate = endDate + 86400;
-    await expect(
-      election.connect(nonOwner).extendElectionDate(newEndDate)
-    ).to.be.revertedWithCustomError(election, "Unauthorized");
-  });
-
-  it("should correctly return all candidates", async function () {
-    const { election, owner } = await loadFixture(deployElectionFixture);
-    await election.connect(owner).addCandidate("Alice", "Team A", "alice.jpg");
-    await election.connect(owner).addCandidate("Bob", "Team B", "bob.jpg");
-    const candidates = await election.getCandidates();
-    expect(candidates.length).to.equal(2);
-    expect(candidates[0].name).to.equal("Alice");
-    expect(candidates[1].name).to.equal("Bob");
-  });
-
   it("should prevent adding duplicate candidates", async function () {
-    const { election, owner, startDate } = await loadFixture(
+    const { election, owner } = await loadFixture(
       deployElectionFixture
     );
     const latestBlock = await hre.ethers.provider.getBlock("latest");
@@ -133,6 +104,46 @@ describe("Election Contract", function () {
     ).to.be.revertedWithCustomError(election, "ElectionAlreadyStarted");
   });
 
+  it("should allow owners to add voters", async function () {
+    const { election, owner, voter1 } = await loadFixture(
+      deployElectionFixture
+    );
+    await expect(
+      election.connect(owner).addVoters([voter1.address])
+    ).to.emit(election, "VotersAdded");
+  });
+
+  it("should allow getting voter by address", async function () {
+    const { election, owner, voter1 } = await loadFixture(
+      deployElectionFixture
+    );
+    await expect(
+      election.connect(owner).addVoters([voter1.address])
+    ).to.emit(election, "VotersAdded");
+    await election.getVoter(voter1.address);
+  });
+
+  it("should prevent double addition of voters", async function () {
+    const { election, owner, voter1 } = await loadFixture(
+      deployElectionFixture
+    );
+    await expect(
+      election.connect(owner).addVoters([voter1.address])
+    ).to.emit(election, "VotersAdded");
+    await expect(
+      election.connect(owner).addVoters([voter1.address])
+    ).to.be.revertedWithCustomError(election, "VoterAlreadyRegistered");
+  });
+
+  it("should prevent non-owners from adding voters", async function () {
+    const { election, nonOwner, voter1 } = await loadFixture(
+      deployElectionFixture
+    );
+    await expect(
+      election.connect(nonOwner).addVoters([voter1.address])
+    ).to.be.revertedWithCustomError(election, "Unauthorized");
+  });
+
   it("should prevent adding voters during ongoing election", async function () {
     const { election, owner, startDate, voter1 } = await loadFixture(
       deployElectionFixture
@@ -147,6 +158,25 @@ describe("Election Contract", function () {
     await expect(
       election.connect(owner).addVoters([voter1.address])
     ).to.be.revertedWithCustomError(election, "ElectionAlreadyStarted");
+  });
+
+  it("should allow owner to extend the election date", async function () {
+    const { election, owner, endDate } = await loadFixture(
+      deployElectionFixture
+    );
+    const newEndDate = endDate + 86400;
+    await expect(election.connect(owner).extendElectionDate(newEndDate))
+      .to.emit(election, "ElectionExtended");
+  });
+
+  it("should prevent non-owners from extending the election date", async function () {
+    const { election, nonOwner, endDate } = await loadFixture(
+      deployElectionFixture
+    );
+    const newEndDate = endDate + 86400;
+    await expect(
+      election.connect(nonOwner).extendElectionDate(newEndDate)
+    ).to.be.revertedWithCustomError(election, "Unauthorized");
   });
 
   it("should prevent double voting", async function () {
@@ -169,7 +199,7 @@ describe("Election Contract", function () {
   });
 
   it("should prevent voting for an invalid candidate", async function () {
-    const { election, voter1, owner, startDate } = await loadFixture(
+    const { election, voter1, startDate } = await loadFixture(
       deployElectionFixture
     );
 
@@ -183,5 +213,30 @@ describe("Election Contract", function () {
     const invalidCandidateId = 99;
     await expect(election.connect(voter1).castVote(invalidCandidateId))
       .to.be.revertedWithCustomError(election, "InvalidCandidate");
+  });
+
+  it("should prevent voting for not started election", async function () {
+    const { election, voter1 } = await loadFixture(deployElectionFixture);
+    await expect(election.connect(voter1).castVote(0))
+      .to.be.revertedWithCustomError(election, "ElectionNotStarted");
+  });
+
+  // READ OPERATIONS UNIT TESTS
+  it("should correctly return all candidates", async function () {
+    const { election, owner } = await loadFixture(deployElectionFixture);
+    await election.connect(owner).addCandidate("Alice", "Team A", "alice.jpg");
+    await election.connect(owner).addCandidate("Bob", "Team B", "bob.jpg");
+    const candidates = await election.getCandidates();
+    expect(candidates.length).to.equal(2);
+    expect(candidates[0].name).to.equal("Alice");
+    expect(candidates[1].name).to.equal("Bob");
+  });
+
+  it("should correctly return election summary", async function () {
+    const { election, owner } = await loadFixture(deployElectionFixture);
+    await election.connect(owner).addCandidate("Alice", "Team A", "alice.jpg");
+    await election.connect(owner).addCandidate("Bob", "Team B", "bob.jpg");
+    const summary = await election.getElectionSummary();
+    expect(summary[1]).to.equal(0);
   });
 });

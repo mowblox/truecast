@@ -32,6 +32,7 @@ contract Election {
 
     event VoteCast(address indexed voter, uint indexed candidateId);
     event CandidateAdded(uint id, string name);
+    event VotersAdded(address[] voters);
     event ElectionExtended(uint newEndDate);
 
     constructor(
@@ -109,6 +110,7 @@ contract Election {
             votersCount++;
             voters[_voterAddresses[i]] = Voter(true, false, 0);
         }
+        emit VotersAdded(_voterAddresses);
     }
 
     function getVoter(address _voterAddress) public view returns (bool, uint) {
