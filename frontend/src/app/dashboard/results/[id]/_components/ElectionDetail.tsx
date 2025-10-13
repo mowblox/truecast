@@ -4,22 +4,18 @@ import { ElectionDescription } from "@/components/web3/ElectionDescription";
 import { ElectionTitle } from "@/components/web3/ElectionTitle";
 import useElectionStatus from "@/hooks/use-election-status";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useChainId } from "wagmi";
 
 export default function ElectionDetail() {
+  const chainId = useChainId();
   const { id } = useParams();
-  const [url, setUrl] = useState('');
   const status = useElectionStatus({ address: id });
 
   const copyUrl = async () => {
-    await navigator.clipboard.writeText(url);
+    await navigator.clipboard.writeText(`${location.origin}/dashboard/vote/${id}?chainId=${chainId}`);
     toast.info("URL copied to clipboard!");
   };
-
-  useEffect(() => {
-    setUrl(`${location.origin}/dashboard/vote/${id}`);
-  }, [id]);
 
   return (
     <section className="flex flex-col gap-8 md:gap-[60px] md:flex-1">
@@ -45,7 +41,7 @@ export default function ElectionDetail() {
       <article className="flex flex-col gap-3 lg:max-w-[672px]">
         <p className="text-2xl">Your election sharing URL</p>
         <div className="h-[75px] bg-primary/10 w-full p-6 overflow-hidden">
-          <p className="text-wrap">{url}</p>
+          <p className="text-wrap">{`${location.origin}/dashboard/vote/${id}?chainId=${chainId}`}</p>
         </div>
 
         <button
