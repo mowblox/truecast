@@ -118,4 +118,23 @@ describe("ElectionFactory Contract", function () {
     // Should return at least one address (the election contract)
     expect(elections.length).to.be.greaterThan(0);
   });
+
+  it("should return all public elections", async function () {
+    const { electionFactory, owner } = await loadFixture(deployElectionFactoryFixture);
+    // Create an election
+    const tx = await electionFactory.createElection(
+      "Presidential Election",
+      "Vote for president",
+      true,
+      1713302400,
+      1715908800
+    );
+    await tx.wait();
+
+    // Call getOwnerElections
+    const elections = await electionFactory.getPublicElections();
+
+    // Should return at least one address (the election contract)
+    expect(elections.length).to.be.greaterThan(0);
+  });
 });
