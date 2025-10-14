@@ -3,23 +3,22 @@ import hre from "hardhat";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 
 describe("Election Contract", function () {
-  async function deployElectionFixture(
-    startDate = Date.now() + 3600 * 1000, // 1 hour in the future (ms)
-    endDate = startDate + 86400 * 1000 // 1 day after start date
-  ) {
+  async function deployElectionFixture() {
     const Election = await hre.ethers.getContractFactory("Election");
     const [owner, voter1, voter2, nonOwner] = await hre.ethers.getSigners();
     const title = "Election 2024";
     const description = "Election Description";
+    const startDate = Date.now() + 3600 * 1000; // 1 hour in the future (ms)
+    const endDate = startDate + 86400 * 1000; // 1 day after start date
 
     const election = await Election.deploy(
       title,
       description,
       true,
-      startDate,
-      endDate,
       owner
     );
+    // Update election dates
+    await election.connect(owner).updateElectionDates(startDate, endDate);
 
     return {
       election,
@@ -35,29 +34,6 @@ describe("Election Contract", function () {
   }
 
   // WRITE OPERATIONS UNIT TESTS
-  it("should prevent creating an election with an invalid end date", async function () {
-    const Election = await hre.ethers.getContractFactory("Election");
-    const [owner] = await hre.ethers.getSigners();
-
-    const title = "Invalid Election";
-    const description = "This should fail";
-    const isPublic = true;
-
-    const startDate = Math.floor(Date.now() / 1000) + 3600; // 1 hour in the future
-    const invalidEndDate = startDate - 3600; // 1 hour before start date
-
-    await expect(
-      Election.deploy(
-        title,
-        description,
-        isPublic,
-        startDate,
-        invalidEndDate,
-        owner
-      )
-    ).to.be.revertedWithCustomError(Election, "InvalidEndDate");
-  });
-
   it("should allow owner to add candidates", async function () {
     const { election, owner } = await loadFixture(deployElectionFixture);
     await expect(
@@ -92,6 +68,7 @@ describe("Election Contract", function () {
     const { election, owner, startDate } = await loadFixture(
       deployElectionFixture
     );
+    await election.connect(owner).goLive();
     const latestBlock = await hre.ethers.provider.getBlock("latest");
     if (!latestBlock) throw new Error("Failed to fetch latest block");
     const timeToAdvance =
@@ -101,7 +78,7 @@ describe("Election Contract", function () {
 
     await expect(
       election.connect(owner).addCandidate("David", "Team D", "david.jpg")
-    ).to.be.revertedWithCustomError(election, "ElectionAlreadyStarted");
+    ).to.be.revertedWithCustomError(election, "ElectionIsAlreadyLive");
   });
 
   it("should allow owners to add voters", async function () {
@@ -148,6 +125,7 @@ describe("Election Contract", function () {
     const { election, owner, startDate, voter1 } = await loadFixture(
       deployElectionFixture
     );
+    await election.connect(owner).goLive();
     const latestBlock = await hre.ethers.provider.getBlock("latest");
     if (!latestBlock) throw new Error("Failed to fetch latest block");
     const timeToAdvance =
@@ -157,25 +135,26 @@ describe("Election Contract", function () {
 
     await expect(
       election.connect(owner).addVoters([voter1.address])
-    ).to.be.revertedWithCustomError(election, "ElectionAlreadyStarted");
+    ).to.be.revertedWithCustomError(election, "ElectionIsAlreadyLive");
   });
 
   it("should allow owner to extend the election date", async function () {
-    const { election, owner, endDate } = await loadFixture(
+    const { election, owner, startDate, endDate } = await loadFixture(
       deployElectionFixture
     );
+    const newStartDate = startDate + 86400;
     const newEndDate = endDate + 86400;
-    await expect(election.connect(owner).extendElectionDate(newEndDate))
-      .to.emit(election, "ElectionExtended");
+    await election.connect(owner).updateElectionDates(newStartDate, newEndDate);
   });
 
   it("should prevent non-owners from extending the election date", async function () {
-    const { election, nonOwner, endDate } = await loadFixture(
+    const { election, nonOwner, startDate, endDate } = await loadFixture(
       deployElectionFixture
     );
+    const newStartDate = startDate + 86400;
     const newEndDate = endDate + 86400;
     await expect(
-      election.connect(nonOwner).extendElectionDate(newEndDate)
+      election.connect(nonOwner).updateElectionDates(newStartDate, newEndDate)
     ).to.be.revertedWithCustomError(election, "Unauthorized");
   });
 
@@ -184,6 +163,7 @@ describe("Election Contract", function () {
       deployElectionFixture
     );
     await election.connect(owner).addCandidate("Alice", "Team A", "alice.jpg");
+    await election.connect(owner).goLive();
 
     const latestBlock = await hre.ethers.provider.getBlock("latest");
     if (!latestBlock) throw new Error("Failed to fetch latest block");
@@ -199,9 +179,10 @@ describe("Election Contract", function () {
   });
 
   it("should prevent voting for an invalid candidate", async function () {
-    const { election, voter1, startDate } = await loadFixture(
+    const { election, owner, voter1, startDate } = await loadFixture(
       deployElectionFixture
     );
+    await election.connect(owner).goLive();
 
     const latestBlock = await hre.ethers.provider.getBlock("latest");
     if (!latestBlock) throw new Error("Failed to fetch latest block");
@@ -216,7 +197,8 @@ describe("Election Contract", function () {
   });
 
   it("should prevent voting for not started election", async function () {
-    const { election, voter1 } = await loadFixture(deployElectionFixture);
+    const { election, owner, voter1 } = await loadFixture(deployElectionFixture);
+    await election.connect(owner).goLive();
     await expect(election.connect(voter1).castVote(0))
       .to.be.revertedWithCustomError(election, "ElectionNotStarted");
   });
@@ -238,5 +220,13 @@ describe("Election Contract", function () {
     await election.connect(owner).addCandidate("Bob", "Team B", "bob.jpg");
     const summary = await election.getElectionSummary();
     expect(summary[1]).to.equal(0);
+  });
+
+  it("should prevent going live for incorrect duration", async function () {
+    const { election, owner } = await loadFixture(deployElectionFixture);
+    await election.connect(owner).addCandidate("Alice", "Team A", "alice.jpg");
+    await election.connect(owner).addCandidate("Bob", "Team B", "bob.jpg");
+    await election.connect(owner).updateElectionDates(0, 0);
+    expect(election.connect(owner).goLive()).to.be.revertedWithCustomError(election, "InvalidElectionDuration");
   });
 });

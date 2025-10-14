@@ -30,9 +30,7 @@ describe("ElectionFactory Contract", function () {
     const newElection = await electionFactory.createElection(
       "Election Title",
       "Election Description",
-      true,
-      1234567890,
-      1234567899
+      true
     );
 
     // Wait for the transaction to be mined
@@ -48,9 +46,7 @@ describe("ElectionFactory Contract", function () {
     await expect(electionFactory.createElection(
       "Election Title",
       "Election Description",
-      true,
-      1234567890,
-      1234567899
+      true
     )).to.emit(electionFactory, "ElectionCreated");
   });
 
@@ -61,9 +57,7 @@ describe("ElectionFactory Contract", function () {
     const newElection = await electionFactory.createElection(
       "Election Title",
       "Election Description",
-      true,
-      1234567890,
-      1234567899
+      true
     );
 
     await newElection.wait();
@@ -89,9 +83,7 @@ describe("ElectionFactory Contract", function () {
     const newElection = await electionFactory.createElection(
       "Election Title",
       "Election Description",
-      true,
-      1234567890,
-      1234567899
+      true
     );
 
     await newElection.wait();
@@ -106,9 +98,7 @@ describe("ElectionFactory Contract", function () {
     const tx = await electionFactory.createElection(
       "Presidential Election",
       "Vote for president",
-      true,
-      1713302400,
-      1715908800
+      true
     );
     await tx.wait();
 
@@ -125,9 +115,7 @@ describe("ElectionFactory Contract", function () {
     const tx = await electionFactory.createElection(
       "Presidential Election",
       "Vote for president",
-      true,
-      1713302400,
-      1715908800
+      true
     );
     await tx.wait();
 
