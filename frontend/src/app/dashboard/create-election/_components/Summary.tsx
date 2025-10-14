@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { ELECTION_ABI } from "@/contracts/Election";
-import { useReadContract } from "wagmi";
+import { useConfig, useReadContract } from "wagmi";
 import { ElectionTitle } from "@/components/web3/ElectionTitle";
 import { ElectionDescription } from "@/components/web3/ElectionDescription";
 import { ElectionStartDate } from "@/components/web3/ElectionStartDate";
@@ -17,34 +17,125 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import useElectionVoters from "@/hooks/use-election-voters";
+import { DateTimePicker } from "@/components/ui/datetime-picker";
+import { waitForTransactionReceipt, simulateContract, writeContract } from '@wagmi/core'
+import { toast } from "sonner";
+
+type Period = {
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+};
 
 const Summary = ({ isPublished }: { isPublished?: boolean }) => {
-  const { id: electionAddress } = useParams();
+  const config = useConfig();
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [period, setPeriod] = useState<Period>({
+    startDate: undefined,
+    endDate: undefined,
+  });
   const searchParams = useSearchParams();
   const router = useRouter();
   const result = useReadContract({
     abi: ELECTION_ABI,
-    address: searchParams.get("election") || (electionAddress as any),
+    address: searchParams.get("election") as any,
     functionName: "getCandidates",
   });
   const voters = useElectionVoters({
-    address: searchParams.get("election") || (electionAddress as any),
+    address: searchParams.get("election"),
   });
 
-  const onConfirmPublish = () => {
-    // Implement publish logic here...
+  const updateElectionDates = async () => {
+    setIsPending(true);
+    // Simulate transaction
+    try {
+      await simulateContract(config, {
+        abi: ELECTION_ABI,
+        address: searchParams.get("election") as any,
+        functionName: "updateElectionDates",
+        args: [
+          period.startDate?.valueOf(),
+          period.endDate?.valueOf(),
+        ],
+      });
+    } catch (error: any) {
+      setIsPending(false);
+      console.log(error?.message.split('Contract Call:')[0].trim());
+      return toast.error(error?.message.split('Contract Call:')[0].trim());
+    }
+    // Perform transaction
+    const hash = await writeContract(config, {
+      abi: ELECTION_ABI,
+      address: searchParams.get("election") as any,
+      functionName: "updateElectionDates",
+      args: [
+        period.startDate?.valueOf(),
+        period.endDate?.valueOf(),
+      ],
+    });
+    // Wait for transaction to complete
+    await waitForTransactionReceipt(config, { hash });
+    location.reload();
+  }
+
+  const onConfirmPublish = async () => {
+    setIsPending(true);
+    // Simulate transaction
+    try {
+      await simulateContract(config, {
+        abi: ELECTION_ABI,
+        address: searchParams.get("election") as any,
+        functionName: "goLive",
+      });
+    } catch (error: any) {
+      setIsPending(false);
+      console.log(error?.message.split('Contract Call:')[0].trim());
+      return toast.error(error?.message.split('Contract Call:')[0].trim());
+    }
+    // Perform transaction
+    const hash = await writeContract(config, {
+      abi: ELECTION_ABI,
+      address: searchParams.get("election") as any,
+      functionName: "goLive",
+    });
+    // Wait for transaction to complete
+    await waitForTransactionReceipt(config, { hash });
     router.push(
-      `/dashboard/results/${searchParams.get("election") || electionAddress}`
+      `/dashboard/results/${searchParams.get("election")}`
     );
   };
 
   return (
     <div className="w-full flex flex-col gap-12">
       <div className="flex flex-col gap-3">
+        <label htmlFor="period" className="text-lg dark:text-white/87">
+          <span className="font-bold">Timeline</span> (Choose when your election starts and ends.)
+        </label>
+        <div className="grid md:grid-cols-3 gap-x-8 gap-y-4">
+          <DateTimePicker
+            disabled={{ before: new Date() }}
+            selected={period.startDate}
+            onSelect={(value) => setPeriod({ ...period, startDate: value })}
+            placeholder="Start date"
+            required
+          />
+          <DateTimePicker
+            disabled={{ before: new Date(period.startDate || "") }}
+            selected={period.endDate}
+            onSelect={(value) => setPeriod({ ...period, endDate: value })}
+            placeholder="End date"
+            required
+          />
+          <Button loading={isPending} as="span" size="lg" onClick={updateElectionDates}>
+            Set Timeline
+          </Button>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
         <label className="text-lg">Election Title</label>
         <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
           <ElectionTitle
-            address={searchParams.get("election") || electionAddress}
+            address={searchParams.get("election")}
           />
         </div>
       </div>
@@ -52,7 +143,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
         <label className="text-lg">Election Description</label>
         <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
           <ElectionDescription
-            address={searchParams.get("election") || electionAddress}
+            address={searchParams.get("election")}
           />
         </div>
       </div>
@@ -61,11 +152,11 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
         <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
           <p>
             <ElectionStartDate
-              address={searchParams.get("election") || electionAddress}
+              address={searchParams.get("election")}
             />{" "}
             -{" "}
             <ElectionEndDate
-              address={searchParams.get("election") || electionAddress}
+              address={searchParams.get("election")}
             />
           </p>
         </div>
@@ -74,7 +165,7 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
         <label className="text-lg">Election Type</label>
         <div className="flex flex-col gap-2 text-text dark:text-white/40 text-lg">
           <ElectionType
-            address={searchParams.get("election") || electionAddress}
+            address={searchParams.get("election")}
           />
         </div>
       </div>
@@ -100,14 +191,14 @@ const Summary = ({ isPublished }: { isPublished?: boolean }) => {
 
       {isPublished ? null : (
         <div className="flex justify-end mt-24">
-          <SubmitDialog onConfirmPublish={onConfirmPublish} />
+          <SubmitDialog isLoading={isPending} onConfirmPublish={onConfirmPublish} />
         </div>
       )}
     </div>
   );
 };
 
-const SubmitDialog = ({ onConfirmPublish }: { onConfirmPublish: Function }) => {
+const SubmitDialog = ({ onConfirmPublish, isLoading }: { onConfirmPublish: Function, isLoading: boolean }) => {
   return (
     <Dialog>
       <DialogTrigger>
@@ -132,7 +223,7 @@ const SubmitDialog = ({ onConfirmPublish }: { onConfirmPublish: Function }) => {
               Cancel
             </Button>
           </DialogClose>
-          <Button as="span" size="lg" onClick={() => onConfirmPublish()}>
+          <Button loading={isLoading} as="span" size="lg" onClick={() => onConfirmPublish()}>
             Publish
           </Button>
         </div>

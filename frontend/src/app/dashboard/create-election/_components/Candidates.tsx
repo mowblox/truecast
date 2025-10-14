@@ -97,9 +97,7 @@ const CandidateForm = () => {
     // Wait for transaction reciept
     await waitForTransactionReceipt(config, { hash });
     toast.success("Candidate added successfully.");
-    result.refetch();
-    formRef.current?.reset();
-    setIsPending(false);
+    location.reload();
   };
 
   return (
