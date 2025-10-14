@@ -8,6 +8,7 @@ contract Election {
     bool public isPublic;
     uint public startDate;
     uint public endDate;
+    bool public isLive;
 
     address public owner;
 
@@ -39,30 +40,12 @@ contract Election {
         string memory _title,
         string memory _description,
         bool _isPublic,
-        uint _startDate,
-        uint _endDate,
         address _owner
     ) {
-        if (_startDate >= _endDate) revert InvalidEndDate();
         title = _title;
         description = _description;
         isPublic = _isPublic;
-        startDate = _startDate;
-        endDate = _endDate;
         owner = _owner;
-    }
-
-    modifier whileOngoing() {
-        if (!(startDate < (block.timestamp * 1000)))
-            revert ElectionNotStarted();
-        if (!(endDate > (block.timestamp * 1000))) revert ElectionEnded();
-        _;
-    }
-
-    modifier whilePending() {
-        if (!(startDate > (block.timestamp * 1000)))
-            revert ElectionAlreadyStarted();
-        _;
     }
 
     modifier onlyOwner() {
@@ -70,11 +53,30 @@ contract Election {
         _;
     }
 
+    modifier whileLive() {
+        if (!isLive) revert ElectionIsNotLive();
+        if (!(startDate < (block.timestamp * 1000)))
+            revert ElectionNotStarted();
+        if (!(endDate > (block.timestamp * 1000))) revert ElectionEnded();
+        _;
+    }
+
+    modifier whileNotLive() {
+        if (isLive) revert ElectionIsAlreadyLive();
+        _;
+    }
+
+    function goLive() public onlyOwner whileNotLive {
+        if ((endDate < startDate) || (startDate < (block.timestamp * 1000)))
+            revert InvalidElectionDuration();
+        isLive = true;
+    }
+
     function addCandidate(
         string memory _name,
         string memory _team,
         string memory _image
-    ) public onlyOwner whilePending {
+    ) public onlyOwner whileNotLive {
         for (uint i = 1; i <= candidatesCount; i++) {
             if (
                 keccak256(abi.encodePacked(candidates[i].name)) ==
@@ -102,7 +104,7 @@ contract Election {
 
     function addVoters(
         address[] memory _voterAddresses
-    ) public onlyOwner whilePending {
+    ) public onlyOwner whileNotLive {
         uint length = _voterAddresses.length;
         for (uint i = 0; i < length; i++) {
             if (voters[_voterAddresses[i]].registered)
@@ -118,7 +120,7 @@ contract Election {
         return (voter.voted, voter.candidateId);
     }
 
-    function castVote(uint _candidateId) public whileOngoing {
+    function castVote(uint _candidateId) public whileLive {
         if (voters[msg.sender].voted) revert AlreadyVoted();
         if (_candidateId == 0 || _candidateId > candidatesCount)
             revert InvalidCandidate();
@@ -151,9 +153,11 @@ contract Election {
         return (allCandidates, totalVotes);
     }
 
-    function extendElectionDate(uint newEndDate) public onlyOwner {
-        if (newEndDate <= endDate) revert ElectionEnded();
-        endDate = newEndDate;
-        emit ElectionExtended(newEndDate);
+    function updateElectionDates(
+        uint _startDate,
+        uint _endDate
+    ) public onlyOwner whileNotLive {
+        startDate = _startDate;
+        endDate = _endDate;
     }
 }

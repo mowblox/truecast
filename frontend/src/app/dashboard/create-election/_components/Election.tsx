@@ -13,43 +13,30 @@ import {
 } from "@/contracts/ElectionFactory";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { DateTimePicker } from "@/components/ui/datetime-picker";
-
-type Period = {
-  startDate: Date | undefined;
-  endDate: Date | undefined;
-};
 
 const Election = () => {
   const router = useRouter();
   const config = useConfig();
   const chainId = useChainId();
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [period, setPeriod] = useState<Period>({
-    startDate: undefined,
-    endDate: undefined,
-  });
 
-  const validatePeriod = (period: Period) => {
-    if (!(period.startDate && period.endDate)) {
-      return { status: false, message: "Please select a start and end date." };
-    }
-    if (period.startDate.getTime() > period.endDate.getTime()) {
-      return {
-        status: false,
-        message: "Start date must come before end date.",
-      };
-    }
-    return { status: true, message: "" };
-  };
+  // const validatePeriod = (period: Period) => {
+  //   if (!(period.startDate && period.endDate)) {
+  //     return { status: false, message: "Please select a start and end date." };
+  //   }
+  //   if (period.startDate.getTime() > period.endDate.getTime()) {
+  //     return {
+  //       status: false,
+  //       message: "Start date must come before end date.",
+  //     };
+  //   }
+  //   return { status: true, message: "" };
+  // };
 
   const createElection = async (event: React.SyntheticEvent<HTMLFormElement>) => {
     setIsPending(true);
     event.preventDefault();
     const formData = new FormData(event.target as HTMLFormElement);
-    const result = validatePeriod(period);
-    if (!result.status) return toast.error(result.message);
-    // console.log(formData.get("election-type"));
     // Simulate transaction
     try {
       await simulateContract(config, {
@@ -60,8 +47,8 @@ const Election = () => {
           formData.get("title"),
           formData.get("description"),
           formData.get("election-type") === "public",
-          period.startDate?.valueOf(),
-          period.endDate?.valueOf(),
+          // period.startDate?.valueOf(),
+          // period.endDate?.valueOf(),
         ],
       });
     } catch (error: any) {
@@ -78,8 +65,8 @@ const Election = () => {
         formData.get("title"),
         formData.get("description"),
         formData.get("election-type") === "public",
-        period.startDate?.valueOf(),
-        period.endDate?.valueOf(),
+        // period.startDate?.valueOf(),
+        // period.endDate?.valueOf(),
       ],
     });
     // Wait for transaction to complete
@@ -110,28 +97,6 @@ const Election = () => {
         label="Description"
         placeholder="Write a brief summary about the purpose of the election"
       />
-
-      <div className="flex flex-col gap-3">
-        <label htmlFor="period" className="text-lg dark:text-white/87">
-          Election Period
-        </label>
-        <div className="grid md:grid-cols-2 gap-x-8 gap-y-4">
-          <DateTimePicker
-            disabled={{ before: new Date() }}
-            selected={period.startDate}
-            onSelect={(value) => setPeriod({ ...period, startDate: value })}
-            placeholder="Start date"
-            required
-          />
-          <DateTimePicker
-            disabled={{ before: new Date(period.startDate || "") }}
-            selected={period.endDate}
-            onSelect={(value) => setPeriod({ ...period, endDate: value })}
-            placeholder="End date"
-            required
-          />
-        </div>
-      </div>
 
       <InputWrapper name="election-type" label="Election Type">
         <RadioGroup

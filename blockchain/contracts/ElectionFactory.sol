@@ -32,17 +32,13 @@ contract ElectionFactory {
     function createElection(
         string memory _title,
         string memory _description,
-        bool _isPublic,
-        uint _startDate,
-        uint _endDate
+        bool _isPublic
     ) public {
         // Create a new instance of the Election contract
         Election newElection = new Election(
             _title,
             _description,
             _isPublic,
-            _startDate,
-            _endDate,
             msg.sender
         );
 
