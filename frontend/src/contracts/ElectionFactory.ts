@@ -5,7 +5,7 @@ export const getFactoryAddress = (chainId: number) => {
     case 43114:
       return '0x0000000000000000000000000000000000000000'; // avalanche
     case 11155111:
-      return '0x06cBDa292a0AD2cb6FD4cD3E9A986bAb0cA4ca99'; // sepolia
+      return '0x5c4b9b14f30a2d320b81044Ab1a0e407c9b6833C'; // sepolia
     case 17000:
       return '0x9fca09E8579C43753f37727Ba87d5e4eAbE2EDaD'; // holesky
     case 43113:
