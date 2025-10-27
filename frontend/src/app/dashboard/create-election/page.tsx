@@ -23,6 +23,7 @@ const tabsContent = [
 
 const CreateElection = () => {
   const searchParams = useSearchParams();
+  const election = searchParams.get("election");
   let tab = searchParams.get("tab");
   tab = tabHeaders.find(({ value }) => value === tab)?.value || "election";
 
@@ -32,8 +33,9 @@ const CreateElection = () => {
         <TabsList className="w-full flex justify-between border-b px-0 border-gray/30 dark:border-[#EAEAEA]/15 rounded-none">
           {tabHeaders.map(({ value, label }) => (
             <TabsTrigger
-              disabled // can be removed if you want to control with tabs
               key={value}
+              disabled={!election}
+              onClick={console.log}
               className="px-0 text-xl transition duration-300 data-[state=active]:text-secondary dark:text-white/60 dark:data-[state=active]:text-secondary relative before:absolute before:w-full before:h-1 before:bg-secondary before:rounded-full before:bottom-0 before:translate-y-1/2 before:opacity-0 data-[state=active]:before:opacity-100 before:transition before:duration-3000 disabled:opacity-100"
               value={value}
             >
