@@ -2,7 +2,7 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import { darkTheme, getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { WagmiProvider, http } from 'wagmi';
-import { rainbowWallet, metaMaskWallet, walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
+import { rainbowWallet, metaMaskWallet, walletConnectWallet, baseAccount } from '@rainbow-me/rainbowkit/wallets';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { sepolia, scrollSepolia, mainnet, lineaSepolia, hardhat, avalancheFuji, avalanche, holesky } from 'wagmi/chains';
 
@@ -26,6 +26,7 @@ const config = getDefaultConfig({
   wallets: [{
     groupName: 'Recommended',
     wallets: [
+      baseAccount,
       rainbowWallet,
       metaMaskWallet,
       walletConnectWallet
