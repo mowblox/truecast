@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@account-kit/react": "^4.78.0",
     "@filebase/sdk": "^1.0.6",
     "@hookform/resolvers": "^3.9.1",
     "@mailchimp/mailchimp_marketing": "^3.0.80",

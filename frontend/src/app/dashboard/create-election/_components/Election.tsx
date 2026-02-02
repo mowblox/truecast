@@ -13,12 +13,15 @@ import {
 } from "@/contracts/ElectionFactory";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useSendCalls, useSmartAccountClient } from "@account-kit/react";
 
 const Election = () => {
+  const { client } = useSmartAccountClient({});
   const router = useRouter();
   const config = useConfig();
   const chainId = useChainId();
   const [isPending, setIsPending] = useState<boolean>(false);
+  console.log(client?.account.address);
 
   // const validatePeriod = (period: Period) => {
   //   if (!(period.startDate && period.endDate)) {
